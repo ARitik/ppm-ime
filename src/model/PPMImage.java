@@ -6,6 +6,27 @@ public class PPMImage implements Image {
   int width;
   int maxValue;
   int[][] R;
+
+  public int getHeight() {
+    return height;
+  }
+
+  public int getWidth() {
+    return width;
+  }
+
+  public int getRPixel(int row, int column) {
+    return R[row][column];
+  }
+
+  public int getGPixel(int row, int column) {
+    return G[row][column];
+  }
+
+  public int getBPixel(int row, int column) {
+    return B[row][column];
+  }
+
   int[][] G;
   int[][] B;
 
@@ -28,7 +49,6 @@ public class PPMImage implements Image {
 
   @Override
   public int getMaxValue() {
-    System.out.println("Max Value: " + maxValue);
     return maxValue;
   }
 
@@ -42,9 +62,6 @@ public class PPMImage implements Image {
     private int[][] G;
     private int[][] B;
     private ImageBuilder() {
-      this.R = new int[1000][1000];
-      this.G = new int[1000][1000];
-      this.B = new int[1000][1000];
     }
 
     public ImageBuilder R(int RPixel, int row, int column) {
@@ -62,6 +79,9 @@ public class PPMImage implements Image {
     }
     public ImageBuilder height(int height) {
       this.height = height;
+      this.R = new int[height][width];
+      this.G = new int[height][width];
+      this.B = new int[height][width];
       return this;
     }
 
