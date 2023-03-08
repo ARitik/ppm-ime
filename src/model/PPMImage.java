@@ -6,6 +6,8 @@ public class PPMImage implements Image {
   int width;
   int maxValue;
   int[][] R;
+  int[][] G;
+  int[][] B;
 
   public int getHeight() {
     return height;
@@ -27,8 +29,6 @@ public class PPMImage implements Image {
     return B[row][column];
   }
 
-  int[][] G;
-  int[][] B;
 
 
   private PPMImage(String identifier, int height, int width, int maxValue, int[][] R, int[][] G,
@@ -42,6 +42,17 @@ public class PPMImage implements Image {
     this.identifier = identifier;
   }
 
+  public int[][] getR() {
+    return R;
+  }
+
+  public int[][] getG() {
+    return G;
+  }
+
+  public int[][] getB() {
+    return B;
+  }
 
   public static ImageBuilder getBuilder() {
     return new ImageBuilder();
@@ -62,6 +73,21 @@ public class PPMImage implements Image {
     private int[][] G;
     private int[][] B;
     private ImageBuilder() {
+    }
+
+
+    public ImageBuilder RMatrix(int[][] R) {
+      this.R =  R;
+      return this;
+    }
+
+    public ImageBuilder GMatrix(int[][] G) {
+      this.G =  G;
+      return this;
+    }
+    public ImageBuilder BMatrix(int[][] B) {
+      this.B =  B;
+      return this;
     }
 
     public ImageBuilder R(int RPixel, int row, int column) {

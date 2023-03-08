@@ -8,6 +8,8 @@ public interface ImageOperations {
   void brighten(int value, String identifier, String brightenIdentifier);
   void flip(String orientation, String identifier, String flippedIdentifier);
   void greyscale(String component, String identifier, String greyScaleIdentifier);
-  void rgbSplit(String identifier, String tint);
-  void rgbCombine(String identifierOne, String identifierTwo);
+  void rgbSplit(String identifier, String redIdentifier, String greenIdentifier,
+                String blueIdentifier);
+  void rgbCombine(String identifier, String redIdentifier, String greenIdentifier,
+                  String blueIdentifier);
 }

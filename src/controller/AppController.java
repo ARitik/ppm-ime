@@ -50,9 +50,11 @@ public class AppController {
         view.log("greyscale");
         break;
       case "rgb-split":
+        model.rgbSplit(tokens[1],tokens[2],tokens[3],tokens[4]);
         view.log("rgb-split");
         break;
       case "rgb-combine":
+        model.rgbCombine(tokens[1],tokens[2],tokens[3],tokens[4]);
         view.log("rgb-combine");
         break;
       default:
