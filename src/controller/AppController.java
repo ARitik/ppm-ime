@@ -49,6 +49,8 @@ public class AppController {
                 view.log("horizontal-flip");
                 break;
             case "greyscale":
+                String component =  tokens[1].substring(0,tokens[1].indexOf('-'));
+                model.greyscale(component,tokens[2],tokens[3]);
                 view.log("greyscale");
                 break;
             case "rgb-split":

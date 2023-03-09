@@ -101,7 +101,8 @@ public class PPMOperations implements ImageOperations {
 
     @Override
     public void greyscale(String component, String identifier, String greyScaleIdentifier) {
-
+        PPMImage.ImageBuilder grayscaleImage = PPMImage.getBuilder();
+        splitIntoComponent(grayscaleImage, greyScaleIdentifier, component);
     }
 
     @Override
@@ -111,37 +112,55 @@ public class PPMOperations implements ImageOperations {
         PPMImage.ImageBuilder greenChannel = PPMImage.getBuilder();
         PPMImage.ImageBuilder blueChannel = PPMImage.getBuilder();
         PPMImage image = newImages.get(identifier);
-        splitIntoChannel(redChannel, redIdentifier, 'R');
-        splitIntoChannel(greenChannel, greenIdentifier, 'G');
-        splitIntoChannel(blueChannel, blueIdentifier, 'B');
+        splitIntoComponent(redChannel, redIdentifier, "red");
+        splitIntoComponent(greenChannel, greenIdentifier, "green");
+        splitIntoComponent(blueChannel, blueIdentifier, "blue");
     }
 
-    private void splitIntoChannel(PPMImage.ImageBuilder builder,
-                                  String channelIdentifier,
-                                  char type) {
+    private void splitIntoComponent(PPMImage.ImageBuilder builder,
+                                    String channelIdentifier,
+                                    String type) {
         builder.identifier(channelIdentifier)
                 .width(image.getWidth())
                 .height(image.getHeight())
                 .maxValue(image.getMaxValue());
         switch (type) {
-            case 'R':
+            case "red":
                 builder.RMatrix(image.getR())
                         .GMatrix(image.getR())
                         .BMatrix(image.getR());
                 break;
-            case 'G':
+            case "green":
                 builder.RMatrix(image.getG())
                         .GMatrix(image.getG())
                         .BMatrix(image.getG());
                 break;
-            case 'B':
+            case "blue":
                 builder.RMatrix(image.getB())
                         .GMatrix(image.getB())
                         .BMatrix(image.getB());
                 break;
+            case "value" :
+                builder.RMatrix(image.getValue());
+                builder.GMatrix(image.getValue());
+                builder.BMatrix(image.getValue());
+                break;
+            case "intensity" :
+                builder.RMatrix(image.getIntensity());
+                builder.GMatrix(image.getIntensity());
+                builder.BMatrix(image.getIntensity());
+                break;
+            case "luma" :
+                builder.RMatrix(image.getLuma());
+                builder.GMatrix(image.getLuma());
+                builder.BMatrix(image.getLuma());
+                break;
             default:
                 break;
         }
+        builder.valueMatrix(image.getValue());
+        builder.intensityMatrix(image.getIntensity());
+        builder.lumaMatrix(image.getLuma());
         newImages.put(channelIdentifier, builder.build());
     }
 
