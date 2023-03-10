@@ -41,40 +41,41 @@ public class AppController {
                 break;
             case "load":
                 model.load(tokens[1], tokens[2]);
-                view.log("load");
+                view.log("load",true);
                 break;
             case "save":
                 model.save(tokens[1], tokens[2]);
-                view.log("save");
+                view.log("save",true);
                 break;
             case "brighten":
                 int brightenConstant = Integer.parseInt(tokens[1]);
                 model.brighten(brightenConstant, tokens[2], tokens[3]);
-                view.log("brighten");
+                view.log("brighten",true);
                 break;
             case "vertical-flip":
                 model.flip(tokens[0], tokens[1], tokens[2]);
-                view.log("vertical-flip");
+                view.log("vertical-flip",true);
                 break;
             case "horizontal-flip":
                 model.flip(tokens[0], tokens[1], tokens[2]);
-                view.log("horizontal-flip");
+                view.log("horizontal-flip",true);
                 break;
             case "greyscale":
                 String component =  tokens[1].substring(0,tokens[1].indexOf('-'));
                 model.greyscale(component,tokens[2],tokens[3]);
-                view.log("greyscale");
+                view.log("greyscale",true);
                 break;
             case "rgb-split":
                 model.rgbSplit(tokens[1], tokens[2], tokens[3], tokens[4]);
-                view.log("rgb-split");
+                view.log("rgb-split",true);
                 break;
             case "rgb-combine":
                 model.rgbCombine(tokens[1], tokens[2], tokens[3], tokens[4]);
-                view.log("rgb-combine");
+                view.log("rgb-combine",true);
                 break;
             default:
-                throw new IllegalArgumentException("Invalid command entered");
+                view.log("load", false);
+//                throw new IllegalArgumentException("Invalid command entered");
         }
     }
 }
