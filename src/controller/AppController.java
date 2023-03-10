@@ -1,11 +1,13 @@
 package controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
-import model.Image;
 import model.ImageOperations;
 import view.ImageLogView;
+import utils.ImageUtil;
 
 public class AppController {
     ImageOperations model;
@@ -22,11 +24,21 @@ public class AppController {
             processCommandLineArgs(input.nextLine());
         }
     }
+    private void processScriptCommands(String fileName) throws IOException {
+        List<String> commands = new ArrayList<String>();
+        commands.addAll(ImageUtil.readScriptCommands(fileName));
+        for(String command: commands) {
+            processCommandLineArgs(command);
+        }
+    }
 
     private void processCommandLineArgs(String command) throws IOException {
         String[] tokens = command.split("\\s+");
         String operation = tokens[0];
         switch (operation) {
+            case "run":
+                processScriptCommands(tokens[1]);
+                break;
             case "load":
                 model.load(tokens[1], tokens[2]);
                 view.log("load");

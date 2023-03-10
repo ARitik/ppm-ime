@@ -3,6 +3,8 @@ package utils;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import java.io.FileNotFoundException;
 import java.io.FileInputStream;
@@ -16,6 +18,28 @@ import model.PPMImage;
  * as required.
  */
 public class ImageUtil {
+  public static List<String> readScriptCommands(String filename) {
+    Scanner sc;
+    List<String> commands = new ArrayList<String>();
+    System.out.println(filename);
+
+    try {
+      sc = new Scanner(new FileInputStream(filename));
+    } catch (FileNotFoundException e) {
+      System.out.println("File " + filename + " not found!");
+      return null;
+    }
+
+    while (sc.hasNextLine()) {
+      String s = sc.nextLine();
+      if(!s.isEmpty())  {
+        if (s.charAt(0) != '#') {
+          commands.add(s);
+        }
+      }
+    }
+    return commands;
+  }
 
   /**
    * Read an image file in the PPM format and create an Image object.
@@ -67,12 +91,12 @@ public class ImageUtil {
         imageBuilder.G(g, i, j);
         int b = sc.nextInt();
         imageBuilder.B(b, i, j);
-        int value = Math.max(r,Math.max(g,b));
-        int intensity = (r+g+b)/3;
-        int luma = (int) (0.212*r + 0.7152*g + 0.0722*b);
-        imageBuilder.value(value,i,j);
-        imageBuilder.intensity(intensity,i,j);
-        imageBuilder.luma(luma,i,j);
+        int value = Math.max(r, Math.max(g, b));
+        int intensity = (r + g + b) / 3;
+        int luma = (int) (0.212 * r + 0.7152 * g + 0.0722 * b);
+        imageBuilder.value(value, i, j);
+        imageBuilder.intensity(intensity, i, j);
+        imageBuilder.luma(luma, i, j);
       }
     }
     return imageBuilder.build();

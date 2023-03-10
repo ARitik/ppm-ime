@@ -8,11 +8,11 @@ import utils.ImageUtil;
 
 public class PPMOperations implements ImageOperations {
     PPMImage image;
-    Map<String, PPMImage> newImages;
+    private Map<String, PPMImage> imageMap;
 
     public PPMOperations() {
         this.image = null;
-        this.newImages = new HashMap<String, PPMImage>();
+        this.imageMap = new HashMap<String, PPMImage>();
     }
 
     private int limit(int value) {
@@ -21,18 +21,19 @@ public class PPMOperations implements ImageOperations {
 
     @Override
     public void load(String filePath, String identifier) {
-        image = (PPMImage) ImageUtil.readPPM(filePath, identifier);
+        PPMImage image = (PPMImage) ImageUtil.readPPM(filePath, identifier);
+        imageMap.put(identifier, image);
 //    image.getMaxValue();
     }
 
     @Override
     public void save(String savePath, String imageIdentifier) throws IOException {
-        System.out.println(newImages.get(imageIdentifier).getWidth());
-        ImageUtil.savePPM(savePath, newImages.get(imageIdentifier));
+        ImageUtil.savePPM(savePath, imageMap.get(imageIdentifier));
     }
 
     @Override
     public void brighten(int value, String identifier, String brightenIdentifier) {
+        PPMImage image = imageMap.get(identifier);
         PPMImage.ImageBuilder newImageBuilder = PPMImage
                 .getBuilder()
                 .identifier(identifier)
@@ -51,10 +52,11 @@ public class PPMOperations implements ImageOperations {
                 newImageBuilder.B(limit(b + value), row, column);
             }
         }
-        newImages.put(brightenIdentifier, newImageBuilder.build());
+        imageMap.put(brightenIdentifier, newImageBuilder.build());
     }
 
-    private void horizontalFlip(PPMImage.ImageBuilder newImageBuilder, String flippedIdentifier) {
+    private void horizontalFlip(PPMImage image, PPMImage.ImageBuilder newImageBuilder,
+                                String flippedIdentifier) {
         for (int row = 0; row < image.getHeight(); row++) {
             for (int column = 0; column < image.getWidth(); column++) {
                 int r = image.getRPixel(row, image.getWidth() - column - 1);
@@ -65,10 +67,11 @@ public class PPMOperations implements ImageOperations {
                 newImageBuilder.B(Math.min(b, 255), row, column);
             }
         }
-        newImages.put(flippedIdentifier, newImageBuilder.build());
+        imageMap.put(flippedIdentifier, newImageBuilder.build());
     }
 
-    private void verticalFlip(PPMImage.ImageBuilder newImageBuilder, String flippedIdentifier) {
+    private void verticalFlip(PPMImage image ,PPMImage.ImageBuilder newImageBuilder,
+                              String flippedIdentifier) {
 
         for (int row = 0; row < image.getHeight(); row++) {
             for (int column = 0; column < image.getWidth(); column++) {
@@ -80,11 +83,12 @@ public class PPMOperations implements ImageOperations {
                 newImageBuilder.B(Math.min(b, 255), row, column);
             }
         }
-        newImages.put(flippedIdentifier, newImageBuilder.build());
+        imageMap.put(flippedIdentifier, newImageBuilder.build());
     }
 
     @Override
     public void flip(String orientation, String identifier, String flippedIdentifier) {
+        PPMImage image = imageMap.get(identifier);
         PPMImage.ImageBuilder newImageBuilder = PPMImage
                 .getBuilder()
                 .identifier(identifier)
@@ -93,16 +97,17 @@ public class PPMOperations implements ImageOperations {
                 .maxValue(image.getMaxValue());
 
         if (orientation.equalsIgnoreCase("horizontal-flip")) {
-            horizontalFlip(newImageBuilder, flippedIdentifier);
+            horizontalFlip(image,newImageBuilder, flippedIdentifier);
         } else {
-            verticalFlip(newImageBuilder, flippedIdentifier);
+            verticalFlip(image,newImageBuilder, flippedIdentifier);
         }
     }
 
     @Override
     public void greyscale(String component, String identifier, String greyScaleIdentifier) {
         PPMImage.ImageBuilder grayscaleImage = PPMImage.getBuilder();
-        splitIntoComponent(grayscaleImage, greyScaleIdentifier, component);
+        PPMImage image = imageMap.get(identifier);
+        splitIntoComponent(image,grayscaleImage, greyScaleIdentifier, component);
     }
 
     @Override
@@ -111,13 +116,13 @@ public class PPMOperations implements ImageOperations {
         PPMImage.ImageBuilder redChannel = PPMImage.getBuilder();
         PPMImage.ImageBuilder greenChannel = PPMImage.getBuilder();
         PPMImage.ImageBuilder blueChannel = PPMImage.getBuilder();
-        PPMImage image = newImages.get(identifier);
-        splitIntoComponent(redChannel, redIdentifier, "red");
-        splitIntoComponent(greenChannel, greenIdentifier, "green");
-        splitIntoComponent(blueChannel, blueIdentifier, "blue");
+        PPMImage image = imageMap.get(identifier);
+        splitIntoComponent(image,redChannel, redIdentifier, "red");
+        splitIntoComponent(image,greenChannel, greenIdentifier, "green");
+        splitIntoComponent(image,blueChannel, blueIdentifier, "blue");
     }
 
-    private void splitIntoComponent(PPMImage.ImageBuilder builder,
+    private void splitIntoComponent(PPMImage image ,PPMImage.ImageBuilder builder,
                                     String channelIdentifier,
                                     String type) {
         builder.identifier(channelIdentifier)
@@ -161,25 +166,25 @@ public class PPMOperations implements ImageOperations {
         builder.valueMatrix(image.getValue());
         builder.intensityMatrix(image.getIntensity());
         builder.lumaMatrix(image.getLuma());
-        newImages.put(channelIdentifier, builder.build());
+        imageMap.put(channelIdentifier, builder.build());
     }
 
     @Override
     public void rgbCombine(String identifier, String redIdentifier, String greenIdentifier,
                            String blueIdentifier) {
-        int redMaxValue = newImages.get(redIdentifier).getMaxValue();
-        int greenMaxValue = newImages.get(greenIdentifier).getMaxValue();
-        int blueMaxValue = newImages.get(blueIdentifier).getMaxValue();
+        int redMaxValue = imageMap.get(redIdentifier).getMaxValue();
+        int greenMaxValue = imageMap.get(greenIdentifier).getMaxValue();
+        int blueMaxValue = imageMap.get(blueIdentifier).getMaxValue();
         int maxValue = Math.max(redMaxValue, Math.max(greenMaxValue, blueMaxValue));
         PPMImage.ImageBuilder newImageBuilder = PPMImage
                 .getBuilder()
                 .identifier(identifier)
-                .width(newImages.get(redIdentifier).getWidth())
-                .height(newImages.get(redIdentifier).getHeight())
+                .width(imageMap.get(redIdentifier).getWidth())
+                .height(imageMap.get(redIdentifier).getHeight())
                 .maxValue(maxValue)
-                .RMatrix(newImages.get(redIdentifier).getR())
-                .GMatrix(newImages.get(greenIdentifier).getG())
-                .BMatrix(newImages.get(blueIdentifier).getB());
-        newImages.put(identifier, newImageBuilder.build());
+                .RMatrix(imageMap.get(redIdentifier).getR())
+                .GMatrix(imageMap.get(greenIdentifier).getG())
+                .BMatrix(imageMap.get(blueIdentifier).getB());
+        imageMap.put(identifier, newImageBuilder.build());
     }
 }
