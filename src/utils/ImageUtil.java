@@ -11,6 +11,7 @@ import java.io.FileInputStream;
 
 import model.Image;
 import model.PPMImage;
+import model.Pixel;
 
 
 /**
@@ -86,17 +87,9 @@ public class ImageUtil {
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         int r = sc.nextInt();
-        imageBuilder.R(r, i, j);
         int g = sc.nextInt();
-        imageBuilder.G(g, i, j);
         int b = sc.nextInt();
-        imageBuilder.B(b, i, j);
-        int value = Math.max(r, Math.max(g, b));
-        int intensity = (r + g + b) / 3;
-        int luma = (int) (0.212 * r + 0.7152 * g + 0.0722 * b);
-        imageBuilder.value(value, i, j);
-        imageBuilder.intensity(intensity, i, j);
-        imageBuilder.luma(luma, i, j);
+        imageBuilder.pixel(new Pixel(r,g,b),i,j);
       }
     }
     return imageBuilder.build();

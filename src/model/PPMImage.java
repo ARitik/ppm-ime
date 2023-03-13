@@ -1,18 +1,67 @@
 package model;
 
+import java.util.Arrays;
+
 public class PPMImage implements Image {
   String identifier;
   int height;
   int width;
   int maxValue;
-  int[][] R;
-  int[][] G;
-  int[][] B;
-  int[][] value;
-  int[][] luma;
-  int[][] intensity;
+  Pixel pixels [][];
+
+  public int[][] getRMatrix() {
+    int[][] rArray = Arrays.stream(pixels)
+      .map(row -> Arrays.stream(row)
+          .mapToInt(Pixel::getR)
+          .toArray())
+      .toArray(int[][]::new);
+    return rArray;
+  }
+
+  public int[][] getBMatrix() {
+    int[][] bArray = Arrays.stream(pixels)
+            .map(row -> Arrays.stream(row)
+                    .mapToInt(Pixel::getB)
+                    .toArray())
+            .toArray(int[][]::new);
+    return bArray;
+  }
 
 
+  public int[][] getGMatrix() {
+    int[][] gArray = Arrays.stream(pixels)
+            .map(row -> Arrays.stream(row)
+                    .mapToInt(Pixel::getG)
+                    .toArray())
+            .toArray(int[][]::new);
+    return gArray;
+  }
+
+  public int[][] getValueMatrix() {
+    int[][] valueArray = Arrays.stream(pixels)
+            .map(row -> Arrays.stream(row)
+                    .mapToInt(Pixel::getValue)
+                    .toArray())
+            .toArray(int[][]::new);
+    return valueArray;
+  }
+
+  public int[][] getIntensityMatrix() {
+    int[][] intensityArray = Arrays.stream(pixels)
+            .map(row -> Arrays.stream(row)
+                    .mapToInt(Pixel::getIntensity)
+                    .toArray())
+            .toArray(int[][]::new);
+    return intensityArray;
+  }
+  public int[][] getLumaMatrix() {
+    int[][] lumaArray = Arrays.stream(pixels)
+            .map(row -> Arrays.stream(row)
+                    .mapToInt(Pixel::getValue)
+                    .toArray())
+            .toArray(int[][]::new);
+    return lumaArray;
+  }
   public int getHeight() {
     return height;
   }
@@ -22,66 +71,26 @@ public class PPMImage implements Image {
   }
 
   public int getRPixel(int row, int column) {
-    return R[row][column];
+    return pixels[row][column].getR();
   }
 
   public int getGPixel(int row, int column) {
-    return G[row][column];
+    return pixels[row][column].getG();
   }
 
   public int getBPixel(int row, int column) {
-    return B[row][column];
-  }
-
-  public int getValuePixel(int row, int column) {
-    return value[row][column];
-  }
-
-  public int getLumaPixel(int row, int column) {
-    return luma[row][column];
-  }
-
-  public int getIntensityPixel(int row, int column) {
-    return intensity[row][column];
+    return pixels[row][column].getB();
   }
 
 
-  public int[][] getValue() {
-    return value;
-  }
-
-  public int[][] getLuma() {
-    return luma;
-  }
-
-  public int[][] getIntensity() {
-    return intensity;
-  }
-
-  private PPMImage(String identifier, int height, int width, int maxValue, int[][] R, int[][] G,
-                   int[][] B, int[][] value, int[][] luma, int[][] intensity) {
+  private PPMImage(String identifier, int height, int width, int maxValue, //int[][] R, int[][] G,
+                   //int[][] B, int[][] value, int[][] luma, int[][] intensity) {
+  Pixel pixels[][]){
     this.identifier = identifier;
     this.height = height;
     this.width = width;
     this.maxValue = maxValue;
-    this.R = R;
-    this.G = G;
-    this.B= B;
-    this.value = value;
-    this.luma = luma;
-    this.intensity= intensity;
-  }
-
-  public int[][] getR() {
-    return R;
-  }
-
-  public int[][] getG() {
-    return G;
-  }
-
-  public int[][] getB() {
-    return B;
+    this.pixels = pixels;
   }
 
   public static ImageBuilder getBuilder() {
@@ -99,81 +108,23 @@ public class PPMImage implements Image {
     private int height;
     private int width;
     private int maxValue;
-    private int[][] R;
-    private int[][] G;
-    private int[][] B;
-    int[][] value;
-    int[][] luma;
-    int[][] intensity;
+    private Pixel pixels[][];
 
     private ImageBuilder() {
     }
 
-
-    public ImageBuilder RMatrix(int[][] R) {
-      this.R =  R;
+    public ImageBuilder pixelMatrix(Pixel[][] pixels) {
+      this.pixels = pixels;
       return this;
     }
 
-    public ImageBuilder GMatrix(int[][] G) {
-      this.G =  G;
-      return this;
-    }
-    public ImageBuilder BMatrix(int[][] B) {
-      this.B =  B;
-      return this;
-    }
-
-    public ImageBuilder valueMatrix(int[][] value) {
-      this.value =  value;
-      return this;
-    }
-
-    public ImageBuilder intensityMatrix(int[][] intensity) {
-      this.intensity =  intensity;
-      return this;
-    }
-    public ImageBuilder lumaMatrix(int[][] luma) {
-      this.luma =  luma;
-      return this;
-    }
-
-    public ImageBuilder R(int RPixel, int row, int column) {
-      R[row][column] = RPixel;
-      return this;
-    }
-
-    public ImageBuilder G(int GPixel, int row, int column) {
-      G[row][column] = GPixel;
-      return this;
-    }
-    public ImageBuilder B(int BPixel, int row, int column) {
-      B[row][column] = BPixel;
-      return this;
-    }
-
-    public ImageBuilder value(int valuePixel, int row, int column) {
-      value[row][column] = valuePixel;
-      return this;
-    }
-
-    public ImageBuilder intensity(int intensityPixel, int row, int column) {
-      intensity[row][column] = intensityPixel;
-      return this;
-    }
-
-    public ImageBuilder luma(int lumaPixel, int row, int column) {
-      luma[row][column] = lumaPixel;
+    public ImageBuilder pixel(Pixel pixel, int row, int column) {
+      pixels[row][column] = pixel;
       return this;
     }
     public ImageBuilder height(int height) {
       this.height = height;
-      this.R = new int[height][width];
-      this.G = new int[height][width];
-      this.B = new int[height][width];
-      this.value = new int[height][width];
-      this.luma = new int[height][width];
-      this.intensity = new int[height][width];
+      this.pixels = new Pixel[height][width];
       return this;
     }
 
@@ -193,7 +144,8 @@ public class PPMImage implements Image {
     }
 
     public PPMImage build() {
-      return new PPMImage(identifier,height,width,maxValue,R,G,B,value,luma,intensity);
+      //return new PPMImage(identifier,height,width,maxValue,R,G,B,value,luma,intensity);
+      return new PPMImage(identifier,height,width,maxValue, pixels);
     }
   }
 

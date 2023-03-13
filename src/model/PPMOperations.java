@@ -7,11 +7,9 @@ import java.util.Map;
 import utils.ImageUtil;
 
 public class PPMOperations implements ImageOperations {
-    PPMImage image;
     private Map<String, PPMImage> imageMap;
 
     public PPMOperations() {
-        this.image = null;
         this.imageMap = new HashMap<String, PPMImage>();
     }
 
@@ -23,7 +21,6 @@ public class PPMOperations implements ImageOperations {
     public void load(String filePath, String identifier) {
         PPMImage image = (PPMImage) ImageUtil.readPPM(filePath, identifier);
         imageMap.put(identifier, image);
-//    image.getMaxValue();
     }
 
     @Override
@@ -44,12 +41,11 @@ public class PPMOperations implements ImageOperations {
 
         for (int row = 0; row < image.getHeight(); row++) {
             for (int column = 0; column < image.getWidth(); column++) {
-                int r = image.getRPixel(row, column);
-                int g = image.getGPixel(row, column);
-                int b = image.getBPixel(row, column);
-                newImageBuilder.R(limit(r + value), row, column);
-                newImageBuilder.G(limit(g + value), row, column);
-                newImageBuilder.B(limit(b + value), row, column);
+                int r = limit(image.pixels[row][column].getR() + value);
+                int g = limit(image.pixels[row][column].getG() + value);
+                int b = limit(image.pixels[row][column].getB() + value);
+
+                newImageBuilder.pixel(new Pixel(r,g,b), row, column);
             }
         }
         imageMap.put(brightenIdentifier, newImageBuilder.build());
@@ -59,12 +55,10 @@ public class PPMOperations implements ImageOperations {
                                 String flippedIdentifier) {
         for (int row = 0; row < image.getHeight(); row++) {
             for (int column = 0; column < image.getWidth(); column++) {
-                int r = image.getRPixel(row, image.getWidth() - column - 1);
-                int g = image.getGPixel(row, image.getWidth() - column - 1);
-                int b = image.getBPixel(row, image.getWidth() - column - 1);
-                newImageBuilder.R(Math.min(r, 255), row, column);
-                newImageBuilder.G(Math.min(g, 255), row, column);
-                newImageBuilder.B(Math.min(b, 255), row, column);
+                int r = Math.min(image.getRPixel(row, image.getWidth() - column - 1),255);
+                int g = Math.min(image.getGPixel(row, image.getWidth() - column - 1),255);
+                int b = Math.min(image.getBPixel(row, image.getWidth() - column - 1),255);
+                newImageBuilder.pixel(new Pixel(r,g,b), row, column);
             }
         }
         imageMap.put(flippedIdentifier, newImageBuilder.build());
@@ -75,12 +69,10 @@ public class PPMOperations implements ImageOperations {
 
         for (int row = 0; row < image.getHeight(); row++) {
             for (int column = 0; column < image.getWidth(); column++) {
-                int r = image.getRPixel(image.getHeight() - 1 - row, column);
-                int g = image.getGPixel(image.getHeight() - 1 - row, column);
-                int b = image.getBPixel(image.getHeight() - 1 - row, column);
-                newImageBuilder.R(Math.min(r, 255), row, column);
-                newImageBuilder.G(Math.min(g, 255), row, column);
-                newImageBuilder.B(Math.min(b, 255), row, column);
+                int r = Math.min(image.getRPixel(image.getHeight() - 1 - row, column),255);
+                int g = Math.min(image.getGPixel(image.getHeight() - 1 - row, column),255);
+                int b = Math.min(image.getBPixel(image.getHeight() - 1 - row, column),255);
+                newImageBuilder.pixel(new Pixel(r,g,b), row, column);
             }
         }
         imageMap.put(flippedIdentifier, newImageBuilder.build());
@@ -122,50 +114,47 @@ public class PPMOperations implements ImageOperations {
         splitIntoComponent(image,blueChannel, blueIdentifier, "blue");
     }
 
+    private void createPixelsBasedOnComponent(PPMImage.ImageBuilder builder,int[][] component,
+                                              int height, int width) {
+        for (int row = 0; row < height; row++) {
+            for (int column = 0; column < width; column++) {
+                int basePixel = component[row][column];
+                builder.pixel(new Pixel(basePixel,basePixel,basePixel),row,column);
+            }
+        }
+    }
+
     private void splitIntoComponent(PPMImage image ,PPMImage.ImageBuilder builder,
                                     String channelIdentifier,
                                     String type) {
+        int height = image.getHeight();
+        int width = image.getWidth();
         builder.identifier(channelIdentifier)
                 .width(image.getWidth())
                 .height(image.getHeight())
                 .maxValue(image.getMaxValue());
         switch (type) {
             case "red":
-                builder.RMatrix(image.getR())
-                        .GMatrix(image.getR())
-                        .BMatrix(image.getR());
+                createPixelsBasedOnComponent(builder,image.getRMatrix(),height,width);
                 break;
             case "green":
-                builder.RMatrix(image.getG())
-                        .GMatrix(image.getG())
-                        .BMatrix(image.getG());
+                createPixelsBasedOnComponent(builder,image.getGMatrix(),height,width);
                 break;
             case "blue":
-                builder.RMatrix(image.getB())
-                        .GMatrix(image.getB())
-                        .BMatrix(image.getB());
+                createPixelsBasedOnComponent(builder,image.getBMatrix(),height,width);
                 break;
             case "value" :
-                builder.RMatrix(image.getValue());
-                builder.GMatrix(image.getValue());
-                builder.BMatrix(image.getValue());
+                createPixelsBasedOnComponent(builder,image.getValueMatrix(),height,width);
                 break;
             case "intensity" :
-                builder.RMatrix(image.getIntensity());
-                builder.GMatrix(image.getIntensity());
-                builder.BMatrix(image.getIntensity());
+                createPixelsBasedOnComponent(builder,image.getIntensityMatrix(),height,width);
                 break;
             case "luma" :
-                builder.RMatrix(image.getLuma());
-                builder.GMatrix(image.getLuma());
-                builder.BMatrix(image.getLuma());
+                createPixelsBasedOnComponent(builder,image.getLumaMatrix(),height,width);
                 break;
             default:
                 break;
         }
-        builder.valueMatrix(image.getValue());
-        builder.intensityMatrix(image.getIntensity());
-        builder.lumaMatrix(image.getLuma());
         imageMap.put(channelIdentifier, builder.build());
     }
 
@@ -176,15 +165,23 @@ public class PPMOperations implements ImageOperations {
         int greenMaxValue = imageMap.get(greenIdentifier).getMaxValue();
         int blueMaxValue = imageMap.get(blueIdentifier).getMaxValue();
         int maxValue = Math.max(redMaxValue, Math.max(greenMaxValue, blueMaxValue));
+        int width = imageMap.get(redIdentifier).getWidth();
+        int height = imageMap.get(redIdentifier).getHeight();
         PPMImage.ImageBuilder newImageBuilder = PPMImage
                 .getBuilder()
                 .identifier(identifier)
                 .width(imageMap.get(redIdentifier).getWidth())
                 .height(imageMap.get(redIdentifier).getHeight())
-                .maxValue(maxValue)
-                .RMatrix(imageMap.get(redIdentifier).getR())
-                .GMatrix(imageMap.get(greenIdentifier).getG())
-                .BMatrix(imageMap.get(blueIdentifier).getB());
+                .maxValue(maxValue);
+
+        for (int row = 0; row < height; row++) {
+            for (int column = 0; column < width; column++) {
+                int r = imageMap.get(redIdentifier).getRPixel(row,column);
+                int g = imageMap.get(greenIdentifier).getRPixel(row,column);
+                int b = imageMap.get(blueIdentifier).getRPixel(row,column);
+                newImageBuilder.pixel(new Pixel(r,g,b),row,column);
+            }
+        }
         imageMap.put(identifier, newImageBuilder.build());
     }
 }
