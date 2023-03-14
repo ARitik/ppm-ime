@@ -1,0 +1,26 @@
+package model;
+
+import org.junit.Test;
+
+import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
+
+import controller.AppController;
+import view.ImageLogView;
+
+import static org.junit.Assert.*;
+
+public class PPMOperationsTest {
+  @Test
+  public void testLoad() throws IOException {
+    StringBuffer out = new StringBuffer();
+    ImageOperations model = new PPMOperations();
+    ImageLogView view = new ImageLogView(out);
+    AppController controller = new AppController(model,view);
+    Reader in = new StringReader("load images/sample.ppm sample");
+    controller.go(in);
+    assertEquals("Log: load completed successfully!",out.toString());
+  }
+
+}

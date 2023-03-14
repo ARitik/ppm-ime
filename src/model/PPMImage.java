@@ -97,7 +97,6 @@ public class PPMImage implements Image {
     return new ImageBuilder();
   }
 
-  @Override
   public int getMaxValue() {
     return maxValue;
   }

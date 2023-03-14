@@ -7,20 +7,20 @@ import java.util.Objects;
 import java.util.Scanner;
 
 import model.ImageOperations;
-import view.ImageLogView;
+import view.AppView;
 import utils.ImageUtil;
 
 public class AppController {
   ImageOperations model;
-  ImageLogView view;
+   AppView view;
 
-  public AppController(ImageOperations model, ImageLogView view) {
+  public AppController(ImageOperations model, AppView view) {
     this.model = model;
     this.view = view;
   }
 
-  public void go() throws IOException {
-    Scanner input = new Scanner(System.in);
+  public void go(Readable in) throws IOException {
+    Scanner input = new Scanner(in);
     while (input.hasNextLine()) {
       processCommandLineArgs(input.nextLine());
     }
@@ -39,6 +39,10 @@ public class AppController {
     String operation = tokens[0];
     switch (operation) {
       case "run":
+        if(tokens.length != 2) {
+          view.log("run",false);
+          break;
+        }
         processScriptCommands(tokens[1]);
         break;
       case "load":
@@ -76,7 +80,7 @@ public class AppController {
         view.log("rgb-combine", true);
         break;
       default:
-        view.log("load", false);
+        view.log("Invalid Command!", false);
     }
   }
 }

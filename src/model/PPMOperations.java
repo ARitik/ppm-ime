@@ -7,7 +7,7 @@ import java.util.Map;
 import utils.ImageUtil;
 
 public class PPMOperations implements ImageOperations {
-    private Map<String, PPMImage> imageMap;
+    private final Map<String, PPMImage> imageMap;
 
     public PPMOperations() {
         this.imageMap = new HashMap<String, PPMImage>();

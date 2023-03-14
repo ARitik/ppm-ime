@@ -1,11 +1,18 @@
 package view;
 
-public class ImageLogView {
-    public void log(String operation, boolean isPass) {
+
+import java.io.IOException;
+
+public class ImageLogView implements AppView {
+    final Appendable out;
+    public ImageLogView(Appendable out) {
+        this.out = out;
+    }
+    public void log(String operation, boolean isPass) throws IOException {
         if(isPass) {
-            System.out.println("Log:\n" + operation + " completed successfully!");
+            this.out.append(String.format("Log: " + operation + " completed successfully!"));
         } else {
-            System.out.println("Log:\n" + "Invalid command entered");
+            this.out.append(String.format("Log: " + "Invalid command entered in " + operation));
         }
 
     }
