@@ -177,8 +177,8 @@ public class PPMOperations implements ImageOperations {
         for (int row = 0; row < height; row++) {
             for (int column = 0; column < width; column++) {
                 int r = imageMap.get(redIdentifier).getRPixel(row,column);
-                int g = imageMap.get(greenIdentifier).getRPixel(row,column);
-                int b = imageMap.get(blueIdentifier).getRPixel(row,column);
+                int g = imageMap.get(greenIdentifier).getGPixel(row,column);
+                int b = imageMap.get(blueIdentifier).getBPixel(row,column);
                 newImageBuilder.pixel(new Pixel(r,g,b),row,column);
             }
         }

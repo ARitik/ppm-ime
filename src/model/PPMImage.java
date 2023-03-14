@@ -18,11 +18,12 @@ public class PPMImage implements Image {
       return false;
     }
     PPMImage other = (PPMImage) o;
-    if(other.getMaxValue() != this.getMaxValue() ||
-    other.getHeight() != this.getHeight() || other.getWidth()!=this.getWidth()) {
+    if (other.getMaxValue() != this.getMaxValue() ||
+            other.getHeight() != this.getHeight() || other.getWidth() != this.getWidth()) {
       return false;
     }
-    if(Arrays.deepEquals(other.getPixels(),this.getPixels())) {
+
+    if(!Arrays.deepEquals(other.getPixels(),this.getPixels())) {
       return false;
     }
     return true;
@@ -81,7 +82,7 @@ public class PPMImage implements Image {
   public int[][] getLumaMatrix() {
     int[][] lumaArray = Arrays.stream(pixels)
             .map(row -> Arrays.stream(row)
-                    .mapToInt(Pixel::getValue)
+                    .mapToInt(Pixel::getLuma)
                     .toArray())
             .toArray(int[][]::new);
     return lumaArray;

@@ -1,8 +1,12 @@
 package utils;
 
 import java.io.BufferedWriter;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -114,6 +118,7 @@ public class ImageUtil {
         writer.write("\n");
       }
     }
+    writer.flush();
     writer.close();
   }
 

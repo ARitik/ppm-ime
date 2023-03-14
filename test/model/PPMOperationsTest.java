@@ -20,11 +20,10 @@ public class PPMOperationsTest {
     ImageLogView view = new ImageLogView(out);
     AppController controller = new AppController(model,view);
     Reader in = new StringReader("load images/sample.ppm sample-test\n" +
-            "save images/sample-test.ppm sample-test");
-
+            "save images/sample-test.ppm sample-test\n");
     controller.go(in);
     Image sampleImage = ImageUtil.readPPM("images/sample.ppm","sample");
-    Image loadedSampleImage = ImageUtil.readPPM("images/sample-test.ppm","sample");
+    Image loadedSampleImage = ImageUtil.readPPM("images/sample-test.ppm","sample-test");
     assertEquals(sampleImage,loadedSampleImage);
   }
 

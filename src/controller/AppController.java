@@ -79,6 +79,8 @@ public class AppController {
         model.rgbCombine(tokens[1], tokens[2], tokens[3], tokens[4]);
         view.log("rgb-combine", true);
         break;
+      case "exit":
+        System.exit(0);
       default:
         view.log("Invalid Command!", false);
     }

@@ -34,4 +34,19 @@ public class Pixel {
     public int getLuma() {
         return (int) (0.212 * R + 0.7152 * G + 0.0722 * B);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Pixel)) {
+            return false;
+        }
+        Pixel other = (Pixel) o;
+        if(other.getR() != getR() || other.getB() != getB() || other.getG() != getG()) {
+            return false;
+        }
+        return true;
+    }
 }
