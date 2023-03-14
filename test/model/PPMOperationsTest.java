@@ -7,6 +7,7 @@ import java.io.Reader;
 import java.io.StringReader;
 
 import controller.AppController;
+import utils.ImageUtil;
 import view.ImageLogView;
 
 import static org.junit.Assert.*;
@@ -18,9 +19,13 @@ public class PPMOperationsTest {
     ImageOperations model = new PPMOperations();
     ImageLogView view = new ImageLogView(out);
     AppController controller = new AppController(model,view);
-    Reader in = new StringReader("load images/sample.ppm sample");
+    Reader in = new StringReader("load images/sample.ppm sample-test\n" +
+            "save images/sample-test.ppm sample-test");
+
     controller.go(in);
-    assertEquals("Log: load completed successfully!",out.toString());
+    Image sampleImage = ImageUtil.readPPM("images/sample.ppm","sample");
+    Image loadedSampleImage = ImageUtil.readPPM("images/sample-test.ppm","sample");
+    assertEquals(sampleImage,loadedSampleImage);
   }
 
 }

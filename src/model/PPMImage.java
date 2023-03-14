@@ -7,14 +7,37 @@ public class PPMImage implements Image {
   int height;
   int width;
   int maxValue;
-  Pixel pixels [][];
+  Pixel pixels[][];
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (!(o instanceof PPMImage)) {
+      return false;
+    }
+    PPMImage other = (PPMImage) o;
+    if(other.getMaxValue() != this.getMaxValue() ||
+    other.getHeight() != this.getHeight() || other.getWidth()!=this.getWidth()) {
+      return false;
+    }
+    if(Arrays.deepEquals(other.getPixels(),this.getPixels())) {
+      return false;
+    }
+    return true;
+  }
+
+  public Pixel[][] getPixels() {
+    return pixels;
+  }
 
   public int[][] getRMatrix() {
     int[][] rArray = Arrays.stream(pixels)
-      .map(row -> Arrays.stream(row)
-          .mapToInt(Pixel::getR)
-          .toArray())
-      .toArray(int[][]::new);
+            .map(row -> Arrays.stream(row)
+                    .mapToInt(Pixel::getR)
+                    .toArray())
+            .toArray(int[][]::new);
     return rArray;
   }
 
@@ -54,6 +77,7 @@ public class PPMImage implements Image {
             .toArray(int[][]::new);
     return intensityArray;
   }
+
   public int[][] getLumaMatrix() {
     int[][] lumaArray = Arrays.stream(pixels)
             .map(row -> Arrays.stream(row)
@@ -62,6 +86,7 @@ public class PPMImage implements Image {
             .toArray(int[][]::new);
     return lumaArray;
   }
+
   public int getHeight() {
     return height;
   }
@@ -85,7 +110,7 @@ public class PPMImage implements Image {
 
   private PPMImage(String identifier, int height, int width, int maxValue, //int[][] R, int[][] G,
                    //int[][] B, int[][] value, int[][] luma, int[][] intensity) {
-  Pixel pixels[][]){
+                   Pixel pixels[][]) {
     this.identifier = identifier;
     this.height = height;
     this.width = width;
@@ -121,6 +146,7 @@ public class PPMImage implements Image {
       pixels[row][column] = pixel;
       return this;
     }
+
     public ImageBuilder height(int height) {
       this.height = height;
       this.pixels = new Pixel[height][width];
@@ -144,7 +170,7 @@ public class PPMImage implements Image {
 
     public PPMImage build() {
       //return new PPMImage(identifier,height,width,maxValue,R,G,B,value,luma,intensity);
-      return new PPMImage(identifier,height,width,maxValue, pixels);
+      return new PPMImage(identifier, height, width, maxValue, pixels);
     }
   }
 
