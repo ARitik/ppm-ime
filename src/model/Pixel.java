@@ -5,7 +5,7 @@ public class Pixel {
     private int G;
     private int B;
 
-    public Pixel(int R, int G, int B){
+    public Pixel(int R, int G, int B) {
         this.R = R;
         this.B = B;
         this.G = G;
@@ -24,11 +24,11 @@ public class Pixel {
     }
 
     public int getIntensity() {
-        return R+G+B/2;
+        return R + G + B / 2;
     }
 
     public int getValue() {
-        return Math.max(R,Math.max(G,B));
+        return Math.max(R, Math.max(G, B));
     }
 
     public int getLuma() {
@@ -44,7 +44,7 @@ public class Pixel {
             return false;
         }
         Pixel other = (Pixel) o;
-        if(other.getR() != getR() || other.getB() != getB() || other.getG() != getG()) {
+        if (other.getR() != getR() || other.getB() != getB() || other.getG() != getG()) {
             return false;
         }
         return true;

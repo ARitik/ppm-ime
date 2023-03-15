@@ -1,17 +1,11 @@
 package utils;
 
-import java.io.BufferedWriter;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.io.FileNotFoundException;
-import java.io.FileInputStream;
 
 import model.Image;
 import model.PPMImage;
@@ -23,104 +17,104 @@ import model.Pixel;
  * as required.
  */
 public class ImageUtil {
-  public static List<String> readScriptCommands(String filename) {
-    Scanner sc;
-    List<String> commands = new ArrayList<String>();
-    System.out.println(filename);
+    public static List<String> readScriptCommands(String filename) {
+        Scanner sc;
+        List<String> commands = new ArrayList<String>();
+        System.out.println(filename);
 
-    try {
-      sc = new Scanner(new FileInputStream(filename));
-    } catch (FileNotFoundException e) {
-      System.out.println("File " + filename + " not found!");
-      return null;
-    }
-
-    while (sc.hasNextLine()) {
-      String s = sc.nextLine();
-      if(!s.isEmpty())  {
-        if (s.charAt(0) != '#') {
-          commands.add(s);
+        try {
+            sc = new Scanner(new FileInputStream(filename));
+        } catch (FileNotFoundException e) {
+            System.out.println("File " + filename + " not found!");
+            return null;
         }
-      }
-    }
-    return commands;
-  }
 
-  /**
-   * Read an image file in the PPM format and create an Image object.
-   *
-   * @param filename the path of the file.
-   */
-  public static Image readPPM(String filename, String identifier) {
-    Scanner sc;
-
-    try {
-      sc = new Scanner(new FileInputStream(filename));
-    } catch (FileNotFoundException e) {
-      System.out.println("File " + filename + " not found!");
-      return null;
-    }
-    StringBuilder builder = new StringBuilder();
-    PPMImage.ImageBuilder imageBuilder = PPMImage.getBuilder();
-    imageBuilder.identifier(identifier);
-    //read the file line by line, and populate a string. This will throw away any comment lines
-    while (sc.hasNextLine()) {
-      String s = sc.nextLine();
-      if (s.charAt(0) != '#') {
-        builder.append(s + System.lineSeparator());
-      }
+        while (sc.hasNextLine()) {
+            String s = sc.nextLine();
+            if (!s.isEmpty()) {
+                if (s.charAt(0) != '#') {
+                    commands.add(s);
+                }
+            }
+        }
+        return commands;
     }
 
-    //now set up the scanner to read from the string we just built
-    sc = new Scanner(builder.toString());
+    /**
+     * Read an image file in the PPM format and create an Image object.
+     *
+     * @param filename the path of the file.
+     */
+    public static Image readPPM(String filename, String identifier) {
+        Scanner sc;
 
-    String token;
+        try {
+            sc = new Scanner(new FileInputStream(filename));
+        } catch (FileNotFoundException e) {
+            System.out.println("File " + filename + " not found!");
+            return null;
+        }
+        StringBuilder builder = new StringBuilder();
+        PPMImage.ImageBuilder imageBuilder = PPMImage.getBuilder();
+        imageBuilder.identifier(identifier);
+        //read the file line by line, and populate a string. This will throw away any comment lines
+        while (sc.hasNextLine()) {
+            String s = sc.nextLine();
+            if (s.charAt(0) != '#') {
+                builder.append(s + System.lineSeparator());
+            }
+        }
 
-    token = sc.next();
-    if (!token.equals("P3")) {
-      System.out.println("Invalid PPM file: plain RAW file should begin with P3");
-      throw new IllegalStateException("Invalid PPM file");
+        //now set up the scanner to read from the string we just built
+        sc = new Scanner(builder.toString());
+
+        String token;
+
+        token = sc.next();
+        if (!token.equals("P3")) {
+            System.out.println("Invalid PPM file: plain RAW file should begin with P3");
+            throw new IllegalStateException("Invalid PPM file");
+        }
+        int width = sc.nextInt();
+        imageBuilder.width(width);
+        int height = sc.nextInt();
+        imageBuilder.height(height);
+        int maxValue = sc.nextInt();
+        imageBuilder.maxValue(maxValue);
+
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                int r = sc.nextInt();
+                int g = sc.nextInt();
+                int b = sc.nextInt();
+                imageBuilder.pixel(new Pixel(r, g, b), i, j);
+            }
+        }
+        return imageBuilder.build();
     }
-    int width = sc.nextInt();
-    imageBuilder.width(width);
-    int height = sc.nextInt();
-    imageBuilder.height(height);
-    int maxValue = sc.nextInt();
-    imageBuilder.maxValue(maxValue);
 
-    for (int i = 0; i < height; i++) {
-      for (int j = 0; j < width; j++) {
-        int r = sc.nextInt();
-        int g = sc.nextInt();
-        int b = sc.nextInt();
-        imageBuilder.pixel(new Pixel(r,g,b),i,j);
-      }
+    /**
+     * Read an image file in the PPM format and create an Image object.
+     *
+     * @param filename the path of the file.
+     */
+    public static void savePPM(String filename, PPMImage image) throws IOException {
+        BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
+        writer.write("P3\n");
+        writer.write(image.getWidth() + " " + image.getHeight() + "\n");
+        writer.write(image.getMaxValue() + "\n");
+        for (int i = 0; i < image.getHeight(); i++) {
+            for (int j = 0; j < image.getWidth(); j++) {
+                int r = image.getRPixel(i, j);
+                int g = image.getGPixel(i, j);
+                int b = image.getBPixel(i, j);
+                writer.write(r + " " + g + " " + b + " ");
+                writer.write("\n");
+            }
+        }
+        writer.flush();
+        writer.close();
     }
-    return imageBuilder.build();
-  }
-
-  /**
-   * Read an image file in the PPM format and create an Image object.
-   *
-   * @param filename the path of the file.
-   */
-  public static void savePPM(String filename, PPMImage image) throws IOException {
-    BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
-    writer.write("P3\n");
-    writer.write(image.getWidth() + " " + image.getHeight() + "\n");
-    writer.write(image.getMaxValue() + "\n");
-    for (int i = 0; i < image.getHeight(); i++) {
-      for (int j = 0; j < image.getWidth(); j++) {
-        int r = image.getRPixel(i, j);
-        int g = image.getGPixel(i, j);
-        int b = image.getBPixel(i, j);
-        writer.write(r + " " + g + " " + b + " ");
-        writer.write("\n");
-      }
-    }
-    writer.flush();
-    writer.close();
-  }
 
 }
 
