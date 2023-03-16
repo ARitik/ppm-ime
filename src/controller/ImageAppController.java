@@ -86,7 +86,8 @@ public class ImageAppController implements AppController {
                 break;
             case "save":
                 if(tokens.length != 3){
-                    view.log("save","Incorrect params supplied!", false);
+                    view.log("save","Incorrect params supplied!",
+                            false);
                     break;
                 }
                 Image savedImage = model.save(tokens[1], tokens[2]);
@@ -104,7 +105,16 @@ public class ImageAppController implements AppController {
                     break;
                 }
                 int brightenConstant = Integer.parseInt(tokens[1]);
-                model.brighten(brightenConstant, tokens[2], tokens[3]);
+                if(brightenConstant < -255 || brightenConstant > 255) {
+                    view.log("brighten","Invalid brighten constant supplied!",
+                            false);
+                    break;
+                }
+                Image brightenedImage = model.brighten(brightenConstant, tokens[2], tokens[3]);
+                if(brightenedImage == null) {
+                    view.log("brighten","Image does not exist!",false);
+                    break;
+                }
                 view.log("brighten", true);
                 break;
             case "vertical-flip":
@@ -113,7 +123,12 @@ public class ImageAppController implements AppController {
                             false);
                     break;
                 }
-                model.flip(tokens[0], tokens[1], tokens[2]);
+                Image flippedImage = model.flip(tokens[0], tokens[1], tokens[2]);
+                if(flippedImage == null) {
+                    view.log("vertical-flip","Image does not exist!",
+                            false);
+                    break;
+                }
                 view.log("vertical-flip", true);
                 break;
             case "horizontal-flip":
@@ -122,7 +137,12 @@ public class ImageAppController implements AppController {
                             false);
                     break;
                 }
-                model.flip(tokens[0], tokens[1], tokens[2]);
+                flippedImage = model.flip(tokens[0], tokens[1], tokens[2]);
+                if(flippedImage == null) {
+                    view.log("vertical-flip", "Image does not exist!",
+                            false);
+                    break;
+                }
                 view.log("horizontal-flip", true);
                 break;
             case "greyscale":
@@ -132,7 +152,11 @@ public class ImageAppController implements AppController {
                     break;
                 }
                 String component = tokens[1].substring(0, tokens[1].indexOf('-'));
-                model.greyscale(component, tokens[2], tokens[3]);
+                Image greyScaleImage = model.greyscale(component, tokens[2], tokens[3]);
+                if (greyScaleImage == null) {
+                    view.log("greyscale","Image does not exist!",false);
+                    break;
+                }
                 view.log("greyscale", true);
                 break;
             case "rgb-split":
@@ -141,7 +165,12 @@ public class ImageAppController implements AppController {
                             false);
                     break;
                 }
-                model.rgbSplit(tokens[1], tokens[2], tokens[3], tokens[4]);
+                List<Image> channelImages = model.rgbSplit(tokens[1], tokens[2], tokens[3],
+                    tokens[4]);
+                if(channelImages == null) {
+                    view.log("rgb-split","Image does not exist!",false);
+                    break;
+                }
                 view.log("rgb-split", true);
                 break;
             case "rgb-combine":
@@ -150,7 +179,12 @@ public class ImageAppController implements AppController {
                             false);
                     break;
                 }
-                model.rgbCombine(tokens[1], tokens[2], tokens[3], tokens[4]);
+                Image combinedImage = model.rgbCombine(tokens[1], tokens[2], tokens[3], tokens[4]);
+                if(combinedImage == null) {
+                    view.log("rgb-combine","Channel does not exist!",
+                            false);
+                    break;
+                }
                 view.log("rgb-combine", true);
                 break;
             case "exit":
