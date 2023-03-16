@@ -23,9 +23,9 @@ public interface ImageOperations {
    *
    * @param savePath        path at which the image has to be saved.
    * @param imageIdentifier identifier of the image
+   * @return the saved image.
    * @throws IOException when the image path is not found. In this case the image
    *                     cannot be saved.
-   * @return the saved image.
    */
   Image save(String savePath, String imageIdentifier) throws IOException;
 
@@ -41,7 +41,7 @@ public interface ImageOperations {
   Image brighten(int value, String identifier, String brightenIdentifier);
 
   /**
-   * The method flips an image according to the orientation to create a new image
+   * The method flips an image according to the orientation to create a new image.
    *
    * @param orientation       image to be flipped horizontally or vertically.
    * @param identifier        of the image
@@ -84,5 +84,5 @@ public interface ImageOperations {
    * @return the combined image.
    */
   Image rgbCombine(String identifier, String redIdentifier, String greenIdentifier,
-                  String blueIdentifier);
+                   String blueIdentifier);
 }

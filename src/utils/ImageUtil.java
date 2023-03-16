@@ -1,6 +1,10 @@
 package utils;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -92,10 +96,7 @@ public class ImageUtil {
         int r = sc.nextInt();
         int g = sc.nextInt();
         int b = sc.nextInt();
-        if ((r >= 255 || r <= 0) || (g >= 255 || g <= 0) || (b >= 255 || b <= 0)) {
-          throw new IllegalStateException("Invalid PPM File");
-        }
-          imageBuilder.pixel(new Pixel(r, g, b), i, j);
+        imageBuilder.pixel(new Pixel(r, g, b), i, j);
       }
     }
     return imageBuilder.build();

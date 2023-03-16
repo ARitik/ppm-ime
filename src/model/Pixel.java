@@ -4,90 +4,93 @@ package model;
  * A Class that represents a Pixel.
  */
 public class Pixel {
-    private int R;
-    private int G;
-    private int B;
+  private int red;
+  private int green;
+  private int blue;
 
-    /**
-     * Constructs a Pixel using R,G,B values.
-     *
-     * @param R R (red) value of the pixel.
-     * @param G G (green) value of the pixel.
-     * @param B B (blue) value of the pixel.
-     */
-    public Pixel(int R, int G, int B) {
-        this.R = R;
-        this.B = B;
-        this.G = G;
-    }
+  /**
+   * Constructs a Pixel using red,green,blue values.
+   *
+   * @param red   red (red) value of the pixel.
+   * @param green green (green) value of the pixel.
+   * @param blue  blue (blue) value of the pixel.
+   */
+  public Pixel(int red, int green, int blue) {
+    this.red = red;
+    this.blue = blue;
+    this.green = green;
+  }
 
-    /**
-     * Get R Value of the pixel.
-     *
-     * @return the R value of the pixel.
-     */
-    public int getR() {
-        return R;
-    }
+  /**
+   * Get red Value of the pixel.
+   *
+   * @return the red value of the pixel.
+   */
+  public int getRed() {
+    return red;
+  }
 
-    /**
-     * Get B value of the pixel.
-     *
-     * @return the B value of the pixel.
-     */
-    public int getB() {
-        return B;
-    }
+  /**
+   * Get blue value of the pixel.
+   *
+   * @return the blue value of the pixel.
+   */
+  public int getBlue() {
+    return blue;
+  }
 
-    /**
-     * Get G value of the pixel.
-     *
-     * @return the G value of the pixel.
-     */
-    public int getG() {
-        return G;
-    }
+  /**
+   * Get green value of the pixel.
+   *
+   * @return the green value of the pixel.
+   */
+  public int getGreen() {
+    return green;
+  }
 
-    /**
-     * Calculate the intensity of a pixel which is the average of R,G,B values;
-     *
-     * @return the intensity of the pixel.
-     */
-    public int getIntensity() {
-        return R + G + B / 2;
-    }
+  /**
+   * Calculate the intensity of a pixel which is the average of red,green,blue values.
+   *
+   * @return the intensity of the pixel.
+   */
+  public int getIntensity() {
+    return red + green + blue / 2;
+  }
 
-    /**
-     * Calculate the value of a pixel which is the greatest value from R,G,B;
-     *
-     * @return the value of the pixel.
-     */
-    public int getValue() {
-        return Math.max(R, Math.max(G, B));
-    }
+  /**
+   * Calculate the value of a pixel which is the greatest value from red, green, blue.
+   *
+   * @return the value of the pixel.
+   */
+  public int getValue() {
+    return Math.max(red, Math.max(green, blue));
+  }
 
-    /**
-     * Calculate the luma of a pixel which is calculated using the formula
-     * luma = 0.212 * R + 0.7152 * G + 0.0722 * B.
-     *
-     * @return the luma of the pixel.
-     */
-    public int getLuma() {
-        return (int) (0.212 * R + 0.7152 * G + 0.0722 * B);
-    }
+  /**
+   * Calculate the luma of a pixel which is calculated using the formula.
+   * luma = 0.212 * red + 0.7152 * green + 0.0722 * blue.
+   *
+   * @return the luma of the pixel.
+   */
+  public int getLuma() {
+    return (int) (0.212 * red + 0.7152 * green + 0.0722 * blue);
+  }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof Pixel)) {
-            return false;
-        }
-        Pixel other = (Pixel) o;
-        if (other.getR() != getR() || other.getB() != getB() || other.getG() != getG()) {
-            return false;
-        }
-        return true;
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
     }
+    if (!(o instanceof Pixel)) {
+      return false;
+    }
+    Pixel other = (Pixel) o;
+    return other.getRed() == getRed() && other.getBlue() == getBlue()
+            && other.getGreen() == getGreen();
+  }
+
+  @Override
+  public int hashCode() {
+    return getLuma() * (red + green + blue);
+  }
 }

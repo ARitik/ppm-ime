@@ -114,3 +114,6 @@ brighten 50 sample-blue sample-blue
 #combine them back, but by using the brightened red we get a red tint
 rgb-combine sample-blue-tint sample-red sample-green sample-blue
 save res/sample-blue-tint.ppm sample-blue-tint
+
+#exit the program
+exit

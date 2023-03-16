@@ -35,10 +35,10 @@ public class PPMOperations implements ImageOperations {
 
   @Override
   public Map<String, PPMImage> load(String filePath, String identifier) {
-      PPMImage image = (PPMImage) ImageUtil.readPPM(filePath, identifier);
-      if(image != null) {
-        imageMap.put(identifier, image);
-      }
+    PPMImage image = (PPMImage) ImageUtil.readPPM(filePath, identifier);
+    if (image != null) {
+      imageMap.put(identifier, image);
+    }
     return imageMap;
   }
 
@@ -54,7 +54,7 @@ public class PPMOperations implements ImageOperations {
   @Override
   public Image brighten(int value, String identifier, String brightenIdentifier) {
     PPMImage image = imageMap.get(identifier);
-    if(image == null) {
+    if (image == null) {
       return null;
     }
     PPMImage.ImageBuilder newImageBuilder = PPMImage
@@ -67,9 +67,9 @@ public class PPMOperations implements ImageOperations {
 
     for (int row = 0; row < image.getHeight(); row++) {
       for (int column = 0; column < image.getWidth(); column++) {
-        int r = limit(image.pixels[row][column].getR() + value);
-        int g = limit(image.pixels[row][column].getG() + value);
-        int b = limit(image.pixels[row][column].getB() + value);
+        int r = limit(image.pixels[row][column].getRed() + value);
+        int g = limit(image.pixels[row][column].getGreen() + value);
+        int b = limit(image.pixels[row][column].getBlue() + value);
 
         newImageBuilder.pixel(new Pixel(r, g, b), row, column);
       }
@@ -129,7 +129,7 @@ public class PPMOperations implements ImageOperations {
   @Override
   public Image flip(String orientation, String identifier, String flippedIdentifier) {
     PPMImage image = imageMap.get(identifier);
-    if(image == null) {
+    if (image == null) {
       return null;
     }
     PPMImage.ImageBuilder newImageBuilder = PPMImage
@@ -156,7 +156,7 @@ public class PPMOperations implements ImageOperations {
   @Override
   public List<Image> rgbSplit(String identifier, String redIdentifier, String greenIdentifier,
                               String blueIdentifier) {
-    if(imageMap.get(identifier) == null) {
+    if (imageMap.get(identifier) == null) {
       return null;
     }
     PPMImage.ImageBuilder redChannel = PPMImage.getBuilder();
@@ -167,8 +167,9 @@ public class PPMOperations implements ImageOperations {
             "red");
     PPMImage greenChannelImage = (PPMImage) splitIntoComponent(image, greenChannel, greenIdentifier,
             "green");
-    PPMImage blueChannelImage = (PPMImage) splitIntoComponent(image, blueChannel, blueIdentifier, "blue");
-    List<Image> channelImages= new ArrayList<Image>();
+    PPMImage blueChannelImage = (PPMImage) splitIntoComponent(image, blueChannel, blueIdentifier,
+            "blue");
+    List<Image> channelImages = new ArrayList<Image>();
     channelImages.add(redChannelImage);
     channelImages.add(blueChannelImage);
     channelImages.add(greenChannelImage);
@@ -178,10 +179,10 @@ public class PPMOperations implements ImageOperations {
   /**
    * Create a Pixel Matrix based on the component supplied.
    *
-   * @param builder The builder object used to build the pixel matrix for an image.
+   * @param builder   The builder object used to build the pixel matrix for an image.
    * @param component can be red,green,blue,value,luma,intensity.
-   * @param height the height of the image.
-   * @param width the width of the image.
+   * @param height    the height of the image.
+   * @param width     the width of the image.
    */
   private void createPixelsBasedOnComponent(PPMImage.ImageBuilder builder, int[][] component,
                                             int height, int width) {
@@ -196,10 +197,10 @@ public class PPMOperations implements ImageOperations {
   /**
    * Splits a given image by its corresponding channel.
    *
-   * @param image The image to be split.
-   * @param builder the builder object for the new image.
+   * @param image             The image to be split.
+   * @param builder           the builder object for the new image.
    * @param channelIdentifier the identifier of the channel.
-   * @param type the component based on which image is split.
+   * @param type              the component based on which image is split.
    * @return the greyscale image split by channel.
    */
   private Image splitIntoComponent(PPMImage image, PPMImage.ImageBuilder builder,
@@ -241,8 +242,8 @@ public class PPMOperations implements ImageOperations {
   @Override
   public Image rgbCombine(String identifier, String redIdentifier, String greenIdentifier,
                           String blueIdentifier) {
-    if(imageMap.get(redIdentifier) == null || imageMap.get(blueIdentifier) == null ||
-    imageMap.get(greenIdentifier) == null) {
+    if (imageMap.get(redIdentifier) == null || imageMap.get(blueIdentifier) == null
+            || imageMap.get(greenIdentifier) == null) {
       return null;
     }
     int redMaxValue = imageMap.get(redIdentifier).getMaxValue();
