@@ -12,6 +12,7 @@ import model.Image;
 import model.ImageOperations;
 import model.PPMImage;
 import view.AppView;
+import view.ImageLogView;
 
 import static org.junit.Assert.assertEquals;
 
@@ -25,11 +26,11 @@ public class ImageAppControllerTest {
         StringBuilder modelLog = new StringBuilder();
         StringBuilder viewLog = new StringBuilder();
         ImageOperations model = new MockImageModel(modelLog);
-        AppView view = new MockImageView(viewLog);
+        AppView view = new ImageLogView(viewLog);
         ImageAppController controller = new ImageAppController(model, view);
-        Reader in = new StringReader("load images/sample.ppm sample sample");
+        Reader in = new StringReader("load res/sample.ppm sample sample");
         controller.go(in);
-        assertEquals("load command has not been entered correctly, Passed:false",
+        assertEquals("Log: load failed!\nIncorrect params supplied\n",
                 viewLog.toString());
     }
 
@@ -39,13 +40,13 @@ public class ImageAppControllerTest {
         StringBuilder modelLog = new StringBuilder();
         StringBuilder viewLog = new StringBuilder();
         ImageOperations model = new MockImageModel(modelLog);
-        AppView view = new MockImageView(viewLog);
+        AppView view = new ImageLogView(viewLog);
         ImageAppController controller = new ImageAppController(model, view);
-        Reader in = new StringReader("load images/sample.ppm sample");
+        Reader in = new StringReader("load res/sample.ppm sample");
         controller.go(in);
-        assertEquals("filepath: images/sample.ppm identifier: sample",
+        assertEquals("filepath: res/sample.ppm identifier: sample",
                 modelLog.toString());
-        assertEquals("Operation:load, Passed:true", viewLog.toString());
+        assertEquals("Log: load completed successfully!\n", viewLog.toString());
     }
 
     @Test
@@ -53,31 +54,29 @@ public class ImageAppControllerTest {
         StringBuilder modelLog = new StringBuilder();
         StringBuilder viewLog = new StringBuilder();
         ImageOperations model = new MockImageModel(modelLog);
-        AppView view = new MockImageView(viewLog);
+        AppView view = new ImageLogView(viewLog);
         ImageAppController controller = new ImageAppController(model, view);
-        Reader in = new StringReader("laod images/sample.ppm sample");
+        Reader in = new StringReader("laod res/sample.ppm sample");
         controller.go(in);
-        assertEquals("Invalid Command entered, Passed:false",
+        assertEquals("Log: Invalid Command entered! failed!\n",
                 viewLog.toString());
     }
 
 
-    //@Test
-    public  void testLoadWhenScriptFileIsLoaded() throws IllegalStateException{
-
-    }
 
     @Test
     public void testSaveWhenCorrectParams() throws IOException {
         StringBuilder modelLog = new StringBuilder();
         StringBuilder viewLog = new StringBuilder();
         ImageOperations model = new MockImageModel(modelLog);
-        AppView view = new MockImageView(viewLog);
+        AppView view = new ImageLogView(viewLog);
         ImageAppController controller = new ImageAppController(model, view);
-        Reader in = new StringReader("save images/sample.ppm sample");
+        Reader in = new StringReader("load res/sample.ppm sample\n res/test-images/sample.ppm " +
+                "sample");
         controller.go(in);
-        assertEquals("savepath: images/sample.ppm identifier of the image to be saved: sample", modelLog.toString());
-        assertEquals("Operation:save, Passed:true", viewLog.toString());
+        assertEquals("savepath: images/sample.ppm identifier of the image to" +
+                " be saved: sample", modelLog.toString());
+        assertEquals("Log: save failed!\nImage does not exist!\n", viewLog.toString());
     }
 
     @Test
@@ -85,25 +84,23 @@ public class ImageAppControllerTest {
         StringBuilder modelLog = new StringBuilder();
         StringBuilder viewLog = new StringBuilder();
         ImageOperations model = new MockImageModel(modelLog);
-        AppView view = new MockImageView(viewLog);
+        AppView view = new ImageLogView(viewLog);
         ImageAppController controller = new ImageAppController(model, view);
         Reader in = new StringReader("saev images/sample.ppm sample");
         controller.go(in);
-        //assertEquals("savepath: images/sample.ppm identifier of the image to be saved: sample", modelLog.toString());
-        assertEquals("Invalid Command entered, Passed:false", viewLog.toString());
+        assertEquals("Log: Invalid Command entered! failed!\n", viewLog.toString());
     }
 
-    //@Test
+    @Test
     public void testSaveWhenTheImageDoesNotExist() throws IOException {
-/*        StringBuilder modelLog = new StringBuilder();
+        StringBuilder modelLog = new StringBuilder();
         StringBuilder viewLog = new StringBuilder();
         ImageOperations model = new MockImageModel(modelLog);
-        AppView view = new MockImageView(viewLog);
-        AppController controller = new AppController(model, view);
-        Reader in = new StringReader("save images/cow.ppm cow");
+        AppView view = new ImageLogView(viewLog);
+        ImageAppController controller = new ImageAppController(model, view);
+        Reader in = new StringReader("save images/x.ppm x");
         controller.go(in);
-        //assertEquals("savepath: images/sample.ppm identifier of the image to be saved: sample", modelLog.toString());
-        assertEquals("File cannot be saved because it does not exist, Passed:false", viewLog.toString());*/
+        assertEquals("Log: save failed!\nImage does not exist!\n", viewLog.toString());
     }
 
     @Test
@@ -111,11 +108,12 @@ public class ImageAppControllerTest {
         StringBuilder modelLog = new StringBuilder();
         StringBuilder viewLog = new StringBuilder();
         ImageOperations model = new MockImageModel(modelLog);
-        AppView view = new MockImageView(viewLog);
+        AppView view = new ImageLogView(viewLog);
         ImageAppController controller = new ImageAppController(model, view);
         Reader in = new StringReader("brighten 10 sample sample-brighter");
         controller.go(in);
-        assertEquals("brighten constant: 10 identifier: sample new identifier: sample-brighter", modelLog.toString());
+        assertEquals("brighten constant: 10 identifier: sample new identifier: " +
+                "sample-brighter", modelLog.toString());
         assertEquals("Operation:brighten, Passed:true", viewLog.toString());
     }
 
@@ -124,7 +122,7 @@ public class ImageAppControllerTest {
         StringBuilder modelLog = new StringBuilder();
         StringBuilder viewLog = new StringBuilder();
         ImageOperations model = new MockImageModel(modelLog);
-        AppView view = new MockImageView(viewLog);
+        AppView view = new ImageLogView(viewLog);
         ImageAppController controller = new ImageAppController(model, view);
         Reader in = new StringReader("brighten -10 sample sample-brighter");
         controller.go(in);
@@ -136,7 +134,7 @@ public class ImageAppControllerTest {
         StringBuilder modelLog = new StringBuilder();
         StringBuilder viewLog = new StringBuilder();
         ImageOperations model = new MockImageModel(modelLog);
-        AppView view = new MockImageView(viewLog);
+        AppView view = new ImageLogView(viewLog);
         ImageAppController controller = new ImageAppController(model, view);
         Reader in = new StringReader("vertical-flip sample sample-vertical");
         controller.go(in);
@@ -149,7 +147,7 @@ public class ImageAppControllerTest {
         StringBuilder modelLog = new StringBuilder();
         StringBuilder viewLog = new StringBuilder();
         ImageOperations model = new MockImageModel(modelLog);
-        AppView view = new MockImageView(viewLog);
+        AppView view = new ImageLogView(viewLog);
         ImageAppController controller = new ImageAppController(model, view);
         Reader in = new StringReader("horizontal-flip sample sample-horizontal");
         controller.go(in);
@@ -162,7 +160,7 @@ public class ImageAppControllerTest {
         StringBuilder modelLog = new StringBuilder();
         StringBuilder viewLog = new StringBuilder();
         ImageOperations model = new MockImageModel(modelLog);
-        AppView view = new MockImageView(viewLog);
+        AppView view = new ImageLogView(viewLog);
         ImageAppController controller = new ImageAppController(model, view);
         Reader in = new StringReader("horizontal-flip sample-vertical sample-vertical-horizontal");
         controller.go(in);
@@ -175,7 +173,7 @@ public class ImageAppControllerTest {
         StringBuilder modelLog = new StringBuilder();
         StringBuilder viewLog = new StringBuilder();
         ImageOperations model = new MockImageModel(modelLog);
-        AppView view = new MockImageView(viewLog);
+        AppView view = new ImageLogView(viewLog);
         ImageAppController controller = new ImageAppController(model, view);
         Reader in = new StringReader("vertical-flip sample-horizontal sample-horizontal-vertical");
         controller.go(in);
@@ -188,7 +186,7 @@ public class ImageAppControllerTest {
         StringBuilder modelLog = new StringBuilder();
         StringBuilder viewLog = new StringBuilder();
         ImageOperations model = new MockImageModel(modelLog);
-        AppView view = new MockImageView(viewLog);
+        AppView view = new ImageLogView(viewLog);
         ImageAppController controller = new ImageAppController(model, view);
         Reader in = new StringReader("vertical-flip sample-vertical sample-vertical-vertical");
         controller.go(in);
@@ -201,7 +199,7 @@ public class ImageAppControllerTest {
         StringBuilder modelLog = new StringBuilder();
         StringBuilder viewLog = new StringBuilder();
         ImageOperations model = new MockImageModel(modelLog);
-        AppView view = new MockImageView(viewLog);
+        AppView view = new ImageLogView(viewLog);
         ImageAppController controller = new ImageAppController(model, view);
         Reader in = new StringReader("horizontal-flip sample-horizontal sample-horizontal-horizontal");
         controller.go(in);
@@ -214,7 +212,7 @@ public class ImageAppControllerTest {
         StringBuilder modelLog = new StringBuilder();
         StringBuilder viewLog = new StringBuilder();
         ImageOperations model = new MockImageModel(modelLog);
-        AppView view = new MockImageView(viewLog);
+        AppView view = new ImageLogView(viewLog);
         ImageAppController controller = new ImageAppController(model, view);
         Reader in = new StringReader("greyscale value-component sample sample-greyscale");
         controller.go(in);
@@ -227,7 +225,7 @@ public class ImageAppControllerTest {
         StringBuilder modelLog = new StringBuilder();
         StringBuilder viewLog = new StringBuilder();
         ImageOperations model = new MockImageModel(modelLog);
-        AppView view = new MockImageView(viewLog);
+        AppView view = new ImageLogView(viewLog);
         ImageAppController controller = new ImageAppController(model, view);
         Reader in = new StringReader("greyscale luma-component sample sample-greyscale");
         controller.go(in);
@@ -240,7 +238,7 @@ public class ImageAppControllerTest {
         StringBuilder modelLog = new StringBuilder();
         StringBuilder viewLog = new StringBuilder();
         ImageOperations model = new MockImageModel(modelLog);
-        AppView view = new MockImageView(viewLog);
+        AppView view = new ImageLogView(viewLog);
         ImageAppController controller = new ImageAppController(model, view);
         Reader in = new StringReader("greyscale intensity-component sample sample-greyscale");
         controller.go(in);
@@ -253,7 +251,7 @@ public class ImageAppControllerTest {
         StringBuilder modelLog = new StringBuilder();
         StringBuilder viewLog = new StringBuilder();
         ImageOperations model = new MockImageModel(modelLog);
-        AppView view = new MockImageView(viewLog);
+        AppView view = new ImageLogView(viewLog);
         ImageAppController controller = new ImageAppController(model, view);
         Reader in = new StringReader("greyscale red-component sample sample-greyscale");
         controller.go(in);
@@ -266,7 +264,7 @@ public class ImageAppControllerTest {
         StringBuilder modelLog = new StringBuilder();
         StringBuilder viewLog = new StringBuilder();
         ImageOperations model = new MockImageModel(modelLog);
-        AppView view = new MockImageView(viewLog);
+        AppView view = new ImageLogView(viewLog);
         ImageAppController controller = new ImageAppController(model, view);
         Reader in = new StringReader("greyscale green-component sample sample-greyscale");
         controller.go(in);
@@ -279,7 +277,7 @@ public class ImageAppControllerTest {
         StringBuilder modelLog = new StringBuilder();
         StringBuilder viewLog = new StringBuilder();
         ImageOperations model = new MockImageModel(modelLog);
-        AppView view = new MockImageView(viewLog);
+        AppView view = new ImageLogView(viewLog);
         ImageAppController controller = new ImageAppController(model, view);
         Reader in = new StringReader("greyscale blue-component sample sample-greyscale");
         controller.go(in);
@@ -291,7 +289,7 @@ public class ImageAppControllerTest {
         StringBuilder modelLog = new StringBuilder();
         StringBuilder viewLog = new StringBuilder();
         ImageOperations model = new MockImageModel(modelLog);
-        AppView view = new MockImageView(viewLog);
+        AppView view = new ImageLogView(viewLog);
         ImageAppController controller = new ImageAppController(model, view);
         Reader in = new StringReader("rgb-split sample sample-red sample-green sample-blue");
         controller.go(in);
@@ -304,7 +302,7 @@ public class ImageAppControllerTest {
         StringBuilder modelLog = new StringBuilder();
         StringBuilder viewLog = new StringBuilder();
         ImageOperations model = new MockImageModel(modelLog);
-        AppView view = new MockImageView(viewLog);
+        AppView view = new ImageLogView(viewLog);
         ImageAppController controller = new ImageAppController(model, view);
         Reader in = new StringReader("rgb-combine sample-red-tint sample-red sample-green sample-blue");
         controller.go(in);
@@ -349,24 +347,6 @@ public class ImageAppControllerTest {
 
 
 
-    class MockImageView implements AppView {
-
-        StringBuilder viewLog;
-
-        public MockImageView(StringBuilder viewLog) {
-            this.viewLog = viewLog;
-        }
-
-        @Override
-        public void log(String operation, boolean isPass) throws IOException {
-            if(!isPass){
-                viewLog.append(operation + ", Passed:" + isPass);
-            }
-            else {
-                viewLog.append("Operation:" + operation + ", " + "Passed:" + isPass);
-            }
-        }
-    }
 
     class MockImageModel implements ImageOperations {
         private final StringBuilder modelLog;

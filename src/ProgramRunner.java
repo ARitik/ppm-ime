@@ -7,6 +7,9 @@ import model.ImageOperations;
 import model.PPMOperations;
 import view.ImageLogView;
 
+/**
+ * A class that serves as the entry point for the program.
+ */
 public class ProgramRunner {
     /**
      * This class creates the model, view(s) and controller(s) and then gives control to the controller.

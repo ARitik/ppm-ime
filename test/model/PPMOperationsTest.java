@@ -36,6 +36,11 @@ public class PPMOperationsTest {
     }
 
     @Test
+    public  void testLoadWhenScriptFileIsLoaded() throws IllegalStateException{
+
+    }
+
+    @Test
     public void testSave() throws IOException {
         StringBuffer out = new StringBuffer();
         ImageOperations model = new PPMOperations();

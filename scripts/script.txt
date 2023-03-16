@@ -1,5 +1,5 @@
 #load sample.ppm and call it 'sample'
-load images/sample.ppm sample
+load res/sample.ppm sample
 
 #brighten sample by adding 50
 brighten 50 sample sample-brighter

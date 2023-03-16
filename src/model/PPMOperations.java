@@ -16,20 +16,23 @@ public class PPMOperations implements ImageOperations {
   private final Map<String, PPMImage> imageMap;
 
 
+  /**
+   * Constructs an object representing PPMOperations on a PPMImage.
+   */
   public PPMOperations() {
     this.imageMap = new HashMap<String, PPMImage>();
   }
 
+  /**
+   * Limits the value of a pixel to an integer between 0 and 255.
+   *
+   * @param value the value to be limited.
+   * @return a value that satisfies pixel class invariants.
+   */
   private int limit(int value) {
     return Math.max(0, Math.min(value, 255));
   }
 
-  /**
-   * The method loads an image from the specified path and refer it by the given image name.
-   *
-   * @param filePath   path of the image
-   * @param identifier identifies the given image
-   */
   @Override
   public Map<String, PPMImage> load(String filePath, String identifier) {
       PPMImage image = (PPMImage) ImageUtil.readPPM(filePath, identifier);
@@ -39,14 +42,6 @@ public class PPMOperations implements ImageOperations {
     return imageMap;
   }
 
-  /**
-   * The method saves the image with the given name to the specified path.
-   *
-   * @param savePath        path at which the image has to be saved.
-   * @param imageIdentifier identifier of the image
-   * @throws IOException when the image path is not found. In this case the image
-   *                     cannot be saved.
-   */
   @Override
   public Image save(String savePath, String imageIdentifier) throws IOException {
     if (imageMap.get(imageIdentifier) == null) {
@@ -56,13 +51,6 @@ public class PPMOperations implements ImageOperations {
     return imageMap.get(imageIdentifier);
   }
 
-  /**
-   * The method brightens the image by the given increment to create a new image.
-   *
-   * @param value              by which the image is to be brightened.
-   * @param identifier         of the image
-   * @param brightenIdentifier identifier of the new brightened image
-   */
   @Override
   public Image brighten(int value, String identifier, String brightenIdentifier) {
     PPMImage image = imageMap.get(identifier);
@@ -97,6 +85,7 @@ public class PPMOperations implements ImageOperations {
    * @param image             to be flipped
    * @param newImageBuilder   builds a new image
    * @param flippedIdentifier idefier of the newly built image
+   * @return The image flipped horizontally.
    */
   private Image horizontalFlip(PPMImage image, PPMImage.ImageBuilder newImageBuilder,
                                String flippedIdentifier) {
@@ -119,6 +108,7 @@ public class PPMOperations implements ImageOperations {
    * @param image             to be flipped
    * @param newImageBuilder   builds a new image
    * @param flippedIdentifier idefier of the newly built image
+   * @return the image flipped vertically.
    */
   private Image verticalFlip(PPMImage image, PPMImage.ImageBuilder newImageBuilder,
                              String flippedIdentifier) {
@@ -136,13 +126,6 @@ public class PPMOperations implements ImageOperations {
     return flippedImage;
   }
 
-  /**
-   * The method flips an image according to the orientation to create a new image
-   *
-   * @param orientation       image to be flipped horizontally or vertically.
-   * @param identifier        of the image
-   * @param flippedIdentifier identifier of the flipped image
-   */
   @Override
   public Image flip(String orientation, String identifier, String flippedIdentifier) {
     PPMImage image = imageMap.get(identifier);
@@ -163,13 +146,6 @@ public class PPMOperations implements ImageOperations {
     }
   }
 
-  /**
-   * The method creates a greyscale image with the given component.
-   *
-   * @param component           either red, blue, green, luma, value, intensity
-   * @param identifier          of the image
-   * @param greyScaleIdentifier identifier of the new grey-scaled image.
-   */
   @Override
   public Image greyscale(String component, String identifier, String greyScaleIdentifier) {
     PPMImage.ImageBuilder grayscaleImage = PPMImage.getBuilder();
@@ -177,15 +153,6 @@ public class PPMOperations implements ImageOperations {
     return splitIntoComponent(image, grayscaleImage, greyScaleIdentifier, component);
   }
 
-  /**
-   * The method splits the given image into three greyscale images
-   * containing its red, green and blue components.
-   *
-   * @param identifier      of the image
-   * @param redIdentifier   of image
-   * @param greenIdentifier of image
-   * @param blueIdentifier  of image
-   */
   @Override
   public List<Image> rgbSplit(String identifier, String redIdentifier, String greenIdentifier,
                               String blueIdentifier) {
@@ -264,22 +231,13 @@ public class PPMOperations implements ImageOperations {
         createPixelsBasedOnComponent(builder, image.getLumaMatrix(), height, width);
         break;
       default:
-        break;
+        return null;
     }
     PPMImage greyScaleImage = builder.build();
     imageMap.put(channelIdentifier, greyScaleImage);
     return greyScaleImage;
   }
 
-  /**
-   * The method combine the three greyscale images into a single image
-   * that gets its red, green and blue components from the three images.
-   *
-   * @param identifier      of the image
-   * @param redIdentifier   of the image
-   * @param greenIdentifier of the image
-   * @param blueIdentifier  of the image
-   */
   @Override
   public Image rgbCombine(String identifier, String redIdentifier, String greenIdentifier,
                           String blueIdentifier) {

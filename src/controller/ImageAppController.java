@@ -139,7 +139,7 @@ public class ImageAppController implements AppController {
                 }
                 flippedImage = model.flip(tokens[0], tokens[1], tokens[2]);
                 if(flippedImage == null) {
-                    view.log("vertical-flip", "Image does not exist!",
+                    view.log("horizontal-flip", "Image does not exist!",
                             false);
                     break;
                 }
@@ -152,6 +152,13 @@ public class ImageAppController implements AppController {
                     break;
                 }
                 String component = tokens[1].substring(0, tokens[1].indexOf('-'));
+                if(!component.equals("red") && !component.equals("blue") && !component.equals(
+                        "green") && !component.equals("value") && !component.equals("luma") &&
+                !component.equals("intensity")) {
+                    view.log("greyscale","Invalid component supplied!",
+                            false);
+                    break;
+                }
                 Image greyScaleImage = model.greyscale(component, tokens[2], tokens[3]);
                 if (greyScaleImage == null) {
                     view.log("greyscale","Image does not exist!",false);
