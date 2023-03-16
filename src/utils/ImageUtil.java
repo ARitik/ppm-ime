@@ -17,11 +17,15 @@ import model.Pixel;
  * as required.
  */
 public class ImageUtil {
+    /**
+     * Parses a given script to generate a list of commands.
+     *
+     * @param filename the script to be parsed
+     * @return the list of commands.
+     */
     public static List<String> readScriptCommands(String filename) {
         Scanner sc;
         List<String> commands = new ArrayList<String>();
-        System.out.println(filename);
-
         try {
             sc = new Scanner(new FileInputStream(filename));
         } catch (FileNotFoundException e) {
@@ -44,6 +48,8 @@ public class ImageUtil {
      * Read an image file in the PPM format and create an Image object.
      *
      * @param filename the path of the file.
+     * @param identifier the name of the new image.
+     * @return image after it has been read;
      */
     public static Image readPPM(String filename, String identifier) {
         Scanner sc;

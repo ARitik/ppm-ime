@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 
-import controller.AppController;
+import controller.ImageAppController;
 import utils.ImageUtil;
 import view.ImageLogView;
 
@@ -21,7 +21,7 @@ public class PPMOperationsTest {
         StringBuffer out = new StringBuffer();
         ImageOperations model = new PPMOperations();
         ImageLogView view = new ImageLogView(out);
-        AppController controller = new AppController(model, view);
+        ImageAppController controller = new ImageAppController(model, view);
         Reader in = new StringReader("load images/sample.ppm sample-test\n" +
                 "save images/sample-test.ppm sample-test\n");
         controller.go(in);
@@ -31,11 +31,16 @@ public class PPMOperationsTest {
     }
 
     @Test
+    public void testLoadWhenImageFileDoesNotExist() throws IOException{
+
+    }
+
+    @Test
     public void testSave() throws IOException {
         StringBuffer out = new StringBuffer();
         ImageOperations model = new PPMOperations();
         ImageLogView view = new ImageLogView(out);
-        AppController controller = new AppController(model, view);
+        ImageAppController controller = new ImageAppController(model, view);
         Reader in = new StringReader("load images/sample.ppm sample-test\n" +
                 "save images/sample-test.ppm sample-test\n");
         controller.go(in);
@@ -50,7 +55,7 @@ public class PPMOperationsTest {
         StringBuffer out = new StringBuffer();
         ImageOperations model = new PPMOperations();
         ImageLogView view = new ImageLogView(out);
-        AppController controller = new AppController(model, view);
+        ImageAppController controller = new ImageAppController(model, view);
         Reader in = new StringReader("");
         controller.go(in);
         Image sampleImage = ImageUtil.readPPM("images/sample-brighter.ppm", "sample-brighter");
@@ -63,7 +68,7 @@ public class PPMOperationsTest {
         StringBuffer out = new StringBuffer();
         ImageOperations model = new PPMOperations();
         ImageLogView view = new ImageLogView(out);
-        AppController controller = new AppController(model, view);
+        ImageAppController controller = new ImageAppController(model, view);
         Reader in = new StringReader("load images/sample.ppm sample-test\n" + "brighten -100 sample-test sample-test-darker\n" +
                 "save images/sample-test-darker.ppm sample-test-darker\n");
         controller.go(in);
@@ -77,7 +82,7 @@ public class PPMOperationsTest {
         StringBuffer out = new StringBuffer();
         ImageOperations model = new PPMOperations();
         ImageLogView view = new ImageLogView(out);
-        AppController controller = new AppController(model, view);
+        ImageAppController controller = new ImageAppController(model, view);
         Reader in = new StringReader("load images/sample.ppm sample-test\n" + "vertical-flip sample-test sample-test-vertical\n" +
                 "save images/sample-test-vertical.ppm sample-test-vertical\n");
         controller.go(in);
@@ -91,7 +96,7 @@ public class PPMOperationsTest {
         StringBuffer out = new StringBuffer();
         ImageOperations model = new PPMOperations();
         ImageLogView view = new ImageLogView(out);
-        AppController controller = new AppController(model, view);
+        ImageAppController controller = new ImageAppController(model, view);
         Reader in = new StringReader("load images/sample.ppm sample-test\n" + "horizontal-flip sample-test sample-test-horizontal\n" +
                 "save images/sample-test-horizontal.ppm sample-test-horizontal\n");
         controller.go(in);
@@ -105,7 +110,7 @@ public class PPMOperationsTest {
         StringBuffer out = new StringBuffer();
         ImageOperations model = new PPMOperations();
         ImageLogView view = new ImageLogView(out);
-        AppController controller = new AppController(model, view);
+        ImageAppController controller = new ImageAppController(model, view);
         Reader in = new StringReader("load images/sample-test-horizontal.ppm sample-test-horizontal\n"
                 + "vertical-flip sample-test-horizontal sample-test-horizontal-vertical\n"
         +"save images/sample-test-horizontal-vertical.ppm sample-test-horizontal-vertical");
@@ -120,7 +125,7 @@ public class PPMOperationsTest {
         StringBuffer out = new StringBuffer();
         ImageOperations model = new PPMOperations();
         ImageLogView view = new ImageLogView(out);
-        AppController controller = new AppController(model, view);
+        ImageAppController controller = new ImageAppController(model, view);
         Reader in = new StringReader("load images/sample-test-vertical.ppm sample-test-vertical\n"
                 + "horizontal-flip sample-test-vertical sample-test-vertical-horizontal\n"
                 +"save images/sample-test-vertical-horizontal.ppm sample-test-vertical-horizontal");
@@ -135,7 +140,7 @@ public class PPMOperationsTest {
         StringBuffer out = new StringBuffer();
         ImageOperations model = new PPMOperations();
         ImageLogView view = new ImageLogView(out);
-        AppController controller = new AppController(model, view);
+        ImageAppController controller = new ImageAppController(model, view);
         Reader in = new StringReader("load images/sample-test-horizontal.ppm sample-test-horizontal\n"
                 + "horizontal-flip sample-test-horizontal sample-test-horizontal-horizontal\n"
                 +"save images/sample-test-horizontal-horizontal.ppm sample-test-horizontal-horizontal");
@@ -150,7 +155,7 @@ public class PPMOperationsTest {
         StringBuffer out = new StringBuffer();
         ImageOperations model = new PPMOperations();
         ImageLogView view = new ImageLogView(out);
-        AppController controller = new AppController(model, view);
+        ImageAppController controller = new ImageAppController(model, view);
         Reader in = new StringReader("load images/sample-test-vertical.ppm sample-test-vertical\n"
                 + "vertical-flip sample-test-vertical sample-test-vertical-vertical\n"
                 +"save images/sample-test-vertical-vertical.ppm sample-test-vertical-vertical");
@@ -165,7 +170,7 @@ public class PPMOperationsTest {
         StringBuffer out = new StringBuffer();
         ImageOperations model = new PPMOperations();
         ImageLogView view = new ImageLogView(out);
-        AppController controller = new AppController(model, view);
+        ImageAppController controller = new ImageAppController(model, view);
         Reader in = new StringReader("load images/sample-test.ppm sample-test\n"
                 + "greyscale value-component sample-test sample-test-greyscale-value\n"
                 +"save images/sample-test-greyscale-value.ppm sample-test-greyscale-value");
@@ -180,7 +185,7 @@ public class PPMOperationsTest {
         StringBuffer out = new StringBuffer();
         ImageOperations model = new PPMOperations();
         ImageLogView view = new ImageLogView(out);
-        AppController controller = new AppController(model, view);
+        ImageAppController controller = new ImageAppController(model, view);
         Reader in = new StringReader("load images/sample-test.ppm sample-test\n"
                 + "greyscale intensity-component sample-test sample-test-greyscale-intensity\n"
                 +"save images/sample-test-greyscale-intensity.ppm sample-test-greyscale-intensity");
@@ -195,7 +200,7 @@ public class PPMOperationsTest {
         StringBuffer out = new StringBuffer();
         ImageOperations model = new PPMOperations();
         ImageLogView view = new ImageLogView(out);
-        AppController controller = new AppController(model, view);
+        ImageAppController controller = new ImageAppController(model, view);
         Reader in = new StringReader("load images/sample-test.ppm sample-test\n"
                 + "greyscale luma-component sample-test sample-test-greyscale-luma\n"
                 +"save images/sample-test-greyscale-luma.ppm sample-test-greyscale-luma");
@@ -210,7 +215,7 @@ public class PPMOperationsTest {
         StringBuffer out = new StringBuffer();
         ImageOperations model = new PPMOperations();
         ImageLogView view = new ImageLogView(out);
-        AppController controller = new AppController(model, view);
+        ImageAppController controller = new ImageAppController(model, view);
         Reader in = new StringReader("load images/sample-test.ppm sample-test\n"
                 + "greyscale red-component sample-test sample-test-greyscale-red\n"
                 +"save images/sample-test-greyscale-red.ppm sample-test-greyscale-red");
@@ -225,7 +230,7 @@ public class PPMOperationsTest {
         StringBuffer out = new StringBuffer();
         ImageOperations model = new PPMOperations();
         ImageLogView view = new ImageLogView(out);
-        AppController controller = new AppController(model, view);
+        ImageAppController controller = new ImageAppController(model, view);
         Reader in = new StringReader("load images/sample-test.ppm sample-test\n"
                 + "greyscale green-component sample-test sample-test-greyscale-green\n"
                 +"save images/sample-test-greyscale-green.ppm sample-test-greyscale-green");
@@ -240,7 +245,7 @@ public class PPMOperationsTest {
         StringBuffer out = new StringBuffer();
         ImageOperations model = new PPMOperations();
         ImageLogView view = new ImageLogView(out);
-        AppController controller = new AppController(model, view);
+        ImageAppController controller = new ImageAppController(model, view);
         Reader in = new StringReader("load images/sample-test.ppm sample-test\n"
                 + "greyscale blue-component sample-test sample-test-greyscale-blue\n"
                 +"save images/sample-test-greyscale-blue.ppm sample-test-greyscale-blue");
@@ -255,7 +260,7 @@ public class PPMOperationsTest {
         StringBuffer out = new StringBuffer();
         ImageOperations model = new PPMOperations();
         ImageLogView view = new ImageLogView(out);
-        AppController controller = new AppController(model, view);
+        ImageAppController controller = new ImageAppController(model, view);
         Reader in = new StringReader("load images/sample-test.ppm sample-test\n"
                 + "rgb-split sample-test sample-test-red sample-test-green sample-test-blue\n"
                 +"brighten 50 sample-test-red sample-test-red\n"

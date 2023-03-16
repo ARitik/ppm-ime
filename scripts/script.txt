@@ -5,85 +5,85 @@ load images/sample.ppm sample
 brighten 50 sample sample-brighter
 
 #save sample-brighter
-save images/sample-brighter.ppm sample-brighter
+save res/sample-brighter.ppm sample-brighter
 
 #darken sample by adding -100
 brighten -100 sample sample-darker
 
 #save sample-brighter
-save images/sample-darker.ppm sample-darker
+save res/sample-darker.ppm sample-darker
 
 #flip sample vertically
 vertical-flip sample sample-vertical
 
 #save sample vertically
-save images/sample-vertical.ppm sample-vertical
+save res/sample-vertical.ppm sample-vertical
 
 #flip sample horizontally
 horizontal-flip sample sample-horizontal
 
 #save sample horizontally
-save images/sample-horizontal.ppm sample-horizontal
+save res/sample-horizontal.ppm sample-horizontal
 
 #flip the vertically flipped sample horizontally
 horizontal-flip sample-vertical sample-vertical-horizontal
 
 #save sample vertically
-save images/sample-vertical-horizontal.ppm sample-vertical-horizontal
+save res/sample-vertical-horizontal.ppm sample-vertical-horizontal
 
 #flip the horizontally flipped sample vertically
 vertical-flip sample-horizontal sample-horizontal-vertical
 
 #save sample vertically
-save images/sample-horizontal-vertical.ppm sample-horizontal-vertical
+save res/sample-horizontal-vertical.ppm sample-horizontal-vertical
 
 #flip the vertically flipped sample vertically
 vertical-flip sample-vertical sample-vertical-vertical
 
 #save sample vertically
-save images/sample-vertical-vertical.ppm sample-vertical-vertical
+save res/sample-vertical-vertical.ppm sample-vertical-vertical
 
 #flip the horizontally flipped sample horizontally
 horizontal-flip sample-horizontal sample-horizontal-horizontal
 
 #save sample horizontally
-save images/sample-horizontal-horizontal.ppm sample-horizontal-horizontal
+save res/sample-horizontal-horizontal.ppm sample-horizontal-horizontal
 
 #create a greyscale using only the value component, as an image sample-greyscale
 greyscale value-component sample sample-greyscale-value
 
 #save sample-greyscale
-save images/sample-greyscale-value.ppm sample-greyscale-value
+save res/sample-greyscale-value.ppm sample-greyscale-value
 
 #create a greyscale using only the luma component, as an image sample-greyscale
 greyscale luma-component sample sample-greyscale-luma
 
 #save sample-greyscale
-save images/sample-greyscale-luma.ppm sample-greyscale-luma
+save res/sample-greyscale-luma.ppm sample-greyscale-luma
 
 #create a greyscale using only the intensity component, as an image sample-greyscale
 greyscale intensity-component sample sample-greyscale-intensity
 
 #save sample-greyscale
-save images/sample-greyscale-intensity.ppm sample-greyscale-intensity
+save res/sample-greyscale-intensity.ppm sample-greyscale-intensity
 
 #create a greyscale using only the red component, as an image sample-greyscale
 greyscale red-component sample sample-greyscale-red
 
 #save sample-greyscale
-save images/sample-greyscale-red.ppm sample-greyscale-red
+save res/sample-greyscale-red.ppm sample-greyscale-red
 
 #create a greyscale using only the green component, as an image sample-greyscale
 greyscale green-component sample sample-greyscale-green
 
 #save sample-greyscale
-save images/sample-greyscale-green.ppm sample-greyscale-green
+save res/sample-greyscale-green.ppm sample-greyscale-green
 
 #create a greyscale using only the blue component, as an image sample-greyscale
 greyscale blue-component sample sample-greyscale-blue
 
 #save sample-greyscale
-save images/sample-greyscale-blue.ppm sample-greyscale-blue
+save res/sample-greyscale-blue.ppm sample-greyscale-blue
 
 #give the sample a red tint
 rgb-split sample sample-red sample-green sample-blue
@@ -93,7 +93,7 @@ brighten 50 sample-red sample-red
 
 #combine them back, but by using the brightened red we get a red tint
 rgb-combine sample-red-tint sample-red sample-green sample-blue
-save images/sample-red-tint.ppm sample-red-tint
+save res/sample-red-tint.ppm sample-red-tint
 
 #give the sample a green tint
 rgb-split sample sample-red sample-green sample-blue
@@ -103,7 +103,7 @@ brighten 50 sample-green sample-green
 
 #combine them back, but by using the brightened red we get a red tint
 rgb-combine sample-green-tint sample-red sample-green sample-blue
-save images/sample-green-tint.ppm sample-green-tint
+save res/sample-green-tint.ppm sample-green-tint
 
 #give the sample a blue tint
 rgb-split sample sample-red sample-green sample-blue
@@ -113,4 +113,4 @@ brighten 50 sample-blue sample-blue
 
 #combine them back, but by using the brightened red we get a red tint
 rgb-combine sample-blue-tint sample-red sample-green sample-blue
-save images/sample-blue-tint.ppm sample-blue-tint
+save res/sample-blue-tint.ppm sample-blue-tint

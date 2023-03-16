@@ -8,7 +8,7 @@ public interface Image {
     /**
      * The method is used to compare whether two images are exact same or not.
      * @param o
-     * @return true if the images are same, else it returns false.
+     * @return true if two images are the same, otherwise return false.
      */
     @Override
     boolean equals(Object o);
