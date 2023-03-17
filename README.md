@@ -35,23 +35,33 @@ then relinquishes control to the controller
    jpg, png etc.).
 2. ImageOperations - This class implements ImageOperations and contains methods that perform some
    operation on the image.
+   The operations that can be performed on the image are : load an image, save an image, brighten or
+   darken an image,
+   flip image horizontally or vertically, greyscale an image on the basis of red, blue, green,
+   value, luma, intensity component,
+   split the given image into three greyscale images containing its red, green and blue components,
+   combine the three greyscale images into a single image that gets its red, green and blue
+   components from the three image.
 
--> Classes
+#### Classes
 
-1. PPMImage implements Image - This class implements Image and builds a ppm type image.
-2. PPMOperations implement ImageOperations - This class implements ImageOperations and perform
-   certain operations on an image of ppm format.
-3. Pixel -
+1. PPMImage - This class implements Image and builds a ppm type image.
+2. PPMOperations - This class implements ImageOperations and perform certain operations (load,
+   save, greyscale, brighten or darken,
+   flip image vertically or horizontally, split and combine images) on an image of ppm format.
+3. Pixel - This class represents a pixel and creates a pixel using the RGB values.
 
 ### CONTROLLER:
 
 #### Interface
 
-1. AppController
+1. AppController - This interface represents the Controller which takes user inputs, tells the model
+   what to do and tells the view what to display.
 
-#### Classes
+### Classes
 
-1. ImageController
+1. ImageAppController - This class implements the AppController Interface, providing a Controller
+   for an Application that provides Image Processing Functionality.
 
 ### VIEW:
 
@@ -66,7 +76,8 @@ then relinquishes control to the controller
 
 ### UTILS:
 
-1. ImageUtil
+1. ImageUtil - This class contains utility methods to read a PPM image from file and save it as an
+   Image as required.
 
 ## Testing
 
@@ -91,3 +102,13 @@ Title of the work - Sample illusion
 Location - Boston, Massachusetts, United States of America
 
 From the creator's personal collection.
+
+### For example.ppm:
+
+Creator's name - Filesamples.com
+
+Website URL - https://filesamples.com/formats/ppm
+
+Title of the work - Sample_620X220
+
+Location - Rotterdam, Netherlands

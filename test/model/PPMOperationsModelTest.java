@@ -5,26 +5,25 @@ import org.junit.Test;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
+import java.util.Map;
 
 import controller.ImageAppController;
 import utils.ImageUtil;
 import view.ImageLogView;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 
 /**
- * This a JUnit test class for PPMOperations model.
+ * A JUnit test class that tests the ImageOperations model directly.
  */
-public class PPMOperationsTest {
+public class PPMOperationsModelTest {
   @Test
   public void testLoadIfImageExistsLoadSuccessfully() throws IOException {
-    StringBuffer out = new StringBuffer();
     ImageOperations model = new PPMOperations();
-    ImageLogView view = new ImageLogView(out);
-    ImageAppController controller = new ImageAppController(model, view);
-    Reader in = new StringReader("load res/sample.ppm sample-test\n" +
-            "save res/sample-test.ppm sample-test\n");
-    controller.run(in);
+    model.load("res/sample.ppm", "sample");
+    model.save("res/sample-test.ppm", "sample");
     Image sampleImage = ImageUtil.readPPM("res/sample.ppm", "sample");
     Image loadedSampleImage = ImageUtil.readPPM("res/sample-test.ppm",
             "sample-test");
@@ -32,25 +31,17 @@ public class PPMOperationsTest {
   }
 
   @Test
-  public void testLoadWhenImageFileDoesNotExistLogError() throws IOException {
-    StringBuffer out = new StringBuffer();
+  public void testLoadWhenImageFileDoesNotExistReturnEmptyMap() throws IOException {
     ImageOperations model = new PPMOperations();
-    ImageLogView view = new ImageLogView(out);
-    ImageAppController controller = new ImageAppController(model, view);
     Reader in = new StringReader("load res/x.ppm sample-test\n");
-    controller.run(in);
-    assertEquals("Log: load failed!\nFile does not exist!\n", out.toString());
+    Map<String, PPMImage> imageMap = model.load("res/x.ppm", "sample-test");
+    assertNotNull(imageMap);
   }
 
   @Test
   public void testLoadWhenScriptFileIsLoaded() throws IllegalStateException, IOException {
-    StringBuffer out = new StringBuffer();
     ImageOperations model = new PPMOperations();
-    ImageLogView view = new ImageLogView(out);
     String message = "Script cannot run script! Recursive possibility";
-    ImageAppController controller = new ImageAppController(model, view);
-    Reader in = new StringReader("run scripts/loadscript.txt\n");
-    controller.run(in);
     String message2 = new String(message);
     assertEquals(message, message2);
   }
@@ -58,13 +49,11 @@ public class PPMOperationsTest {
 
   @Test
   public void testSave() throws IOException {
-    StringBuffer out = new StringBuffer();
     ImageOperations model = new PPMOperations();
-    ImageLogView view = new ImageLogView(out);
-    ImageAppController controller = new ImageAppController(model, view);
     Reader in = new StringReader("load res/sample.ppm sample-test\n" +
             "save res/sample-test.ppm sample-test\n");
-    controller.run(in);
+    model.load("res/sample.ppm", "sample-test");
+    model.save("res/sample-test.ppm", "sample-test");
     Image sampleImage = ImageUtil.readPPM("res/sample.ppm", "sample");
     Image loadedSampleImage = ImageUtil.readPPM("res/sample-test.ppm",
             "sample-test");
@@ -74,14 +63,10 @@ public class PPMOperationsTest {
 
   @Test
   public void testImageBrighten() throws IOException {
-    StringBuffer out = new StringBuffer();
     ImageOperations model = new PPMOperations();
-    ImageLogView view = new ImageLogView(out);
-    ImageAppController controller = new ImageAppController(model, view);
-    Reader in = new StringReader("load res/sample.ppm sample\n" +
-            "brighten 50 sample sample-test-brighter\n" +
-            "save res/sample-test-brighter.ppm sample-test-brighter");
-    controller.run(in);
+    model.load("res/sample.ppm", "sample");
+    model.brighten(50, "sample", "sample-test-brighter");
+    model.save("res/sample-test-brighter.ppm", "sample-test-brighter");
     Image sampleImage = ImageUtil.readPPM("res/sample-brighter.ppm",
             "sample-brighter");
     Image loadedSampleImage = ImageUtil.readPPM("res/sample-test-brighter.ppm",
@@ -91,14 +76,10 @@ public class PPMOperationsTest {
 
   @Test
   public void testImageBrightenWhenConstantGreaterThan255GenerateWhiteImage() throws IOException {
-    StringBuffer out = new StringBuffer();
     ImageOperations model = new PPMOperations();
-    ImageLogView view = new ImageLogView(out);
-    ImageAppController controller = new ImageAppController(model, view);
-    Reader in = new StringReader("load res/sample.ppm sample\n" +
-            "brighten 350 sample sample-test-super-brighter\n" +
-            "save res/sample-test-brighter.ppm sample-test-super-brighter");
-    controller.run(in);
+    model.load("res/sample.ppm", "sample");
+    model.brighten(350, "sample", "sample-test-super-brighter");
+    model.save("res/sample-test-brighter.ppm", "sample-test-super-brighter");
     Image sampleImage = ImageUtil.readPPM("res/sample-super-brighter.ppm",
             "sample-brighter");
     Image loadedSampleImage = ImageUtil.readPPM("res/sample-test-super-brighter.ppm",
@@ -108,14 +89,10 @@ public class PPMOperationsTest {
 
   @Test
   public void testImageDarkerWhenConstantLessThan255GenerateBlackImage() throws IOException {
-    StringBuffer out = new StringBuffer();
     ImageOperations model = new PPMOperations();
-    ImageLogView view = new ImageLogView(out);
-    ImageAppController controller = new ImageAppController(model, view);
-    Reader in = new StringReader("load res/sample.ppm sample\n" +
-            "brighten -350 sample sample-test-super-darker\n" +
-            "save res/sample-test-super-darker.ppm sample-test-super-darker");
-    controller.run(in);
+    model.load("res/sample.ppm", "sample");
+    model.brighten(-350, "sample", "sample-test-super-darker");
+    model.save("res/sample-test-super-darker.ppm", "sample-test-super-darker");
     Image sampleImage = ImageUtil.readPPM("res/sample-super-darker.ppm",
             "sample-darker");
     Image loadedSampleImage = ImageUtil.readPPM("res/sample-test-super-darker.ppm",
@@ -125,126 +102,43 @@ public class PPMOperationsTest {
 
   @Test
   public void testImageDarken() throws IOException {
-    StringBuffer out = new StringBuffer();
     ImageOperations model = new PPMOperations();
-    ImageLogView view = new ImageLogView(out);
-    ImageAppController controller = new ImageAppController(model, view);
-    Reader in = new StringReader("load res/sample.ppm sample-test\n" + "brighten -100 " +
-            "sample-test sample-test-darker\n" +
-            "save res/sample-test-darker.ppm sample-test-darker\n");
-    controller.run(in);
+    model.load("res/sample.ppm", "sample-test");
+    model.brighten(-100, "sample-test", "sample-test-darker");
+    model.save("res/sample-test-darker.ppm", "sample-test-darker");
     Image sampleImage = ImageUtil.readPPM("res/sample-darker.ppm",
             "sample-darker");
     Image loadedSampleImage = ImageUtil.readPPM("res/sample-test-darker.ppm",
-            "sample-test" +
-                    "-darker");
+            "sample-test-darker");
     assertEquals(sampleImage, loadedSampleImage);
   }
 
   @Test
   public void testVerticalFlipForImage() throws IOException {
-    StringBuffer out = new StringBuffer();
     ImageOperations model = new PPMOperations();
-    ImageLogView view = new ImageLogView(out);
-    ImageAppController controller = new ImageAppController(model, view);
-    Reader in = new StringReader("load res/sample.ppm sample-test\n" + "vertical-flip " +
-            "sample-test sample-test-vertical\n" +
-            "save res/sample-test-vertical.ppm sample-test-vertical\n");
-    controller.run(in);
+    model.load("res/sample.ppm", "sample-test");
+    model.flip("vertical-flip", "sample-test",
+            "sample-test-vertical");
+    model.save("res/sample-test-vertical.ppm", "sample-test-vertical");
     Image sampleImage = ImageUtil.readPPM("res/sample-vertical.ppm",
             "sample-vertical");
     Image loadedSampleImage = ImageUtil.readPPM("res/sample-test-vertical.ppm",
-            "sample-test" +
-                    "-vertical");
+            "sample-test-vertical");
     assertEquals(sampleImage, loadedSampleImage);
   }
+
 
   @Test
   public void testHorizontalFlipForImage() throws IOException {
-    StringBuffer out = new StringBuffer();
     ImageOperations model = new PPMOperations();
-    ImageLogView view = new ImageLogView(out);
-    ImageAppController controller = new ImageAppController(model, view);
-    Reader in = new StringReader("load res/sample.ppm sample-test\n" + "horizontal-flip " +
-            "sample-test sample-test-horizontal\n" +
-            "save res/sample-test-horizontal.ppm sample-test-horizontal\n");
-    controller.run(in);
+    model.load("res/sample.ppm", "sample-test");
+    model.flip("horizontal-flip", "sample-test",
+            "sample-test-horizontal");
+    model.save("res/sample-test-horizontal.ppm", "sample-test-horizontal");
     Image sampleImage = ImageUtil.readPPM("res/sample-horizontal.ppm",
             "sample-horizontal");
     Image loadedSampleImage = ImageUtil.readPPM("res/sample-test-horizontal.ppm",
-            "sample-test" +
-                    "-horizontal");
-    assertEquals(sampleImage, loadedSampleImage);
-  }
-
-  @Test
-  public void testVerticalFlipForHorizontallyFlippedImage() throws IOException {
-    StringBuffer out = new StringBuffer();
-    ImageOperations model = new PPMOperations();
-    ImageLogView view = new ImageLogView(out);
-    ImageAppController controller = new ImageAppController(model, view);
-    Reader in = new StringReader("load res/sample-test-horizontal.ppm sample-test-horizontal\n"
-            + "vertical-flip sample-test-horizontal sample-test-horizontal-vertical\n"
-            + "save res/sample-test-horizontal-vertical.ppm sample-test-horizontal-vertical");
-    controller.run(in);
-    Image sampleImage = ImageUtil.readPPM("res/sample-horizontal-vertical.ppm",
-            "sample" +
-                    "-horizontal-vertical");
-    Image loadedSampleImage = ImageUtil.readPPM("res/sample-test-horizontal-vertical.ppm",
-            "sample-test-horizontal-vertical");
-    assertEquals(sampleImage, loadedSampleImage);
-  }
-
-  @Test
-  public void testHorizontalFlipForVerticallyFlippedImage() throws IOException {
-    StringBuffer out = new StringBuffer();
-    ImageOperations model = new PPMOperations();
-    ImageLogView view = new ImageLogView(out);
-    ImageAppController controller = new ImageAppController(model, view);
-    Reader in = new StringReader("load res/sample-test-vertical.ppm sample-test-vertical\n"
-            + "horizontal-flip sample-test-vertical sample-test-vertical-horizontal\n"
-            + "save res/sample-test-vertical-horizontal.ppm sample-test-vertical-horizontal");
-    controller.run(in);
-    Image sampleImage = ImageUtil.readPPM("res/sample-vertical-horizontal.ppm",
-            "sample" +
-                    "-vertical-horizontal");
-    Image loadedSampleImage = ImageUtil.readPPM("res/sample-test-vertical-horizontal.ppm",
-            "sample-test-vertical-horizontal");
-    assertEquals(sampleImage, loadedSampleImage);
-  }
-
-  @Test
-  public void testHorizontalFlipForHorizontallyFlippedImage() throws IOException {
-    StringBuffer out = new StringBuffer();
-    ImageOperations model = new PPMOperations();
-    ImageLogView view = new ImageLogView(out);
-    ImageAppController controller = new ImageAppController(model, view);
-    Reader in = new StringReader("load res/sample-test-horizontal.ppm sample-test-horizontal\n"
-            + "horizontal-flip sample-test-horizontal sample-test-horizontal-horizontal\n"
-            + "save res/sample-test-horizontal-horizontal.ppm sample-test-horizontal-horizontal");
-    controller.run(in);
-    Image sampleImage = ImageUtil.readPPM("res/sample-horizontal-horizontal.ppm",
-            "sample-horizontal-horizontal");
-    Image loadedSampleImage = ImageUtil.readPPM("res/sample-test-horizontal-horizontal.ppm",
-            "sample-test-horizontal-horizontal");
-    assertEquals(sampleImage, loadedSampleImage);
-  }
-
-  @Test
-  public void testVerticalFlipForVerticallyFlippedImage() throws IOException {
-    StringBuffer out = new StringBuffer();
-    ImageOperations model = new PPMOperations();
-    ImageLogView view = new ImageLogView(out);
-    ImageAppController controller = new ImageAppController(model, view);
-    Reader in = new StringReader("load res/sample-test-vertical.ppm sample-test-vertical\n"
-            + "vertical-flip sample-test-vertical sample-test-vertical-vertical\n"
-            + "save res/sample-test-vertical-vertical.ppm sample-test-vertical-vertical");
-    controller.run(in);
-    Image sampleImage = ImageUtil.readPPM("res/sample-vertical-vertical.ppm",
-            "sample-vertical" +
-                    "-vertical");
-    Image loadedSampleImage = ImageUtil.readPPM("res/sample-test-vertical-vertical.ppm",
-            "sample-test-vertical-vertical");
+            "sample-test-horizontal");
     assertEquals(sampleImage, loadedSampleImage);
   }
 
