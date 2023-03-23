@@ -3,6 +3,7 @@ import java.io.InputStreamReader;
 
 import controller.AppController;
 import controller.ImageAppController;
+import controller.ImageCommandController;
 import model.ImageOperations;
 import model.PPMOperations;
 import view.ImageLogView;
@@ -21,7 +22,8 @@ public class ProgramRunner {
   public static void main(String[] args) throws IOException {
     ImageOperations model = new PPMOperations();
     ImageLogView view = new ImageLogView(System.out);
-    AppController controller = new ImageAppController(model, view);
+//    AppController controller = new ImageAppController(model, view);
+    AppController controller = new ImageCommandController(model, view);
     controller.run(new InputStreamReader(System.in));
   }
 }
