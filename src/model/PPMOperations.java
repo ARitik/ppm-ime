@@ -35,7 +35,8 @@ public class PPMOperations implements ImageOperations {
 
   @Override
   public Map<String, PPMImage> load(String filePath, String identifier) {
-    PPMImage image = (PPMImage) ImageUtil.readPPM(filePath, identifier);
+//    PPMImage image = (PPMImage) ImageUtil.readPPM(filePath, identifier);
+    PPMImage image = (PPMImage) ImageUtil.readImage(filePath, identifier);
     if (image != null) {
       imageMap.put(identifier, image);
     }
@@ -47,7 +48,8 @@ public class PPMOperations implements ImageOperations {
     if (imageMap.get(imageIdentifier) == null) {
       return null;
     }
-    ImageUtil.savePPM(savePath, imageMap.get(imageIdentifier));
+//    ImageUtil.savePPM(savePath, imageMap.get(imageIdentifier));
+    ImageUtil.saveImage(savePath, imageMap.get(imageIdentifier));
     return imageMap.get(imageIdentifier);
   }
 
