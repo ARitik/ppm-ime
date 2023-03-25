@@ -1,6 +1,6 @@
 package controller.commands;
 
-import model.ImageOperations;
+import model.ImageOperationsBasicPlus;
 
 public class Greyscale implements ImageCommand {
   String component;
@@ -13,7 +13,7 @@ public class Greyscale implements ImageCommand {
 
   }
 
-  public void execute(ImageOperations model) {
+  public void execute(ImageOperationsBasicPlus model) {
     model.greyscale(component,identifier,greyScaleIdentifier);
   }
 }

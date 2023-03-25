@@ -9,14 +9,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
 import java.awt.image.BufferedImage;
 
 import model.Image;
-import model.PPMImage;
+import model.RGBImage;
 import model.Pixel;
 
 
@@ -70,7 +69,7 @@ public class ImageUtil {
       return null;
     }
     StringBuilder builder = new StringBuilder();
-    PPMImage.ImageBuilder imageBuilder = PPMImage.getBuilder();
+    RGBImage.ImageBuilder imageBuilder = RGBImage.getBuilder();
     imageBuilder.identifier(identifier);
     //read the file line by line, and populate a string. This will throw away any comment lines
     while (sc.hasNextLine()) {
@@ -122,7 +121,7 @@ public class ImageUtil {
       System.out.println(exception.getMessage());
       return null;
     }
-    PPMImage.ImageBuilder imageBuilder = PPMImage.getBuilder();
+    RGBImage.ImageBuilder imageBuilder = RGBImage.getBuilder();
     int width = image.getWidth();
     int height = image.getHeight();
     imageBuilder.identifier(identifier);
@@ -145,7 +144,7 @@ public class ImageUtil {
    *
    * @param filename the path of the file.
    */
-  public static void savePPM(String filename, PPMImage image) {
+  public static void savePPM(String filename, RGBImage image) {
     BufferedWriter writer;
     try {
       writer = new BufferedWriter(new FileWriter(filename));
@@ -168,7 +167,7 @@ public class ImageUtil {
     }
   }
 
-  public static void saveImage(String filename, PPMImage image) {
+  public static void saveImage(String filename, RGBImage image) {
     String imageFormat = filename.substring(filename.lastIndexOf(".") + 1);
     if (imageFormat.equals("ppm")) {
       savePPM(filename, image);

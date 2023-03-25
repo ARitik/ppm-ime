@@ -1,6 +1,6 @@
 package controller.commands;
 
-import model.ImageOperations;
+import model.ImageOperationsBasicPlus;
 
 public class Split implements ImageCommand {
   private String identifier;
@@ -16,7 +16,7 @@ public class Split implements ImageCommand {
     this.greenIdentifier = greenIdentifier;
   }
 
-  public void execute(ImageOperations model) {
+  public void execute(ImageOperationsBasicPlus model) {
     model.greyscale("red", identifier, redIdentifier);
     model.greyscale("green", identifier, greenIdentifier);
     model.greyscale("blue", identifier, blueIdentifier);

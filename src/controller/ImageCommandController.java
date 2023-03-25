@@ -10,6 +10,7 @@ import java.util.Objects;
 import java.util.Scanner;
 import java.util.function.Function;
 
+import controller.commands.Blur;
 import controller.commands.Brighten;
 import controller.commands.Combine;
 import controller.commands.Flip;
@@ -17,13 +18,14 @@ import controller.commands.Greyscale;
 import controller.commands.ImageCommand;
 import controller.commands.Load;
 import controller.commands.Save;
+import controller.commands.Sepia;
 import controller.commands.Split;
-import model.ImageOperations;
+import model.ImageOperationsBasicPlus;
 import utils.ImageUtil;
 import view.AppView;
 
 public class ImageCommandController implements AppController {
-  ImageOperations model;
+  ImageOperationsBasicPlus model;
   AppView view;
 
   /**
@@ -32,7 +34,7 @@ public class ImageCommandController implements AppController {
    * @param model The model for the app.
    * @param view  The view for the app.
    */
-  public ImageCommandController(ImageOperations model, AppView view) {
+  public ImageCommandController(ImageOperationsBasicPlus model, AppView view) {
     this.model = model;
     this.view = view;
   }
@@ -70,6 +72,8 @@ public class ImageCommandController implements AppController {
             tokens[3], tokens[4]));
     imageCommands.put("rgb-combine", s -> new Combine(tokens[1], tokens[2],
             tokens[3], tokens[4]));
+    imageCommands.put("blur",s -> new Blur(tokens[1],tokens[2]));
+    imageCommands.put("sepia",s -> new Sepia(tokens[1],tokens[2]));
     ImageCommand requestedCommand;
 
     if(operation.equals("run")) {

@@ -2,8 +2,8 @@ package controller.commands;
 
 import java.io.IOException;
 
-import model.ImageOperations;
+import model.ImageOperationsBasicPlus;
 
 public interface ImageCommand {
-  public void execute(ImageOperations model) throws IOException;
+  public void execute(ImageOperationsBasicPlus model) throws IOException;
 }

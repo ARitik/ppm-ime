@@ -1,6 +1,7 @@
 package controller.commands;
 
 import model.ImageOperations;
+import model.ImageOperationsBasicPlus;
 
 public class Brighten implements ImageCommand {
   int value;
@@ -14,7 +15,7 @@ public class Brighten implements ImageCommand {
 
   }
 
-  public void execute(ImageOperations model) {
+  public void execute(ImageOperationsBasicPlus model) {
     model.brighten(value,identifier,brightenIdentifier);
   }
 }

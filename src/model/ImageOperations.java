@@ -16,7 +16,7 @@ public interface ImageOperations {
    * @param identifier identifies the given image
    * @return updated hashmap containing all images.
    */
-  Map<String, PPMImage> load(String filePath, String identifier);
+  Map<String, RGBImage> load(String filePath, String identifier);
 
   /**
    * The method saves the image with the given name to the specified path.

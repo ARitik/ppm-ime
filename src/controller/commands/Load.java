@@ -1,6 +1,6 @@
 package controller.commands;
 
-import model.ImageOperations;
+import model.ImageOperationsBasicPlus;
 
 public class Load implements ImageCommand {
   String filePath;
@@ -10,7 +10,7 @@ public class Load implements ImageCommand {
     this.identifier = identifer;
   }
   @Override
-  public void execute(ImageOperations model) {
+  public void execute(ImageOperationsBasicPlus model) {
     model.load(filePath,identifier);
   }
 

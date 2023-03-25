@@ -1,6 +1,6 @@
 package controller.commands;
 
-import model.ImageOperations;
+import model.ImageOperationsBasicPlus;
 
 public class Flip implements ImageCommand {
   String orientation;
@@ -12,7 +12,7 @@ public class Flip implements ImageCommand {
     this.flippedIdentifier = flippedIdentifier;
   }
 
-  public void execute(ImageOperations model) {
+  public void execute(ImageOperationsBasicPlus model) {
     model.flip(orientation,identifier,flippedIdentifier);
   }
 }

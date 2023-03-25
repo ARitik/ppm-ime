@@ -1,6 +1,6 @@
 package controller.commands;
 
-import model.ImageOperations;
+import model.ImageOperationsBasicPlus;
 
 public class Combine implements ImageCommand {
   String identifier;
@@ -16,7 +16,7 @@ public class Combine implements ImageCommand {
     this.greenIdentifier = greenIdentifier;
   }
 
-  public void execute(ImageOperations model) {
+  public void execute(ImageOperationsBasicPlus model) {
     model.rgbCombine(identifier,redIdentifier,greenIdentifier,blueIdentifier);
   }
 }

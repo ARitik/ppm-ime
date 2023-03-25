@@ -2,10 +2,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import controller.AppController;
-import controller.ImageAppController;
 import controller.ImageCommandController;
 import model.ImageOperations;
-import model.PPMOperations;
+import model.ImageOperationsBasicPlus;
+import model.RGBOperationsBasic;
+import model.RGBOperationsBasicPlus;
 import view.ImageLogView;
 
 /**
@@ -20,7 +21,8 @@ public class ProgramRunner {
    * @throws IOException wherever required in the program
    */
   public static void main(String[] args) throws IOException {
-    ImageOperations model = new PPMOperations();
+//    ImageOperations model = new RGBOperationsBasic();
+    ImageOperationsBasicPlus model = new RGBOperationsBasicPlus();
     ImageLogView view = new ImageLogView(System.out);
 //    AppController controller = new ImageAppController(model, view);
     AppController controller = new ImageCommandController(model, view);

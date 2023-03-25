@@ -1,0 +1,21 @@
+load images/koala.ppm koala
+blur koala koala
+blur koala koala
+blur koala koala
+blur koala koala
+blur koala koala
+blur koala koala
+blur koala koala
+blur koala koala
+blur koala koala
+blur koala koala
+blur koala koala
+blur koala koala
+blur koala koala
+blur koala koala
+blur koala koala
+blur koala koala
+blur koala koala
+blur koala koala
+save images/koala-blurred.png koala
+exit

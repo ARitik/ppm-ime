@@ -10,7 +10,7 @@ import java.util.Map;
 
 import model.Image;
 import model.ImageOperations;
-import model.PPMImage;
+import model.RGBImage;
 import view.AppView;
 import view.ImageLogView;
 
@@ -499,7 +499,7 @@ public class ImageAppControllerTest {
     }
 
     @Override
-    public Map<String, PPMImage> load(String filePath, String identifier) {
+    public Map<String, RGBImage> load(String filePath, String identifier) {
       modelLog.append("filepath: " + filePath + " " + "identifier: " + identifier);
       return null;
     }

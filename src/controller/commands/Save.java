@@ -2,7 +2,7 @@ package controller.commands;
 
 import java.io.IOException;
 
-import model.ImageOperations;
+import model.ImageOperationsBasicPlus;
 
 public class Save implements ImageCommand {
   String filePath;
@@ -14,7 +14,7 @@ public class Save implements ImageCommand {
   }
 
   @Override
-  public void execute(ImageOperations model) throws IOException {
+  public void execute(ImageOperationsBasicPlus model) throws IOException {
     model.save(filePath, identifier);
   }
 
