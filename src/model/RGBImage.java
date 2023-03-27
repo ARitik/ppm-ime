@@ -198,6 +198,10 @@ public class RGBImage implements Image {
     this.pixels = pixels;
   }
 
+  public Pixel getPixel(int row,int column) {
+    return pixels[row][column];
+  }
+
   /**
    * The method creates an object of ImageBuilder class.
    *
@@ -234,6 +238,7 @@ public class RGBImage implements Image {
     private ImageBuilder() {
     }
 
+
     public ImageBuilder pixelMatrix(Pixel[][] pixels) {
       this.pixels = pixels;
       return this;
@@ -249,6 +254,12 @@ public class RGBImage implements Image {
      */
     public ImageBuilder pixel(Pixel pixel, int row, int column) {
       pixels[row][column] = pixel;
+      return this;
+    }
+
+    public ImageBuilder pixel(int row, int column, int newRedValue, int newGreenValue,
+                              int newBlueValue) {
+      pixels[row][column] = new Pixel(newRedValue,newGreenValue,newBlueValue);
       return this;
     }
 

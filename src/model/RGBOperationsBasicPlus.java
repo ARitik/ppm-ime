@@ -15,31 +15,94 @@ public class RGBOperationsBasicPlus
             {2 / 16f, 4 / 16f, 2 / 16f},
             {1 / 16f, 2 / 16f, 1 / 16f}};
 
-    applyFilter(kernel, image, blurIdentifier);
-    return null;
+    return applyFilter(kernel, image, blurIdentifier);
   }
 
   @Override
-  public Image sharpen(String identifier, String blurIdentifier) {
-    return null;
+  public Image sharpen(String identifier, String sharpenIdentifier) {
+    RGBImage image = (RGBImage) imageMap.get(identifier);
+    float[][] kernel = {{-1 / 8f, -1 / 8f, -1 / 8f, -1 / 8f, -1 / 8f},
+            {-1 / 8f, 2 / 8f, 2 / 8f, 2 / 8f, -1 / 8f},
+            {-1 / 8f, 2 / 8f, 1, 2 / 8f, -1 / 8f},
+            {-1 / 8f, 2 / 8f, 2 / 8f, 2 / 8f, -1 / 8f},
+            {-1 / 8f, -1 / 8f, -1 / 8f, -1 / 8f, -1 / 8f}
+    };
+    return applyFilter(kernel, image, sharpenIdentifier);
   }
 
   @Override
   public Image sepia(String identifier, String sepiaIdentifier) {
     RGBImage image = (RGBImage) imageMap.get(identifier);
-     float[][] kernel = {{0.393f, 0.769f, 0.189f},
-                                 {0.349f, 0.686f, 0.168f},
-                                 {0.272f, 0.534f, 0.131f}};
-    applyColorTransformation(kernel, image, sepiaIdentifier);
-    return null;
+    float[][] kernel = {{0.393f, 0.769f, 0.189f},
+            {0.349f, 0.686f, 0.168f},
+            {0.272f, 0.534f, 0.131f}};
+    return applyColorTransformation(kernel, image, sepiaIdentifier);
   }
 
   @Override
   public Image greyscale(String identifier, String greyScaleIdentifier) {
-    return null;
+    RGBImage image = (RGBImage) imageMap.get(identifier);
+    float[][] kernel = {{0.2126f, 0.7152f, 0.0722f}, {0.2126f, 0.7152f, 0.0722f}, {0.2126f,
+            0.7152f, 0.0722f}};
+    return applyColorTransformation(kernel, image, greyScaleIdentifier);
   }
 
-  private void applyFilter(float[][] kernel, RGBImage image, String filterIdentifier) {
+
+  @Override
+  public Image dither(String identifier, String ditherIdentifier) {
+//    RGBImage greyScaleImage = (RGBImage) this.greyscale("luma", identifier, identifier);
+    RGBImage greyScaleImage = (RGBImage) this.greyscale( identifier, identifier);
+    RGBImage.ImageBuilder imageBuilder = RGBImage.getBuilder();
+    int width = greyScaleImage.getWidth();
+    int height = greyScaleImage.getHeight();
+    imageBuilder.identifier(ditherIdentifier);
+    imageBuilder.width(width);
+    imageBuilder.height(height);
+    imageBuilder.pixelMatrix(greyScaleImage.getPixels());
+    for (int row = 0; row < height; row++) {
+      for (int column = 0; column < width; column++) {
+        int old_color = greyScaleImage.getRPixel(row, column);
+        int new_color = (old_color < 128) ? 0 : 255;
+        int error = old_color - new_color;
+//        int currentPixel = greyScaleImage.getRPixel(row, column);
+        imageBuilder.pixel(new Pixel(new_color, new_color, new_color), row, column);
+
+        if (column < greyScaleImage.getWidth() - 1) {
+          Pixel rightPixel = greyScaleImage.getPixel(row, column + 1);
+          int rightError = (int) (error * 7.0 / 16.0);
+          int newRed = rightPixel.getRed() + rightError;
+          newRed = Math.max(0, Math.min(255, newRed));
+          imageBuilder.pixel(row, column + 1, newRed, newRed, newRed);
+        }
+        if (column > 0 && row < greyScaleImage.getHeight() - 1) {
+          Pixel bottomLeftPixel = greyScaleImage.getPixel(row + 1, column - 1);
+          int bottomLeftError = (int) (error * 3.0 / 16.0);
+          int newRed = bottomLeftPixel.getRed() + bottomLeftError;
+          newRed = Math.max(0, Math.min(255, newRed));
+          imageBuilder.pixel(row + 1, column - 1, newRed, newRed, newRed);
+        }
+        if (row < greyScaleImage.getHeight() - 1) {
+          Pixel bottomPixel = greyScaleImage.getPixel(row + 1, column);
+          int bottomError = (int) (error * 5.0 / 16.0);
+          int newRed = bottomPixel.getRed() + bottomError;
+          newRed = Math.max(0, Math.min(255, newRed));
+          imageBuilder.pixel(row + 1, column, newRed, newRed, newRed);
+        }
+        if (row < greyScaleImage.getHeight() - 1 && column < greyScaleImage.getWidth() - 1) {
+          Pixel bottomRightPixel = greyScaleImage.getPixel(row + 1, column + 1);
+          int bottomRightError = (int) (error * 1.0 / 16.0);
+          int newRed = bottomRightPixel.getRed() + bottomRightError;
+          newRed = Math.max(0, Math.min(255, newRed));
+          imageBuilder.pixel(row + 1, column + 1, newRed, newRed, newRed);
+        }
+      }
+    }
+    RGBImage ditherImage = imageBuilder.build();
+    imageMap.put(ditherIdentifier, ditherImage);
+    return ditherImage;
+  }
+
+  private Image applyFilter(float[][] kernel, RGBImage image, String filterIdentifier) {
     RGBImage.ImageBuilder imageBuilder = RGBImage.getBuilder();
     int kernelSize = kernel.length;
     int offset = kernelSize / 2;
@@ -68,13 +131,15 @@ public class RGBOperationsBasicPlus
             }
           }
         }
-        imageBuilder.pixel(new Pixel(newRed, newGreen, newBlue), i, j);
+        imageBuilder.pixel(new Pixel(limit(newRed), limit(newGreen), limit(newBlue)), i, j);
       }
     }
-    imageMap.put(filterIdentifier, imageBuilder.build());
+    RGBImage filterImage = imageBuilder.build();
+    imageMap.put(filterIdentifier, filterImage);
+    return filterImage;
   }
 
-  private void applyColorTransformation(float[][] kernel, RGBImage image,
+  private Image applyColorTransformation(float[][] kernel, RGBImage image,
                                         String transformationIdentifier) {
     RGBImage.ImageBuilder imageBuilder = RGBImage.getBuilder();
     int kernelSize = kernel.length;
@@ -99,6 +164,8 @@ public class RGBOperationsBasicPlus
       }
     }
 
-    imageMap.put(transformationIdentifier, imageBuilder.build());
+    RGBImage transformedImage = imageBuilder.build();
+    imageMap.put(transformationIdentifier, transformedImage);
+    return transformedImage;
   }
 }

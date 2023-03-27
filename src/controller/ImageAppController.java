@@ -45,7 +45,7 @@ public class ImageAppController implements AppController {
    * @param fileName the path of the script to be executed.
    * @throws IOException When Script is invalid or does not exist.
    */
-  private void processScriptCommands(String fileName) throws IOException {
+  public void processScriptCommands(String fileName) throws IOException {
     List<String> commands =
             new ArrayList<String>(Objects.requireNonNull(ImageUtil.readScriptCommands(fileName)));
     for (String command : commands) {

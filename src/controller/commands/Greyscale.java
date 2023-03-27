@@ -10,10 +10,18 @@ public class Greyscale implements ImageCommand {
     this.component = component;
     this.identifier = identifier;
     this.greyScaleIdentifier = greyScaleIdentifier;
-
   }
 
+  public Greyscale(String identifier, String greyScaleIdentifier) {
+    this.component = null;
+    this.identifier = identifier;
+    this.greyScaleIdentifier = greyScaleIdentifier;
+  }
   public void execute(ImageOperationsBasicPlus model) {
-    model.greyscale(component,identifier,greyScaleIdentifier);
+    if(this.component == null) {
+      model.greyscale(identifier,greyScaleIdentifier);
+    } else {
+      model.greyscale(component,identifier,greyScaleIdentifier);
+    }
   }
 }

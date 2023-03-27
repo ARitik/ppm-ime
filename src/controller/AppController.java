@@ -13,4 +13,5 @@ public interface AppController {
    * @throws IOException When an Image or a Script can't be read or an Image cannot be generated.
    */
   void run(Readable in) throws IOException;
+  void processScriptCommands(String file) throws IOException;
 }

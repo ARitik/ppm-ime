@@ -1,4 +1,6 @@
+import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import controller.AppController;
@@ -26,6 +28,10 @@ public class ProgramRunner {
     ImageLogView view = new ImageLogView(System.out);
 //    AppController controller = new ImageAppController(model, view);
     AppController controller = new ImageCommandController(model, view);
+    if(args.length > 0 && args[0].equals("-script")) {
+      controller.processScriptCommands(args[1]);
+      System.exit(0);
+    }
     controller.run(new InputStreamReader(System.in));
   }
 }
