@@ -50,7 +50,6 @@ public class RGBOperationsBasicPlus
 
   @Override
   public Image dither(String identifier, String ditherIdentifier) {
-//    RGBImage greyScaleImage = (RGBImage) this.greyscale("luma", identifier, identifier);
     RGBImage greyScaleImage = (RGBImage) this.greyscale( identifier, identifier);
     RGBImage.ImageBuilder imageBuilder = RGBImage.getBuilder();
     int width = greyScaleImage.getWidth();
@@ -64,7 +63,6 @@ public class RGBOperationsBasicPlus
         int old_color = greyScaleImage.getRPixel(row, column);
         int new_color = (old_color < 128) ? 0 : 255;
         int error = old_color - new_color;
-//        int currentPixel = greyScaleImage.getRPixel(row, column);
         imageBuilder.pixel(new Pixel(new_color, new_color, new_color), row, column);
 
         if (column < greyScaleImage.getWidth() - 1) {

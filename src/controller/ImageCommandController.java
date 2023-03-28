@@ -44,7 +44,6 @@ public class ImageCommandController implements AppController {
   private void processCommands(String command) throws IOException {
     String[] tokens = command.split("\\s+");
     String operation = tokens[0];
-
     Map<String, Function<String[], ImageCommand>> imageCommands = new HashMap<>();
     imageCommands.put("load", s -> new Load(tokens[1], tokens[2]));
     imageCommands.put("save", s -> new Save(tokens[1], tokens[2]));
@@ -82,10 +81,15 @@ public class ImageCommandController implements AppController {
     }
     Function<String[], ImageCommand> cmd = imageCommands.getOrDefault(operation, null);
     if (cmd == null) {
-      throw new IllegalArgumentException();
+      view.log(operation, "Invalid Command!", false);
     } else {
-      requestedCommand = cmd.apply(tokens);
-      requestedCommand.execute(model);
+      try {
+        requestedCommand = cmd.apply(tokens);
+        requestedCommand.execute(model);
+        view.log(operation, true);
+      } catch (IndexOutOfBoundsException exception) {
+        view.log(operation, "Invalid Parameters Supplied!", false);
+      }
     }
   }
 
