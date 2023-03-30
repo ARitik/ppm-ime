@@ -1,9 +1,13 @@
 package model;
 
 public interface ImageOperationsBasicPlus extends ImageOperations {
-  Image blur(String identifier, String blurIdentifier);
-  Image sharpen(String identifier, String sharpenIdentifier);
-  Image sepia(String identifier, String sepiaIdentifier);
-  Image greyscale(String identifier, String greyScaleIdentifier);
-  Image dither(String identifier, String greyScaleIdentifier);
+  void blur(String identifier, String blurIdentifier);
+
+  void sharpen(String identifier, String sharpenIdentifier);
+
+  void sepia(String identifier, String sepiaIdentifier);
+
+  void greyscale(String identifier, String greyScaleIdentifier);
+
+  void dither(String identifier, String greyScaleIdentifier);
 }

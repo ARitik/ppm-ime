@@ -1,8 +1,10 @@
-package controller.commands;
+package controller;
+
+import java.io.IOException;
 
 import model.ImageOperationsBasicPlus;
 
-public class Combine implements ImageCommand {
+ class Combine implements ImageCommand {
   String identifier;
   String redIdentifier;
   String blueIdentifier;
@@ -16,7 +18,7 @@ public class Combine implements ImageCommand {
     this.greenIdentifier = greenIdentifier;
   }
 
-  public void execute(ImageOperationsBasicPlus model) {
+  public void execute(ImageOperationsBasicPlus model) throws IOException {
     model.rgbCombine(identifier,redIdentifier,greenIdentifier,blueIdentifier);
   }
 }

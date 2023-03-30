@@ -4,7 +4,7 @@ package model;
  * This interface represents an Image model.
  * It creates images of different formats (ppm, jpg, png etc.).
  */
-public interface Image {
+interface Image {
   @Override
   int hashCode();
 

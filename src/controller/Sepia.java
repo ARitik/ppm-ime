@@ -1,10 +1,10 @@
-package controller.commands;
+package controller;
 
 import java.io.IOException;
 
 import model.ImageOperationsBasicPlus;
 
-public class Sepia implements ImageCommand {
+ class Sepia implements ImageCommand {
   String identifier;
   String sepiaIdentifier;
 

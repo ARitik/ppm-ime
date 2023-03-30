@@ -7,7 +7,6 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.util.Map;
 
-import controller.ImageAppController;
 import utils.ImageUtil;
 import view.ImageLogView;
 

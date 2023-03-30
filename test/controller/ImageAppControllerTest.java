@@ -526,28 +526,26 @@ public class ImageAppControllerTest {
     }
 
     @Override
-    public Image greyscale(String component, String identifier, String greyScaleIdentifier) {
+    public void greyscale(String component, String identifier, String greyScaleIdentifier) {
       modelLog.append("component: " + component + " " +
               "identifier: " + identifier + " " + "new identifier: " + greyScaleIdentifier);
       return null;
     }
 
     @Override
-    public List<Image> rgbSplit(String identifier, String redIdentifier, String greenIdentifier,
+    public void rgbSplit(String identifier, String redIdentifier, String greenIdentifier,
                                 String blueIdentifier) {
       modelLog.append("identifier: " + identifier + " " +
               "red identifier: " + redIdentifier + " " + "green identifier: " + greenIdentifier
               + " " + "blue identifier: " + blueIdentifier);
-      return null;
     }
 
     @Override
-    public Image rgbCombine(String identifier, String redIdentifier, String greenIdentifier,
+    public void rgbCombine(String identifier, String redIdentifier, String greenIdentifier,
                             String blueIdentifier) {
       modelLog.append("identifier: " + identifier + " " +
               "red identifier: " + redIdentifier + " " + "green identifier: " + greenIdentifier
               + " " + "blue identifier: " + blueIdentifier);
-      return null;
 
     }
   }

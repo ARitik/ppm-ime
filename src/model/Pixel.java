@@ -3,7 +3,7 @@ package model;
 /**
  * A Class that represents a Pixel.
  */
-public class Pixel {
+class Pixel {
   private int red;
   private int green;
   private int blue;
@@ -15,7 +15,7 @@ public class Pixel {
    * @param green green (green) value of the pixel.
    * @param blue  blue (blue) value of the pixel.
    */
-  public Pixel(int red, int green, int blue) {
+   Pixel(int red, int green, int blue) {
     this.red = red;
     this.blue = blue;
     this.green = green;
@@ -26,7 +26,7 @@ public class Pixel {
    *
    * @return the red value of the pixel.
    */
-  public int getRed() {
+   int getRed() {
     return red;
   }
 
@@ -35,7 +35,7 @@ public class Pixel {
    *
    * @return the blue value of the pixel.
    */
-  public int getBlue() {
+   int getBlue() {
     return blue;
   }
 
@@ -44,7 +44,7 @@ public class Pixel {
    *
    * @return the green value of the pixel.
    */
-  public int getGreen() {
+   int getGreen() {
     return green;
   }
 
@@ -53,7 +53,7 @@ public class Pixel {
    *
    * @return the intensity of the pixel.
    */
-  public int getIntensity() {
+   int getIntensity() {
     return red + green + blue / 2;
   }
 
@@ -62,7 +62,7 @@ public class Pixel {
    *
    * @return the value of the pixel.
    */
-  public int getValue() {
+   int getValue() {
     return Math.max(red, Math.max(green, blue));
   }
 
@@ -72,7 +72,7 @@ public class Pixel {
    *
    * @return the luma of the pixel.
    */
-  public int getLuma() {
+   int getLuma() {
     return (int) (0.212 * red + 0.7152 * green + 0.0722 * blue);
   }
 

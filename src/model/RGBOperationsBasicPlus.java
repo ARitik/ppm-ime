@@ -9,48 +9,50 @@ public class RGBOperationsBasicPlus
   }
 
   @Override
-  public Image blur(String identifier, String blurIdentifier) {
-    RGBImage image = (RGBImage) imageMap.get(identifier);
+  public void blur(String identifier, String blurIdentifier) {
+    Image image = imageMap.get(identifier);
     float[][] kernel = {{1 / 16f, 2 / 16f, 1 / 16f},
             {2 / 16f, 4 / 16f, 2 / 16f},
             {1 / 16f, 2 / 16f, 1 / 16f}};
 
-    return applyFilter(kernel, image, blurIdentifier);
+    applyFilter(kernel, (RGBImage) image, blurIdentifier);
   }
 
   @Override
-  public Image sharpen(String identifier, String sharpenIdentifier) {
-    RGBImage image = (RGBImage) imageMap.get(identifier);
+  public void sharpen(String identifier, String sharpenIdentifier) {
+    Image image = imageMap.get(identifier);
     float[][] kernel = {{-1 / 8f, -1 / 8f, -1 / 8f, -1 / 8f, -1 / 8f},
             {-1 / 8f, 2 / 8f, 2 / 8f, 2 / 8f, -1 / 8f},
             {-1 / 8f, 2 / 8f, 1, 2 / 8f, -1 / 8f},
             {-1 / 8f, 2 / 8f, 2 / 8f, 2 / 8f, -1 / 8f},
             {-1 / 8f, -1 / 8f, -1 / 8f, -1 / 8f, -1 / 8f}
     };
-    return applyFilter(kernel, image, sharpenIdentifier);
+    applyFilter(kernel, (RGBImage) image, sharpenIdentifier);
   }
 
   @Override
-  public Image sepia(String identifier, String sepiaIdentifier) {
-    RGBImage image = (RGBImage) imageMap.get(identifier);
+  public void sepia(String identifier, String sepiaIdentifier) {
+    Image image = imageMap.get(identifier);
     float[][] kernel = {{0.393f, 0.769f, 0.189f},
             {0.349f, 0.686f, 0.168f},
             {0.272f, 0.534f, 0.131f}};
-    return applyColorTransformation(kernel, image, sepiaIdentifier);
+    applyColorTransformation(kernel, (RGBImage) image, sepiaIdentifier);
   }
 
   @Override
-  public Image greyscale(String identifier, String greyScaleIdentifier) {
-    RGBImage image = (RGBImage) imageMap.get(identifier);
+  public void greyscale(String identifier, String greyScaleIdentifier) {
+    Image image = imageMap.get(identifier);
     float[][] kernel = {{0.2126f, 0.7152f, 0.0722f}, {0.2126f, 0.7152f, 0.0722f}, {0.2126f,
             0.7152f, 0.0722f}};
-    return applyColorTransformation(kernel, image, greyScaleIdentifier);
+    applyColorTransformation(kernel, (RGBImage) image, greyScaleIdentifier);
   }
 
 
   @Override
-  public Image dither(String identifier, String ditherIdentifier) {
-    RGBImage greyScaleImage = (RGBImage) this.greyscale( identifier, identifier);
+  public void dither(String identifier, String ditherIdentifier) {
+    greyscale(identifier, identifier);
+    RGBImage greyScaleImage = (RGBImage) imageMap.get(identifier);
+
     RGBImage.ImageBuilder imageBuilder = RGBImage.getBuilder();
     int width = greyScaleImage.getWidth();
     int height = greyScaleImage.getHeight();
@@ -95,12 +97,12 @@ public class RGBOperationsBasicPlus
         }
       }
     }
-    RGBImage ditherImage = imageBuilder.build();
+    Image ditherImage = imageBuilder.build();
     imageMap.put(ditherIdentifier, ditherImage);
-    return ditherImage;
   }
 
-  private Image applyFilter(float[][] kernel, RGBImage image, String filterIdentifier) {
+
+  private void applyFilter(float[][] kernel, RGBImage image, String filterIdentifier) {
     RGBImage.ImageBuilder imageBuilder = RGBImage.getBuilder();
     int kernelSize = kernel.length;
     int offset = kernelSize / 2;
@@ -132,12 +134,11 @@ public class RGBOperationsBasicPlus
         imageBuilder.pixel(new Pixel(limit(newRed), limit(newGreen), limit(newBlue)), i, j);
       }
     }
-    RGBImage filterImage = imageBuilder.build();
+    Image filterImage = imageBuilder.build();
     imageMap.put(filterIdentifier, filterImage);
-    return filterImage;
   }
 
-  private Image applyColorTransformation(float[][] kernel, RGBImage image,
+  private void applyColorTransformation(float[][] kernel, RGBImage image,
                                         String transformationIdentifier) {
     RGBImage.ImageBuilder imageBuilder = RGBImage.getBuilder();
     int kernelSize = kernel.length;
@@ -162,8 +163,7 @@ public class RGBOperationsBasicPlus
       }
     }
 
-    RGBImage transformedImage = imageBuilder.build();
+    Image transformedImage = imageBuilder.build();
     imageMap.put(transformationIdentifier, transformedImage);
-    return transformedImage;
   }
 }

@@ -6,7 +6,8 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 
-import controller.ImageAppController;
+import controller.AppController;
+import controller.ImageCommandController;
 import utils.ImageUtil;
 import view.ImageLogView;
 
@@ -59,13 +60,14 @@ public class RGBOperationsBasicTest {
   @Test
   public void testSave() throws IOException {
     StringBuffer out = new StringBuffer();
-    ImageOperations model = new RGBOperationsBasic();
+    ImageOperationsBasicPlus model = new RGBOperationsBasicPlus();
     ImageLogView view = new ImageLogView(out);
-    ImageAppController controller = new ImageAppController(model, view);
+    AppController controller = new ImageCommandController(model, view);
     Reader in = new StringReader("load res/sample.ppm sample-test\n" +
             "save res/sample-test.ppm sample-test\n");
     controller.run(in);
-    Image sampleImage = ImageUtil.readPPM("res/sample.ppm", "sample");
+    Image sampleImage1 = controller.
+    Image sampleImage = model.getImage("res/sample.ppm", "sample");
     Image loadedSampleImage = ImageUtil.readPPM("res/sample-test.ppm",
             "sample-test");
     assertEquals(sampleImage, loadedSampleImage);

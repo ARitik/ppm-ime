@@ -1,8 +1,11 @@
-package controller.commands;
+package controller;
 
+import java.io.IOException;
+
+import jdk.jshell.spi.ExecutionControl;
 import model.ImageOperationsBasicPlus;
 
-public class Split implements ImageCommand {
+ class Split implements ImageCommand {
   private String identifier;
   private String redIdentifier;
   private String greenIdentifier;
@@ -16,7 +19,7 @@ public class Split implements ImageCommand {
     this.greenIdentifier = greenIdentifier;
   }
 
-  public void execute(ImageOperationsBasicPlus model) {
+  public void execute(ImageOperationsBasicPlus model) throws IOException, ExecutionControl.NotImplementedException {
     model.greyscale("red", identifier, redIdentifier);
     model.greyscale("green", identifier, greenIdentifier);
     model.greyscale("blue", identifier, blueIdentifier);

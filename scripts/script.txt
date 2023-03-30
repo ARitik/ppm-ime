@@ -1,6 +1,15 @@
 #load sample.ppm and call it 'sample'
 load res/sample.ppm sample
 
+#save sample.jpg
+save res/sample.jpg sample
+
+#save sample.png
+save res/sample.png sample
+
+#save sample.bmp
+save res/sample.bmp sample
+
 #brighten sample by adding 50
 brighten 50 sample sample-brighter
 
@@ -114,6 +123,40 @@ brighten 50 sample-blue sample-blue
 #combine them back, but by using the brightened red we get a red tint
 rgb-combine sample-blue-tint sample-red sample-green sample-blue
 save res/sample-blue-tint.ppm sample-blue-tint
+
+#blur sample
+blur sample sample-blur
+
+#save sample-blur
+save res/sample-blur.png sample-blur
+
+
+#sharpen sample
+sharpen sample sample-sharpen
+
+#save sample-sharpen
+save res/sample-sharpen.png sample-sharpen
+
+#greyscale sample
+greyscale sample sample-greyscale
+
+#save sample-greyscale
+save res/sample-greyscale.png sample-greyscale
+
+
+#sepia sample
+sepia sample sample-sepia
+
+#save sample-sepia
+save res/sample-sepia.png sample-sepia
+
+
+#dither sample
+dither sample sample-dither
+
+#save sample-dither
+save res/sample-dither.png sample-dither
+
 
 #exit the program
 exit

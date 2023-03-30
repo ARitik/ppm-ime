@@ -1,8 +1,10 @@
-package controller.commands;
+package controller;
+
+import java.io.IOException;
 
 import model.ImageOperationsBasicPlus;
 
-public class Flip implements ImageCommand {
+ class Flip implements ImageCommand {
   String orientation;
   String identifier;
   String flippedIdentifier;
@@ -12,7 +14,7 @@ public class Flip implements ImageCommand {
     this.flippedIdentifier = flippedIdentifier;
   }
 
-  public void execute(ImageOperationsBasicPlus model) {
+  public void execute(ImageOperationsBasicPlus model) throws IOException {
     model.flip(orientation,identifier,flippedIdentifier);
   }
 }

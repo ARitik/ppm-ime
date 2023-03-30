@@ -1,9 +1,11 @@
-package controller.commands;
+package controller;
+
+import java.io.IOException;
 
 import model.ImageOperations;
 import model.ImageOperationsBasicPlus;
 
-public class Brighten implements ImageCommand {
+ class Brighten implements ImageCommand {
   int value;
   String identifier;
   String brightenIdentifier;
@@ -15,7 +17,7 @@ public class Brighten implements ImageCommand {
 
   }
 
-  public void execute(ImageOperationsBasicPlus model) {
+  public void execute(ImageOperationsBasicPlus model) throws IOException {
     model.brighten(value,identifier,brightenIdentifier);
   }
 }

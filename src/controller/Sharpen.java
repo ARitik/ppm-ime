@@ -1,10 +1,10 @@
-package controller.commands;
+package controller;
 
 import java.io.IOException;
 
 import model.ImageOperationsBasicPlus;
 
-public class Sharpen implements ImageCommand {
+ class Sharpen implements ImageCommand {
   String identifier;
   String sharpenIdentifier;
   public Sharpen(String identifier, String sharpenIdentifier) {

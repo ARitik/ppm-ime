@@ -1,10 +1,10 @@
-package controller.commands;
+package controller;
 
 import java.io.IOException;
 
 import model.ImageOperationsBasicPlus;
 
-public class Dither implements ImageCommand {
+ class Dither implements ImageCommand {
   String identifier;
   String ditherIdentifier;
   public Dither(String identifier, String ditherIdentifier) {

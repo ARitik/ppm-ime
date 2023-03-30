@@ -1,7 +1,13 @@
 package controller;
 
+import java.awt.image.BufferedImage;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,21 +16,13 @@ import java.util.Objects;
 import java.util.Scanner;
 import java.util.function.Function;
 
-import controller.commands.Blur;
-import controller.commands.Brighten;
-import controller.commands.Combine;
-import controller.commands.Dither;
-import controller.commands.Flip;
-import controller.commands.Greyscale;
-import controller.commands.ImageCommand;
-import controller.commands.Load;
-import controller.commands.Save;
-import controller.commands.Sepia;
-import controller.commands.Sharpen;
-import controller.commands.Split;
+import javax.imageio.ImageIO;
+
+import jdk.jshell.spi.ExecutionControl;
 import model.ImageOperationsBasicPlus;
 import utils.ImageUtil;
 import view.AppView;
+
 
 public class ImageCommandController implements AppController {
   ImageOperationsBasicPlus model;
@@ -89,6 +87,8 @@ public class ImageCommandController implements AppController {
         view.log(operation, true);
       } catch (IndexOutOfBoundsException exception) {
         view.log(operation, "Invalid Parameters Supplied!", false);
+      } catch (IOException | ExecutionControl.NotImplementedException exception) {
+        view.log(operation, exception.getMessage(), false);
       }
     }
   }
@@ -109,4 +109,5 @@ public class ImageCommandController implements AppController {
       processCommands(input.nextLine());
     }
   }
+
 }

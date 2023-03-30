@@ -1,10 +1,10 @@
-package controller.commands;
+package controller;
 
 import java.io.IOException;
 
 import model.ImageOperationsBasicPlus;
 
-public class Blur implements ImageCommand {
+ class Blur implements ImageCommand {
   String identifier;
   String blurIdentifier;
   public Blur(String identifier, String blurIdentifier) {
