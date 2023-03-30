@@ -15,7 +15,7 @@ import view.ImageLogView;
 import static org.junit.Assert.assertEquals;
 
 /**
- * This a JUnit test class for RGBOperationsBasic model.
+ * This a JUnit test class for ImageOperationsBasic model.
  */
 public class RGBOperationsBasicTest {
   @Test
@@ -461,7 +461,7 @@ public class RGBOperationsBasicTest {
   }
 
   @Test
-  public void testPPMImageisLoadedAndSavedAsPng() throws IOException {
+  public void testPPMImageIsLoadedAndSavedAsPng() throws IOException {
     StringBuffer out = new StringBuffer();
     ImageOperationsBasicPlus model = new RGBOperationsBasicPlus();
     AppView view = new ImageLogView(out);
@@ -476,7 +476,7 @@ public class RGBOperationsBasicTest {
   }
 
   @Test
-  public void testPPMImageisLoadedAndSavedAsJpg() throws IOException {
+  public void testPPMImageIsLoadedAndSavedAsJpg() throws IOException {
     StringBuffer out = new StringBuffer();
     ImageOperationsBasicPlus model = new RGBOperationsBasicPlus();
     AppView view = new ImageLogView(out);
@@ -491,7 +491,7 @@ public class RGBOperationsBasicTest {
   }
 
   @Test
-  public void testPPMImageisLoadedAndSavedAsBmp() throws IOException {
+  public void testPPMImageIsLoadedAndSavedAsBmp() throws IOException {
     StringBuffer out = new StringBuffer();
     ImageOperationsBasicPlus model = new RGBOperationsBasicPlus();
     AppView view = new ImageLogView(out);
@@ -703,4 +703,56 @@ public class RGBOperationsBasicTest {
             "-greyscale-luma");
     assertEquals(sampleImage, loadedSampleImage);
   }
+
+  @Test
+  public void testSharpenOnJpg() throws IOException {
+    StringBuffer out = new StringBuffer();
+    ImageOperationsBasicPlus model = new RGBOperationsBasicPlus();
+    AppView view = new ImageLogView(out);
+    AppController controller = new ImageCommandController(model, view);
+    Reader in = new StringReader("load res/sample.jpg sample-test\n"
+            + "sharpen sample-test sample-test-dither\n"
+            + "save res/sample-sharpen.jpg sample-test-dither");
+    controller.run(in);
+    Image sampleImage = ImageUtil.readImage("res/sample-sharpen.jpg", "s-sharpen");
+    Image loadedSampleImage = ImageUtil.readImage("res/sample-sharpen.jpg",
+            "sample" +
+                    "-test-greyscale-luma");
+    assertEquals(sampleImage, loadedSampleImage);
+  }
+
+  @Test
+  public void testSharpenOnBmp() throws IOException {
+    StringBuffer out = new StringBuffer();
+    ImageOperationsBasicPlus model = new RGBOperationsBasicPlus();
+    AppView view = new ImageLogView(out);
+    AppController controller = new ImageCommandController(model, view);
+    Reader in = new StringReader("load res/sample.bmp sample-test\n"
+            + "sharpen sample-test sample-test-dither\n"
+            + "save res/sample-sharpen.bmp sample-test-dither");
+    controller.run(in);
+    Image sampleImage = ImageUtil.readImage("res/sample-sharpen.bmp", "s-sharpen");
+    Image loadedSampleImage = ImageUtil.readImage("res/sample-sharpen.bmp",
+            "sample" +
+                    "-test-greyscale-luma");
+    assertEquals(sampleImage, loadedSampleImage);
+  }
+
+  @Test
+  public void testSharpenOnPpm() throws IOException {
+    StringBuffer out = new StringBuffer();
+    ImageOperationsBasicPlus model = new RGBOperationsBasicPlus();
+    AppView view = new ImageLogView(out);
+    AppController controller = new ImageCommandController(model, view);
+    Reader in = new StringReader("load res/sample.ppm sample-test\n"
+            + "sharpen sample-test sample-test-dither\n"
+            + "save res/sample-sharpen.ppm sample-test-dither");
+    controller.run(in);
+    Image sampleImage = ImageUtil.readImage("res/sample-sharpen.ppm", "s-sharpen");
+    Image loadedSampleImage = ImageUtil.readImage("res/sample-sharpen.ppm",
+            "sample" +
+                    "-test-greyscale-luma");
+    assertEquals(sampleImage, loadedSampleImage);
+  }
+
 }

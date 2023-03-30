@@ -129,6 +129,9 @@ blur sample sample-blur
 
 #save sample-blur
 save res/sample-blur.png sample-blur
+save res/sample-blur.ppm sample-blur
+save res/sample-blur.jpg sample-blur
+save res/sample-blur.bmp sample-blur
 
 
 #sharpen sample
@@ -136,12 +139,18 @@ sharpen sample sample-sharpen
 
 #save sample-sharpen
 save res/sample-sharpen.png sample-sharpen
+save res/sample-sharpen.ppm sample-sharpen
+save res/sample-sharpen.jpg sample-sharpen
+save res/sample-sharpen.bmp sample-sharpen
 
 #greyscale sample
 greyscale sample sample-greyscale
 
 #save sample-greyscale
+save res/sample-greyscale.ppm sample-greyscale
 save res/sample-greyscale.png sample-greyscale
+save res/sample-greyscale.jpg sample-greyscale
+save res/sample-greyscale.bmp sample-greyscale
 
 
 #sepia sample
@@ -149,6 +158,9 @@ sepia sample sample-sepia
 
 #save sample-sepia
 save res/sample-sepia.png sample-sepia
+save res/sample-sepia.ppm sample-sepia
+save res/sample-sepia.jpg sample-sepia
+save res/sample-sepia.bmp sample-sepia
 
 
 #dither sample
@@ -156,6 +168,9 @@ dither sample sample-dither
 
 #save sample-dither
 save res/sample-dither.png sample-dither
+save res/sample-dither.ppm sample-dither
+save res/sample-dither.jpg sample-dither
+save res/sample-dither.bmp sample-dither
 
 
 #exit the program
