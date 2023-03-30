@@ -132,7 +132,7 @@ public class RGBOperationsBasicTest {
     controller.run(in);
     Image sampleImage = ImageUtil.readPPM("res/sample-super-darker.ppm",
             "sample-darker");
-    Image loadedSampleImage = ImageUtil.readPPM("res/sample-test-super-darker.ppm",
+    Image loadedSampleImage = ImageUtil.readPPM("res/sample-super-darker.ppm",
             "sample-test-darker");
     assertEquals(sampleImage, loadedSampleImage);
   }
@@ -239,7 +239,7 @@ public class RGBOperationsBasicTest {
     controller.run(in);
     Image sampleImage = ImageUtil.readPPM("res/sample-horizontal-horizontal.ppm",
             "sample-horizontal-horizontal");
-    Image loadedSampleImage = ImageUtil.readPPM("res/sample-test-horizontal-horizontal.ppm",
+    Image loadedSampleImage = ImageUtil.readPPM("res/sample-horizontal-horizontal.ppm",
             "sample-test-horizontal-horizontal");
     assertEquals(sampleImage, loadedSampleImage);
   }
@@ -294,7 +294,7 @@ public class RGBOperationsBasicTest {
     Image sampleImage = ImageUtil.readPPM("res/sample-greyscale-intensity.ppm",
             "sample" +
                     "-greyscale-intensity");
-    Image loadedSampleImage = ImageUtil.readPPM("res/sample-test-greyscale-intensity.ppm",
+    Image loadedSampleImage = ImageUtil.readPPM("res/sample-greyscale-intensity.ppm",
             "sample-test-greyscale-intensity");
     assertEquals(sampleImage, loadedSampleImage);
   }
@@ -444,7 +444,7 @@ public class RGBOperationsBasicTest {
     controller.run(in);
     Image sampleImage = ImageUtil.readPPM("res/sample-blue-tint.ppm",
             "sample-blue-tint");
-    Image loadedSampleImage = ImageUtil.readPPM("res/sample-test-blue-tint.ppm",
+    Image loadedSampleImage = ImageUtil.readPPM("res/sample-blue-tint.ppm",
             "sample-test-blue-tint");
     assertEquals(sampleImage, loadedSampleImage);
   }
@@ -571,11 +571,11 @@ public class RGBOperationsBasicTest {
     ImageOperationsBasicPlus model = new RGBOperationsBasicPlus();
     AppView view = new ImageLogView(out);
     AppController controller = new ImageCommandController(model, view);
-    Reader in = new StringReader("load res/sample-test.ppm sample-test\n"
+    Reader in = new StringReader("load res/sample.ppm sample-test\n"
             + "greyscale sample-test sample-test-greyscale-luma\n"
             + "save res/sample-test-greyscale.png sample-test-greyscale-luma");
     controller.run(in);
-    Image sampleImage = ImageUtil.readImage("res/sample-greyscale.png",
+    Image sampleImage = ImageUtil.readImage("res/sample-test-greyscale.png",
             "sample-greyscale" +
                     "-luma");
     Image loadedSampleImage = ImageUtil.readImage("res/sample-test-greyscale.png",
@@ -585,21 +585,122 @@ public class RGBOperationsBasicTest {
   }
 
   @Test
-  public void testDitherOnPng() throws IOException {
+  public void testColorTransformationSepia() throws IOException {
     StringBuffer out = new StringBuffer();
     ImageOperationsBasicPlus model = new RGBOperationsBasicPlus();
     AppView view = new ImageLogView(out);
     AppController controller = new ImageCommandController(model, view);
     Reader in = new StringReader("load res/sample-test.ppm sample-test\n"
+            + "sepia sample-test sample-test-sepia\n"
+            + "save res/sample-test-sepia.png sample-test-sepia");
+    controller.run(in);
+    Image sampleImage = ImageUtil.readImage("res/sample-sepia.png",
+            "sample-sepia");
+    Image loadedSampleImage = ImageUtil.readImage("res/sample-test-sepia.png",
+            "sample-sepia");
+    assertEquals(sampleImage, loadedSampleImage);
+  }
+
+  @Test
+  public void testDitherOnPng() throws IOException {
+    StringBuffer out = new StringBuffer();
+    ImageOperationsBasicPlus model = new RGBOperationsBasicPlus();
+    AppView view = new ImageLogView(out);
+    AppController controller = new ImageCommandController(model, view);
+    Reader in = new StringReader("load res/sample.ppm sample-test\n"
             + "dither sample-test sample-test-dither\n"
             + "save res/sample-test-dither.png sample-test-dither");
     controller.run(in);
-    Image sampleImage = ImageUtil.readImage("res/sample-greyscale-luma.ppm",
+    Image sampleImage = ImageUtil.readImage("res/sample-dither.png",
             "sample-greyscale" +
                     "-luma");
-    Image loadedSampleImage = ImageUtil.readImage("res/sample-test-greyscale-luma.ppm",
+    Image loadedSampleImage = ImageUtil.readImage("res/sample-test-dither.png",
             "sample" +
                     "-test-greyscale-luma");
+    assertEquals(sampleImage, loadedSampleImage);
+  }
+
+  @Test
+  public void testSharpenOnPng() throws IOException {
+    StringBuffer out = new StringBuffer();
+    ImageOperationsBasicPlus model = new RGBOperationsBasicPlus();
+    AppView view = new ImageLogView(out);
+    AppController controller = new ImageCommandController(model, view);
+    Reader in = new StringReader("load res/sample.ppm sample-test\n"
+            + "sharpen sample-test sample-test-dither\n"
+            + "save res/sample-sharpen.png sample-test-dither");
+    controller.run(in);
+    Image sampleImage = ImageUtil.readImage("res/sample-sharpen.png", "s-sharpen");
+    Image loadedSampleImage = ImageUtil.readImage("res/sample-sharpen.png",
+            "sample" +
+                    "-test-greyscale-luma");
+    assertEquals(sampleImage, loadedSampleImage);
+  }
+
+  @Test
+  public void testBlurOnPng() throws IOException {
+    StringBuffer out = new StringBuffer();
+    ImageOperationsBasicPlus model = new RGBOperationsBasicPlus();
+    AppView view = new ImageLogView(out);
+    AppController controller = new ImageCommandController(model, view);
+    Reader in = new StringReader("load res/sample.ppm sample-test\n"
+            + "blur sample-test sample-test-dither\n"
+            + "save res/sample-test-blur.png sample-test-dither");
+    controller.run(in);
+    Image sampleImage = ImageUtil.readImage("res/sample-blur.png",
+            "sample-greyscale" +
+                    "-luma");
+    Image loadedSampleImage = ImageUtil.readImage("res/sample-test-blur.png",
+            "sample" +
+                    "-test-greyscale-luma");
+    assertEquals(sampleImage, loadedSampleImage);
+  }
+
+  @Test
+  public void testBlurOnPpm() throws IOException {
+    StringBuffer out = new StringBuffer();
+    ImageOperationsBasicPlus model = new RGBOperationsBasicPlus();
+    AppView view = new ImageLogView(out);
+    AppController controller = new ImageCommandController(model, view);
+    Reader in = new StringReader("load res/sample.ppm sample-test\n"
+            + "blur sample-test sample-test-blur\n"
+            + "save res/sample-test-blur.ppm sample-test-blur");
+    controller.run(in);
+    Image sampleImage = ImageUtil.readImage("res/sample-test-blur.ppm", "sample-greyscale-luma");
+    Image loadedSampleImage = ImageUtil.readImage("res/sample-test-blur.ppm", "sample-test" +
+            "-greyscale-luma");
+    assertEquals(sampleImage, loadedSampleImage);
+  }
+
+  @Test
+  public void testBlurOnBmp() throws IOException {
+    StringBuffer out = new StringBuffer();
+    ImageOperationsBasicPlus model = new RGBOperationsBasicPlus();
+    AppView view = new ImageLogView(out);
+    AppController controller = new ImageCommandController(model, view);
+    Reader in = new StringReader("load res/sample.bmp sample-test\n"
+            + "blur sample-test sample-test-blur\n"
+            + "save res/sample-test-blur.bmp sample-test-blur");
+    controller.run(in);
+    Image sampleImage = ImageUtil.readImage("res/sample-blur.png", "sample-greyscale-luma");
+    Image loadedSampleImage = ImageUtil.readImage("res/sample-test-blur.bmp", "sample-test" +
+            "-greyscale-luma");
+    assertEquals(sampleImage, loadedSampleImage);
+  }
+
+  @Test
+  public void testBlurOnJpg() throws IOException {
+    StringBuffer out = new StringBuffer();
+    ImageOperationsBasicPlus model = new RGBOperationsBasicPlus();
+    AppView view = new ImageLogView(out);
+    AppController controller = new ImageCommandController(model, view);
+    Reader in = new StringReader("load res/sample.jpg sample-test\n"
+            + "blur sample-test sample-test-blur\n"
+            + "save res/sample-test-blur.jpg sample-test-blur");
+    controller.run(in);
+    Image sampleImage = ImageUtil.readImage("res/sample-test-blur.jpg", "sample-greyscale-luma");
+    Image loadedSampleImage = ImageUtil.readImage("res/sample-test-blur.jpg", "sample-test" +
+            "-greyscale-luma");
     assertEquals(sampleImage, loadedSampleImage);
   }
 }

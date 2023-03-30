@@ -1,0 +1,161 @@
+#load sample-test.ppm and call it 'sample-test'
+load res/sample.ppm sample-test
+
+#save sample-test.jpg
+save res/sample-test.jpg sample-test
+
+#save sample-test.png
+save res/sample-test.png sample-test
+
+#save sample-test.bmp
+save res/sample-test.bmp sample-test
+
+#brighten sample-test by adding 50
+brighten 50 sample-test sample-test-brighter
+
+#save sample-test-brighter
+save res/sample-test-brighter.ppm sample-test-brighter
+
+#darken sample-test by adding -100
+brighten -100 sample-test sample-test-darker
+
+#save sample-test-brighter
+save res/sample-test-darker.ppm sample-test-darker
+
+#flip sample-test vertically
+vertical-flip sample-test sample-test-vertical
+
+#save sample-test vertically
+save res/sample-test-vertical.ppm sample-test-vertical
+
+#flip sample-test horizontally
+horizontal-flip sample-test sample-test-horizontal
+
+#save sample-test horizontally
+save res/sample-test-horizontal.ppm sample-test-horizontal
+
+#flip the vertically flipped sample-test horizontally
+horizontal-flip sample-test-vertical sample-test-vertical-horizontal
+
+#save sample-test vertically
+save res/sample-test-vertical-horizontal.ppm sample-test-vertical-horizontal
+
+#flip the horizontally flipped sample-test vertically
+vertical-flip sample-test-horizontal sample-test-horizontal-vertical
+
+#save sample-test vertically
+save res/sample-test-horizontal-vertical.ppm sample-test-horizontal-vertical
+
+#flip the vertically flipped sample-test vertically
+vertical-flip sample-test-vertical sample-test-vertical-vertical
+
+#save sample-test vertically
+save res/sample-test-vertical-vertical.ppm sample-test-vertical-vertical
+
+#flip the horizontally flipped sample-test horizontally
+horizontal-flip sample-test-horizontal sample-test-horizontal-horizontal
+
+#save sample-test horizontally
+save res/sample-test-horizontal-horizontal.ppm sample-test-horizontal-horizontal
+
+#create a greyscale using only the value component, as an image sample-test-greyscale
+greyscale value-component sample-test sample-test-greyscale-value
+
+#save sample-test-greyscale
+save res/sample-test-greyscale-value.ppm sample-test-greyscale-value
+
+#create a greyscale using only the luma component, as an image sample-test-greyscale
+greyscale luma-component sample-test sample-test-greyscale-luma
+
+#save sample-test-greyscale
+save res/sample-test-greyscale-luma.ppm sample-test-greyscale-luma
+
+#create a greyscale using only the intensity component, as an image sample-test-greyscale
+greyscale intensity-component sample-test sample-test-greyscale-intensity
+
+#save sample-test-greyscale
+save res/sample-test-greyscale-intensity.ppm sample-test-greyscale-intensity
+
+#create a greyscale using only the red component, as an image sample-test-greyscale
+greyscale red-component sample-test sample-test-greyscale-red
+
+#save sample-test-greyscale
+save res/sample-test-greyscale-red.ppm sample-test-greyscale-red
+
+#create a greyscale using only the green component, as an image sample-test-greyscale
+greyscale green-component sample-test sample-test-greyscale-green
+
+#save sample-test-greyscale
+save res/sample-test-greyscale-green.ppm sample-test-greyscale-green
+
+#create a greyscale using only the blue component, as an image sample-test-greyscale
+greyscale blue-component sample-test sample-test-greyscale-blue
+
+#save sample-test-greyscale
+save res/sample-test-greyscale-blue.ppm sample-test-greyscale-blue
+
+#give the sample-test a red tint
+rgb-split sample-test sample-test-red sample-test-green sample-test-blue
+
+#brighten just the red image
+brighten 50 sample-test-red sample-test-red
+
+#combine them back, but by using the brightened red we get a red tint
+rgb-combine sample-test-red-tint sample-test-red sample-test-green sample-test-blue
+save res/sample-test-red-tint.ppm sample-test-red-tint
+
+#give the sample-test a green tint
+rgb-split sample-test sample-test-red sample-test-green sample-test-blue
+
+#brighten just the green image
+brighten 50 sample-test-green sample-test-green
+
+#combine them back, but by using the brightened red we get a red tint
+rgb-combine sample-test-green-tint sample-test-red sample-test-green sample-test-blue
+save res/sample-test-green-tint.ppm sample-test-green-tint
+
+#give the sample-test a blue tint
+rgb-split sample-test sample-test-red sample-test-green sample-test-blue
+
+#brighten just the blue image
+brighten 50 sample-test-blue sample-test-blue
+
+#combine them back, but by using the brightened red we get a red tint
+rgb-combine sample-test-blue-tint sample-test-red sample-test-green sample-test-blue
+save res/sample-test-blue-tint.ppm sample-test-blue-tint
+
+#blur sample-test
+blur sample-test sample-test-blur
+
+#save sample-test-blur
+save res/sample-test-blur.png sample-test-blur
+
+
+#sharpen sample-test
+sharpen sample-test sample-test-sharpen
+
+#save sample-test-sharpen
+save res/sample-test-sharpen.png sample-test-sharpen
+
+#greyscale sample-test
+greyscale sample-test sample-test-greyscale
+
+#save sample-test-greyscale
+save res/sample-test-greyscale.png sample-test-greyscale
+
+
+#sepia sample-test
+sepia sample-test sample-test-sepia
+
+#save sample-test-sepia
+save res/sample-test-sepia.png sample-test-sepia
+
+
+#dither sample-test
+dither sample-test sample-test-dither
+
+#save sample-test-dither
+save res/sample-test-dither.png sample-test-dither
+
+#exit the program
+exit

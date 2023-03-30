@@ -14,5 +14,11 @@ public interface AppController {
    */
   void run(Readable in) throws IOException;
 
+  /**
+   * Processes the script commands.
+   *
+   * @param file name of the file to be read
+   * @throws IOException wherever required
+   */
   void processScriptCommands(String file) throws IOException;
 }

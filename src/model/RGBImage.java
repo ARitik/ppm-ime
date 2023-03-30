@@ -3,7 +3,7 @@ package model;
 import java.util.Arrays;
 
 /**
- * This class implements Image and builds a ppm type image.
+ * This class implements Image and builds an image.
  */
 public class RGBImage implements Image {
   String identifier;
@@ -222,8 +222,7 @@ public class RGBImage implements Image {
 
 
   /**
-   * This class represents ImageBuilder and is used to construct an image
-   * of type ppm.
+   * This class represents ImageBuilder and is used to construct an image.
    */
   public static class ImageBuilder {
     private String identifier;
@@ -257,8 +256,19 @@ public class RGBImage implements Image {
       return this;
     }
 
+    /**
+     * The method returns the pixels of the image.
+     *
+     * @param row           of the pixel
+     * @param column        of the pixel
+     * @param newRedValue   red channel of pixel
+     * @param newGreenValue green channel of pixel
+     * @param newBlueValue  blue channel of pixel
+     * @return pixels
+     */
+
     public ImageBuilder pixel(int row, int column, int newRedValue, int newGreenValue,
-                       int newBlueValue) {
+                              int newBlueValue) {
       pixels[row][column] = new Pixel(newRedValue, newGreenValue, newBlueValue);
       return this;
     }

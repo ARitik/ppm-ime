@@ -47,7 +47,9 @@ public class ImageUtil {
       }
     }
     return commands;
-  }  /**
+  }
+
+  /**
    * Read an image file in the PPM format and create an Image object.
    *
    * @param filename   the path of the file.
@@ -102,12 +104,20 @@ public class ImageUtil {
     return imageBuilder.build();
   }
 
+  /**
+   * Read an image file in any (ppm, jpg, png, bmp) format and create an Image object.
+   *
+   * @param filename   the path of the file.
+   * @param identifier the name of the new image.
+   * @return image after it has been read;
+   */
+
   public static Image readImage(String filename, String identifier) {
     File imageFile;
     BufferedImage image;
     String imageFormat = filename.substring(filename.lastIndexOf(".") + 1);
-    if(imageFormat.equals("ppm")) {
-      return readPPM(filename,identifier);
+    if (imageFormat.equals("ppm")) {
+      return readPPM(filename, identifier);
     }
     try {
       imageFile = new File(filename);

@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="ppm-ime:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/ppm_ime_jar</output-path>
+    <root id="archive" name="ppm-ime.jar">
+      <element id="module-output" name="ppm-ime" />
+    </root>
+  </artifact>
+</component>

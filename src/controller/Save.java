@@ -10,15 +10,30 @@ import javax.imageio.ImageIO;
 
 import model.ImageOperationsBasicPlus;
 
+/**
+ * A class that represents Save operation on the image.
+ */
 class Save implements ImageCommand {
   String filePath;
   String identifier;
 
-  public Save(String filePath, String identifer) {
+  /**
+   * Implements ImageCommand and saves an image.
+   *
+   * @param filePath   of the image
+   * @param identifier of the image
+   */
+  public Save(String filePath, String identifier) {
     this.filePath = filePath;
-    this.identifier = identifer;
+    this.identifier = identifier;
   }
 
+  /**
+   * Helper method that saves a ppm image.
+   *
+   * @param savePath path of the image
+   * @param image    image to be saved
+   */
   private void savePPM(String savePath, BufferedImage image) throws IOException {
     BufferedWriter writer;
     try {
@@ -43,9 +58,17 @@ class Save implements ImageCommand {
     }
   }
 
+  /**
+   * The method executes the saving of an image.
+   *
+   * @param model model object
+   */
   @Override
   public void execute(ImageOperationsBasicPlus model) throws IOException {
     BufferedImage image = model.getImage(identifier);
+    if (image == null) {
+      throw new IOException("Image does not exist!");
+    }
     String imageFormat = filePath.substring(filePath.lastIndexOf(".") + 1);
     if (imageFormat.equals("ppm")) {
       savePPM(filePath, image);

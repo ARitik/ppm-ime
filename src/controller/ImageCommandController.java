@@ -1,13 +1,7 @@
 package controller;
 
-import java.awt.image.BufferedImage;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -16,13 +10,16 @@ import java.util.Objects;
 import java.util.Scanner;
 import java.util.function.Function;
 
-import javax.imageio.ImageIO;
 
 import jdk.jshell.spi.ExecutionControl;
 import model.ImageOperationsBasicPlus;
 import utils.ImageUtil;
 import view.AppView;
 
+/**
+ * Implements the AppController Interface, providing a Controller for an Application
+ * that provides Image Processing Functionality.
+ */
 
 public class ImageCommandController implements AppController {
   ImageOperationsBasicPlus model;
@@ -39,6 +36,12 @@ public class ImageCommandController implements AppController {
     this.view = view;
   }
 
+  /**
+   * Helper method that processes the commands.
+   *
+   * @param command provided as an input
+   * @throws IOException if command is not passed as expected
+   */
   private void processCommands(String command) throws IOException {
     String[] tokens = command.split("\\s+");
     String operation = tokens[0];
@@ -93,6 +96,13 @@ public class ImageCommandController implements AppController {
     }
   }
 
+  /**
+   * Processes the script commands.
+   *
+   * @param fileName name of the file to be read
+   * @throws IOException wherever required
+   */
+
   public void processScriptCommands(String fileName) throws IOException {
     List<String> commands =
             new ArrayList<String>(Objects.requireNonNull(ImageUtil.readScriptCommands(fileName)));
@@ -101,7 +111,12 @@ public class ImageCommandController implements AppController {
     }
   }
 
-
+  /**
+   * Runs the program and provides a Readable Interface to accept inputs from the user.
+   *
+   * @param in The Buffer into which the characters are read.
+   * @throws IOException When an Image or a Script can't be read or an Image cannot be generated.
+   */
   @Override
   public void run(Readable in) throws IOException {
     Scanner input = new Scanner(in);

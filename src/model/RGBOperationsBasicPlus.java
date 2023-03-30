@@ -1,44 +1,71 @@
 package model;
 
+/**
+ * This class implements ImageOperationsBasicPlus and perform certain operations
+ * on an image.
+ */
 public class RGBOperationsBasicPlus
         extends RGBOperationsBasic
         implements ImageOperationsBasicPlus {
 
+  /**
+   * Calls the constructor of the parent class.
+   */
   public RGBOperationsBasicPlus() {
     super();
   }
 
+  /**
+   * The method blurs the image to create a new image.
+   *
+   * @param identifier     of the image
+   * @param blurIdentifier identifier of the new blurred image.
+   */
   @Override
   public void blur(String identifier, String blurIdentifier) {
     Image image = imageMap.get(identifier);
-    float[][] kernel = {{1 / 16f, 2 / 16f, 1 / 16f},
-            {2 / 16f, 4 / 16f, 2 / 16f},
-            {1 / 16f, 2 / 16f, 1 / 16f}};
+    float[][] kernel = {{1 / 16f, 2 / 16f, 1 / 16f}, {2 / 16f, 4 / 16f, 2 / 16f}, {1 / 16f,
+            2 / 16f, 1 / 16f}};
 
     applyFilter(kernel, (RGBImage) image, blurIdentifier);
   }
 
+  /**
+   * The method sharpens the image to create a new image.
+   *
+   * @param identifier        of the image
+   * @param sharpenIdentifier identifier of the new sharpened image.
+   */
   @Override
   public void sharpen(String identifier, String sharpenIdentifier) {
     Image image = imageMap.get(identifier);
-    float[][] kernel = {{-1 / 8f, -1 / 8f, -1 / 8f, -1 / 8f, -1 / 8f},
-            {-1 / 8f, 2 / 8f, 2 / 8f, 2 / 8f, -1 / 8f},
-            {-1 / 8f, 2 / 8f, 1, 2 / 8f, -1 / 8f},
-            {-1 / 8f, 2 / 8f, 2 / 8f, 2 / 8f, -1 / 8f},
-            {-1 / 8f, -1 / 8f, -1 / 8f, -1 / 8f, -1 / 8f}
+    float[][] kernel = {{-1 / 8f, -1 / 8f, -1 / 8f, -1 / 8f, -1 / 8f}, {-1 / 8f,
+            2 / 8f, 2 / 8f, 2 / 8f, -1 / 8f}, {-1 / 8f, 2 / 8f, 1, 2 / 8f, -1 / 8f}, {-1 / 8f,
+            2 / 8f, 2 / 8f, 2 / 8f, -1 / 8f}, {-1 / 8f, -1 / 8f, -1 / 8f, -1 / 8f, -1 / 8f}
     };
     applyFilter(kernel, (RGBImage) image, sharpenIdentifier);
   }
 
+  /**
+   * The method gives the image a sepia tone.
+   *
+   * @param identifier      of the image
+   * @param sepiaIdentifier identifier of the new sepia image.
+   */
   @Override
   public void sepia(String identifier, String sepiaIdentifier) {
     Image image = imageMap.get(identifier);
-    float[][] kernel = {{0.393f, 0.769f, 0.189f},
-            {0.349f, 0.686f, 0.168f},
-            {0.272f, 0.534f, 0.131f}};
+    float[][] kernel = {{0.393f, 0.769f, 0.189f}, {0.349f, 0.686f, 0.168f}, {0.272f,
+            0.534f, 0.131f}};
     applyColorTransformation(kernel, (RGBImage) image, sepiaIdentifier);
   }
 
+  /**
+   * The method gives the image a greyscale tone.
+   *
+   * @param identifier          of the image
+   * @param greyScaleIdentifier identifier of the new greyscale image.
+   */
   @Override
   public void greyscale(String identifier, String greyScaleIdentifier) {
     Image image = imageMap.get(identifier);
@@ -48,6 +75,12 @@ public class RGBOperationsBasicPlus
   }
 
 
+  /**
+   * The method dithers the image to create a new image.
+   *
+   * @param identifier       of the image
+   * @param ditherIdentifier identifier of the new dithered image
+   */
   @Override
   public void dither(String identifier, String ditherIdentifier) {
     greyscale(identifier, identifier);
@@ -101,7 +134,13 @@ public class RGBOperationsBasicPlus
     imageMap.put(ditherIdentifier, ditherImage);
   }
 
-
+  /**
+   * Helper method that applies filter(blur or sharpen) on an image.
+   *
+   * @param kernel           matrix or filter
+   * @param image            to which filter need to be applied.
+   * @param filterIdentifier identifier of the newly filtered image.
+   */
   private void applyFilter(float[][] kernel, RGBImage image, String filterIdentifier) {
     RGBImage.ImageBuilder imageBuilder = RGBImage.getBuilder();
     int kernelSize = kernel.length;
@@ -138,6 +177,13 @@ public class RGBOperationsBasicPlus
     imageMap.put(filterIdentifier, filterImage);
   }
 
+  /**
+   * Helper method that applies color transformation on an image.
+   *
+   * @param kernel                   matrix or filter
+   * @param image                    which is to be color transformed
+   * @param transformationIdentifier identifier of the newly transformed image.
+   */
   private void applyColorTransformation(float[][] kernel, RGBImage image,
                                         String transformationIdentifier) {
     RGBImage.ImageBuilder imageBuilder = RGBImage.getBuilder();

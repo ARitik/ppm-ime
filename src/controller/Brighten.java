@@ -2,14 +2,23 @@ package controller;
 
 import java.io.IOException;
 
-import model.ImageOperations;
 import model.ImageOperationsBasicPlus;
 
- class Brighten implements ImageCommand {
+/**
+ * A class that represents Brighten operation on the image.
+ */
+class Brighten implements ImageCommand {
   int value;
   String identifier;
   String brightenIdentifier;
 
+  /**
+   * Implements ImageCommand and brightens an image.
+   *
+   * @param value              by which the image is to be brightened.
+   * @param identifier         of the image
+   * @param brightenIdentifier identifier of the new brightened image
+   */
   public Brighten(int value, String identifier, String brightenIdentifier) {
     this.value = value;
     this.identifier = identifier;
@@ -17,7 +26,14 @@ import model.ImageOperationsBasicPlus;
 
   }
 
+  /**
+   * The method executes the brighten in the model.
+   *
+   * @param model model object
+   * @throws IOException wherever required
+   */
+
   public void execute(ImageOperationsBasicPlus model) throws IOException {
-    model.brighten(value,identifier,brightenIdentifier);
+    model.brighten(value, identifier, brightenIdentifier);
   }
 }

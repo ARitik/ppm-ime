@@ -23,7 +23,7 @@ public class ProgramRunner {
     ImageOperationsBasicPlus model = new RGBOperationsBasicPlus();
     AppView view = new ImageLogView(System.out);
     AppController controller = new ImageCommandController(model, view);
-    if(args.length > 0 && args[0].equals("-script")) {
+    if (args.length > 0 && args[0].equals("-script")) {
       controller.processScriptCommands(args[1]);
       System.exit(0);
     }

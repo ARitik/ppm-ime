@@ -7,13 +7,31 @@ import java.io.InputStream;
 
 import model.ImageOperationsBasicPlus;
 
- class Load implements ImageCommand {
+
+/**
+ * A class that represents Load operation on the image.
+ */
+class Load implements ImageCommand {
   String filePath;
   String identifier;
-  public Load(String filePath, String identifer) {
-      this.filePath = filePath;
-      this.identifier = identifer;
+
+  /**
+   * Implements ImageCommand and loads an image.
+   *
+   * @param filePath   path of the image
+   * @param identifier of the image
+   */
+  public Load(String filePath, String identifier) {
+    this.filePath = filePath;
+    this.identifier = identifier;
   }
+
+  /**
+   * The method executes the loading of an image.
+   *
+   * @param model model object
+   * @throws IOException wherever required
+   */
   @Override
   public void execute(ImageOperationsBasicPlus model) throws IOException {
     File imageFile;
