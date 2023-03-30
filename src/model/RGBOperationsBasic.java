@@ -225,7 +225,8 @@ public class RGBOperationsBasic implements ImageOperations {
   }
 
   @Override
-  public void greyscale(String component, String identifier, String greyScaleIdentifier) throws IOException, ExecutionControl.NotImplementedException {
+  public void greyscale(String component, String identifier, String greyScaleIdentifier)
+          throws IOException, ExecutionControl.NotImplementedException {
     RGBImage.ImageBuilder grayscaleImage = RGBImage.getBuilder();
     RGBImage image = (RGBImage) imageMap.get(identifier);
     if (image == null) {

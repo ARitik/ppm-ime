@@ -517,8 +517,23 @@ public class RGBOperationsBasicTest {
     Reader in = new StringReader("load res/sample.jpg sample-test\n" +
             "save res/sample-test.ppm sample-test\n");
     controller.run(in);
-    Image sampleImage = ImageUtil.readImage("res/sample.ppm", "sample");
+    Image sampleImage = ImageUtil.readImage("res/sample-test.ppm", "sample");
     Image loadedSampleImage = ImageUtil.readImage("res/sample-test.ppm",
+            "sample-test");
+    assertEquals(sampleImage, loadedSampleImage);
+  }
+
+  @Test
+  public void testBmpImageisLoadedAndSavedAsPpm() throws IOException {
+    StringBuffer out = new StringBuffer();
+    ImageOperationsBasicPlus model = new RGBOperationsBasicPlus();
+    AppView view = new ImageLogView(out);
+    AppController controller = new ImageCommandController(model, view);
+    Reader in = new StringReader("load res/sample.bmp sample-test\n" +
+            "save res/sample-test.ppm sample-test\n");
+    controller.run(in);
+    Image sampleImage = ImageUtil.readImage("res/sample.bmp", "sample");
+    Image loadedSampleImage = ImageUtil.readImage("res/sample-test.bmp",
             "sample-test");
     assertEquals(sampleImage, loadedSampleImage);
   }

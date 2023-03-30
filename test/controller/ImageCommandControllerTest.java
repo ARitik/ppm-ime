@@ -36,7 +36,7 @@ public class ImageCommandControllerTest {
     public BufferedImage getImage(String identifier) throws IOException {
       modelLog.append("save: " +
               "identifier of the image to be saved: " + identifier);
-      return null;
+      return new BufferedImage(120, 120, BufferedImage.TYPE_INT_RGB);
     }
 
     @Override
@@ -101,7 +101,6 @@ public class ImageCommandControllerTest {
   }
 
 
-
   @Test
   public void testWhenInvalidParamsAreEntered() throws IOException {
     StringBuilder modelLog = new StringBuilder();
@@ -116,55 +115,54 @@ public class ImageCommandControllerTest {
   }
 
 
-    @Test
-    public void testLoadWhenCorrectParams() throws IOException {
-        StringBuilder modelLog = new StringBuilder();
-        StringBuilder viewLog = new StringBuilder();
-        ImageOperationsBasicPlus model = new MockImageModel(modelLog);
-        AppView view = new ImageLogView(viewLog);
-        ImageCommandController controller = new ImageCommandController(model, view);
-        Reader in = new StringReader("load res/sample.ppm sample");
-        controller.run(in);
-        assertEquals("filepath: res/sample.ppm identifier: sample",
-                modelLog.toString());
-        assertEquals("Log: load completed successfully!\n", viewLog.toString());
-    }
-//
-//    @Test
-//    public void testLoadWhenIncorrectParams() throws IOException {
-//        StringBuilder modelLog = new StringBuilder();
-//        StringBuilder viewLog = new StringBuilder();
-//        ImageOperations model = new MockImageModel(modelLog);
-//        AppView view = new ImageLogView(viewLog);
-//        ImageCommandController controller = new ImageCommandController(model, view);
-//        Reader in = new StringReader("laod res/sample.ppm sample");
-//        controller.run(in);
-//        assertEquals("Log: Invalid Command entered! failed!\n",
-//                viewLog.toString());
-//    }
-//
-//
-//    @Test
-//    public void testSaveWhenCorrectParams() throws IOException {
-//        StringBuilder modelLog = new StringBuilder();
-//        StringBuilder viewLog = new StringBuilder();
-//        ImageOperations model = new MockImageModel(modelLog);
-//        AppView view = new ImageLogView(viewLog);
-//        ImageCommandController controller = new ImageCommandController(model, view);
-//        Reader in = new StringReader("load res/sample.ppm sample\nsave res/sample-new.ppm " +
-//                "sample");
-//        controller.run(in);
-//        assertEquals("filepath: res/sample.ppm identifier: sample" +
-//                        "savepath: res/sample-new.ppm identifier of the image to be saved:
-//                        sample",
-//                modelLog.toString());
-//    }
+  @Test
+  public void testLoadWhenCorrectParams() throws IOException {
+    StringBuilder modelLog = new StringBuilder();
+    StringBuilder viewLog = new StringBuilder();
+    ImageOperationsBasicPlus model = new MockImageModel(modelLog);
+    AppView view = new ImageLogView(viewLog);
+    ImageCommandController controller = new ImageCommandController(model, view);
+    Reader in = new StringReader("load res/sample.ppm sample");
+    controller.run(in);
+    assertEquals("filepath: res/sample.ppm identifier: sample",
+            modelLog.toString());
+    assertEquals("Log: load completed successfully!\n", viewLog.toString());
+  }
+
+  @Test
+  public void testLoadWhenIncorrectParams() throws IOException {
+    StringBuilder modelLog = new StringBuilder();
+    StringBuilder viewLog = new StringBuilder();
+    ImageOperationsBasicPlus model = new MockImageModel(modelLog);
+    AppView view = new ImageLogView(viewLog);
+    ImageCommandController controller = new ImageCommandController(model, view);
+    Reader in = new StringReader("laod res/sample.ppm sample");
+    controller.run(in);
+    assertEquals("Log: Invalid Command entered! failed!\n",
+            viewLog.toString());
+  }
+
+
+  @Test
+  public void testSaveWhenCorrectParams() throws IOException {
+    StringBuilder modelLog = new StringBuilder();
+    StringBuilder viewLog = new StringBuilder();
+    ImageOperationsBasicPlus model = new MockImageModel(modelLog);
+    AppView view = new ImageLogView(viewLog);
+    AppController controller = new ImageCommandController(model, view);
+    Reader in = new StringReader("load res/sample.ppm sample\n" +
+            "save res/sample-new.ppm sample");
+    controller.run(in);
+    assertEquals("filepath: res/sample.ppm identifier: sample" +
+                    "savepath: res/sample-new.ppm identifier of the image to be saved: sample",
+            modelLog.toString());
+  }
 //
 //    @Test
 //    public void testSaveWhenIncorrectParams() throws IOException {
 //        StringBuilder modelLog = new StringBuilder();
 //        StringBuilder viewLog = new StringBuilder();
-//        ImageOperations model = new MockImageModel(modelLog);
+//        ImageOperationsBasicPlus model = new MockImageModel(modelLog);
 //        AppView view = new ImageLogView(viewLog);
 //        ImageCommandController controller = new ImageCommandController(model, view);
 //        Reader in = new StringReader("load res/sample.ppm sample\nsae res/sample-new.ppm " +
@@ -179,7 +177,7 @@ public class ImageCommandControllerTest {
 //    public void testSaveWhenTheImageDoesNotExist() throws IOException {
 //        StringBuilder modelLog = new StringBuilder();
 //        StringBuilder viewLog = new StringBuilder();
-//        ImageOperations model = new MockImageModel(modelLog);
+//        ImageOperationsBasicPlus model = new MockImageModel(modelLog);
 //        AppView view = new ImageLogView(viewLog);
 //        ImageCommandController controller = new ImageCommandController(model, view);
 //        Reader in = new StringReader("load res/sample.ppm sample\nsave res/x-new.ppm " +
@@ -191,30 +189,30 @@ public class ImageCommandControllerTest {
 //                viewLog.toString());
 //    }
 //
-//    @Test
-//    public void testBrightenWhenCorrectParams() throws IOException {
-//        StringBuilder modelLog = new StringBuilder();
-//        StringBuilder viewLog = new StringBuilder();
-//        ImageOperations model = new MockImageModel(modelLog);
-//        AppView view = new ImageLogView(viewLog);
-//        ImageCommandController controller = new ImageCommandController(model, view);
-//        Reader in = new StringReader("load res/sample.ppm sample\n" +
-//                "brighten 10 sample sample-brighter\n" +
-//                "save res/sample-brighter.ppm " +
-//                "sample-brighter");
-//        controller.run(in);
-//        assertEquals("filepath: res/sample.ppm identifier: sample" +
-//                "brighten constant: 10 identifier: sample new identifier: sample-brighter" +
-//                "savepath: res/sample-brighter.ppm identifier " +
-//                "of the image to be saved: sample-brighter", modelLog.toString());
-//    }
+    @Test
+    public void testBrightenWhenCorrectParams() throws IOException {
+        StringBuilder modelLog = new StringBuilder();
+        StringBuilder viewLog = new StringBuilder();
+        ImageOperationsBasicPlus model = new MockImageModel(modelLog);
+        AppView view = new ImageLogView(viewLog);
+        ImageCommandController controller = new ImageCommandController(model, view);
+        Reader in = new StringReader("load res/sample.ppm sample\n" +
+                "brighten 10 sample sample-brighter\n" +
+                "save res/sample-brighter.ppm " +
+                "sample-brighter");
+        controller.run(in);
+        assertEquals("filepath: res/sample.ppm identifier: sample" +
+                "brighten constant: 10 identifier: sample new identifier: sample-brighter" +
+                "savepath: res/sample-brighter.ppm identifier " +
+                "of the image to be saved: sample-brighter", modelLog.toString());
+    }
 //
 //
 //    @Test
 //    public void testDarkenWhenCorrectParams() throws IOException {
 //        StringBuilder modelLog = new StringBuilder();
 //        StringBuilder viewLog = new StringBuilder();
-//        ImageOperations model = new MockImageModel(modelLog);
+//        ImageOperationsBasicPlus model = new MockImageModel(modelLog);
 //        AppView view = new ImageLogView(viewLog);
 //        ImageCommandController controller = new ImageCommandController(model, view);
 //        Reader in = new StringReader("load res/sample.ppm sample\n" +
@@ -235,7 +233,7 @@ public class ImageCommandControllerTest {
 //    public void testVerticalFlipWhenCorrectParams() throws IOException {
 //        StringBuilder modelLog = new StringBuilder();
 //        StringBuilder viewLog = new StringBuilder();
-//        ImageOperations model = new MockImageModel(modelLog);
+//        ImageOperationsBasicPlus model = new MockImageModel(modelLog);
 //        AppView view = new ImageLogView(viewLog);
 //        ImageCommandController controller = new ImageCommandController(model, view);
 //        Reader in = new StringReader("load res/sample.ppm sample\n" +
@@ -254,7 +252,7 @@ public class ImageCommandControllerTest {
 //    public void testHorizontalFlipWhenCorrectParams() throws IOException {
 //        StringBuilder modelLog = new StringBuilder();
 //        StringBuilder viewLog = new StringBuilder();
-//        ImageOperations model = new MockImageModel(modelLog);
+//        ImageOperationsBasicPlus model = new MockImageModel(modelLog);
 //        AppView view = new ImageLogView(viewLog);
 //        ImageCommandController controller = new ImageCommandController(model, view);
 //        Reader in = new StringReader("load res/sample.ppm sample\n" +
@@ -274,7 +272,7 @@ public class ImageCommandControllerTest {
 //    IOException {
 //        StringBuilder modelLog = new StringBuilder();
 //        StringBuilder viewLog = new StringBuilder();
-//        ImageOperations model = new MockImageModel(modelLog);
+//        ImageOperationsBasicPlus model = new MockImageModel(modelLog);
 //        AppView view = new ImageLogView(viewLog);
 //        ImageCommandController controller = new ImageCommandController(model, view);
 //        Reader in = new StringReader("load res/sample.ppm sample\n" +
@@ -296,7 +294,7 @@ public class ImageCommandControllerTest {
 //    IOException {
 //        StringBuilder modelLog = new StringBuilder();
 //        StringBuilder viewLog = new StringBuilder();
-//        ImageOperations model = new MockImageModel(modelLog);
+//        ImageOperationsBasicPlus model = new MockImageModel(modelLog);
 //        AppView view = new ImageLogView(viewLog);
 //        ImageCommandController controller = new ImageCommandController(model, view);
 //        Reader in = new StringReader("load res/sample.ppm sample\n" +
@@ -316,7 +314,7 @@ public class ImageCommandControllerTest {
 //    IOException {
 //        StringBuilder modelLog = new StringBuilder();
 //        StringBuilder viewLog = new StringBuilder();
-//        ImageOperations model = new MockImageModel(modelLog);
+//        ImageOperationsBasicPlus model = new MockImageModel(modelLog);
 //        AppView view = new ImageLogView(viewLog);
 //        ImageCommandController controller = new ImageCommandController(model, view);
 //        Reader in = new StringReader("load res/sample.ppm sample\n" +
@@ -338,7 +336,7 @@ public class ImageCommandControllerTest {
 //            throws IOException {
 //        StringBuilder modelLog = new StringBuilder();
 //        StringBuilder viewLog = new StringBuilder();
-//        ImageOperations model = new MockImageModel(modelLog);
+//        ImageOperationsBasicPlus model = new MockImageModel(modelLog);
 //        AppView view = new ImageLogView(viewLog);
 //        ImageCommandController controller = new ImageCommandController(model, view);
 //        Reader in = new StringReader("load res/sample.ppm sample\n" +
@@ -357,7 +355,7 @@ public class ImageCommandControllerTest {
 //    public void testGreyscaleForValueCorrectParams() throws IOException {
 //        StringBuilder modelLog = new StringBuilder();
 //        StringBuilder viewLog = new StringBuilder();
-//        ImageOperations model = new MockImageModel(modelLog);
+//        ImageOperationsBasicPlus model = new MockImageModel(modelLog);
 //        AppView view = new ImageLogView(viewLog);
 //        ImageCommandController controller = new ImageCommandController(model, view);
 //        Reader in = new StringReader("load res/sample.ppm sample\n" +
@@ -377,7 +375,7 @@ public class ImageCommandControllerTest {
 //    public void testGreyscaleForLumaCorrectParams() throws IOException {
 //        StringBuilder modelLog = new StringBuilder();
 //        StringBuilder viewLog = new StringBuilder();
-//        ImageOperations model = new MockImageModel(modelLog);
+//        ImageOperationsBasicPlus model = new MockImageModel(modelLog);
 //        AppView view = new ImageLogView(viewLog);
 //        ImageCommandController controller = new ImageCommandController(model, view);
 //        Reader in = new StringReader("load res/sample.ppm sample\n" +
@@ -397,7 +395,7 @@ public class ImageCommandControllerTest {
 //    public void testGreyscaleForIntensityCorrectParams() throws IOException {
 //        StringBuilder modelLog = new StringBuilder();
 //        StringBuilder viewLog = new StringBuilder();
-//        ImageOperations model = new MockImageModel(modelLog);
+//        ImageOperationsBasicPlus model = new MockImageModel(modelLog);
 //        AppView view = new ImageLogView(viewLog);
 //        ImageCommandController controller = new ImageCommandController(model, view);
 //        Reader in = new StringReader("load res/sample.ppm sample\n" +
@@ -418,7 +416,7 @@ public class ImageCommandControllerTest {
 //    public void testGreyscaleForRedComponentCorrectParams() throws IOException {
 //        StringBuilder modelLog = new StringBuilder();
 //        StringBuilder viewLog = new StringBuilder();
-//        ImageOperations model = new MockImageModel(modelLog);
+//        ImageOperationsBasicPlus model = new MockImageModel(modelLog);
 //        AppView view = new ImageLogView(viewLog);
 //        ImageCommandController controller = new ImageCommandController(model, view);
 //        Reader in = new StringReader("load res/sample.ppm sample\n" +
@@ -437,7 +435,7 @@ public class ImageCommandControllerTest {
 //    public void testGreyscaleForGreenComponentCorrectParams() throws IOException {
 //        StringBuilder modelLog = new StringBuilder();
 //        StringBuilder viewLog = new StringBuilder();
-//        ImageOperations model = new MockImageModel(modelLog);
+//        ImageOperationsBasicPlus model = new MockImageModel(modelLog);
 //        AppView view = new ImageLogView(viewLog);
 //        ImageCommandController controller = new ImageCommandController(model, view);
 //        Reader in = new StringReader("load res/sample.ppm sample\n" +
@@ -457,7 +455,7 @@ public class ImageCommandControllerTest {
 //    public void testGreyscaleForBlueComponentCorrectParams() throws IOException {
 //        StringBuilder modelLog = new StringBuilder();
 //        StringBuilder viewLog = new StringBuilder();
-//        ImageOperations model = new MockImageModel(modelLog);
+//        ImageOperationsBasicPlus model = new MockImageModel(modelLog);
 //        AppView view = new ImageLogView(viewLog);
 //        ImageCommandController controller = new ImageCommandController(model, view);
 //        Reader in = new StringReader("load res/sample.ppm sample\n" +
@@ -477,7 +475,7 @@ public class ImageCommandControllerTest {
 //    public void testRGBSplitCorrectParams() throws IOException {
 //        StringBuilder modelLog = new StringBuilder();
 //        StringBuilder viewLog = new StringBuilder();
-//        ImageOperations model = new MockImageModel(modelLog);
+//        ImageOperationsBasicPlus model = new MockImageModel(modelLog);
 //        AppView view = new ImageLogView(viewLog);
 //        ImageCommandController controller = new ImageCommandController(model, view);
 //        Reader in = new StringReader("load res/sample.ppm sample\n" +
@@ -493,7 +491,7 @@ public class ImageCommandControllerTest {
 //    public void testRGBCombineCorrectParams() throws IOException {
 //        StringBuilder modelLog = new StringBuilder();
 //        StringBuilder viewLog = new StringBuilder();
-//        ImageOperations model = new MockImageModel(modelLog);
+//        ImageOperationsBasicPlus model = new MockImageModel(modelLog);
 //        AppView view = new ImageLogView(viewLog);
 //        ImageCommandController controller = new ImageCommandController(model, view);
 //        Reader in = new StringReader("load res/sample.ppm sample\n" +
@@ -509,7 +507,7 @@ public class ImageCommandControllerTest {
 //    public void testWhenOperationIsPerformedWithoutLoadingImage() throws IOException {
 //        StringBuilder modelLog = new StringBuilder();
 //        StringBuilder viewLog = new StringBuilder();
-//        ImageOperations model = new MockImageModel(modelLog);
+//        ImageOperationsBasicPlus model = new MockImageModel(modelLog);
 //        AppView view = new ImageLogView(viewLog);
 //        ImageCommandController controller = new ImageCommandController(model, view);
 //        Reader in = new StringReader("brighten 10 sample sample-brighter");
@@ -523,7 +521,7 @@ public class ImageCommandControllerTest {
 //    public void testLoadWhenImageDoesNotExist() throws IOException {
 //        StringBuilder modelLog = new StringBuilder();
 //        StringBuilder viewLog = new StringBuilder();
-//        ImageOperations model = new MockImageModel(modelLog);
+//        ImageOperationsBasicPlus model = new MockImageModel(modelLog);
 //        AppView view = new ImageLogView(viewLog);
 //        ImageCommandController controller = new ImageCommandController(model, view);
 //        Reader in = new StringReader("load res/cat.txt cat");
@@ -536,7 +534,7 @@ public class ImageCommandControllerTest {
 //    public void testIdentifierWithSpecialCharacters() throws IOException {
 //        StringBuilder modelLog = new StringBuilder();
 //        StringBuilder viewLog = new StringBuilder();
-//        ImageOperations model = new MockImageModel(modelLog);
+//        ImageOperationsBasicPlus model = new MockImageModel(modelLog);
 //        AppView view = new ImageLogView(viewLog);
 //        ImageCommandController controller = new ImageCommandController(model, view);
 //        Reader in = new StringReader("load res/sample.ppm $sample");
@@ -639,7 +637,7 @@ public class ImageCommandControllerTest {
 //    public void testLoadWhenImageIsJPG() throws IOException {
 //        StringBuilder modelLog = new StringBuilder();
 //        StringBuilder viewLog = new StringBuilder();
-//        ImageOperations model = new MockImageModel(modelLog);
+//        ImageOperationsBasicPlus model = new MockImageModel(modelLog);
 //        AppView view = new ImageLogView(viewLog);
 //        ImageCommandController controller = new ImageCommandController(model, view);
 //        Reader in = new StringReader("load res/sample.jpg sample");
@@ -651,7 +649,7 @@ public class ImageCommandControllerTest {
 //    public void testLoadWhenImageIsPNG() throws IOException {
 //        StringBuilder modelLog = new StringBuilder();
 //        StringBuilder viewLog = new StringBuilder();
-//        ImageOperations model = new MockImageModel(modelLog);
+//        ImageOperationsBasicPlus model = new MockImageModel(modelLog);
 //        AppView view = new ImageLogView(viewLog);
 //        ImageCommandController controller = new ImageCommandController(model, view);
 //        Reader in = new StringReader("load res/sample.png sample");
@@ -663,7 +661,7 @@ public class ImageCommandControllerTest {
 //    public void testLoadWhenImageIsBMP() throws IOException {
 //        StringBuilder modelLog = new StringBuilder();
 //        StringBuilder viewLog = new StringBuilder();
-//        ImageOperations model = new MockImageModel(modelLog);
+//        ImageOperationsBasicPlus model = new MockImageModel(modelLog);
 //        AppView view = new ImageLogView(viewLog);
 //        ImageCommandController controller = new ImageCommandController(model, view);
 //        Reader in = new StringReader("load res/sample.bmp sample");
