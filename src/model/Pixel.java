@@ -3,7 +3,7 @@ package model;
 /**
  * A Class that represents a Pixel.
  */
-class Pixel {
+public class Pixel {
   private int red;
   private int green;
   private int blue;
@@ -15,7 +15,7 @@ class Pixel {
    * @param green green (green) value of the pixel.
    * @param blue  blue (blue) value of the pixel.
    */
-   Pixel(int red, int green, int blue) {
+   public Pixel(int red, int green, int blue) {
     this.red = red;
     this.blue = blue;
     this.green = green;

@@ -14,7 +14,7 @@ import jdk.jshell.spi.ExecutionControl;
  */
 public interface ImageOperations {
 
-  public BufferedImage getImage(String identifier) throws IOException;
+  BufferedImage getImage(String identifier) throws IOException;
 
   void loadImage(InputStream in, String type, String identifier) throws IOException;
 

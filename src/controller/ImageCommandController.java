@@ -86,7 +86,7 @@ public class ImageCommandController implements AppController {
         requestedCommand.execute(model);
         view.log(operation, true);
       } catch (IndexOutOfBoundsException exception) {
-        view.log(operation, "Invalid Parameters Supplied!", false);
+        view.log(operation, "Invalid parameters supplied!", false);
       } catch (IOException | ExecutionControl.NotImplementedException exception) {
         view.log(operation, exception.getMessage(), false);
       }

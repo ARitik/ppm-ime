@@ -207,7 +207,7 @@ public class RGBImage implements Image {
    *
    * @return object of ImageBuilder
    */
-  static ImageBuilder getBuilder() {
+  public static ImageBuilder getBuilder() {
     return new ImageBuilder();
   }
 
@@ -225,7 +225,7 @@ public class RGBImage implements Image {
    * This class represents ImageBuilder and is used to construct an image
    * of type ppm.
    */
-  static class ImageBuilder {
+  public static class ImageBuilder {
     private String identifier;
     private int height;
     private int width;
@@ -239,7 +239,7 @@ public class RGBImage implements Image {
     }
 
 
-    ImageBuilder pixelMatrix(Pixel[][] pixels) {
+    public ImageBuilder pixelMatrix(Pixel[][] pixels) {
       this.pixels = pixels;
       return this;
     }
@@ -252,12 +252,12 @@ public class RGBImage implements Image {
      * @param column of the pixel
      * @return pixels
      */
-    ImageBuilder pixel(Pixel pixel, int row, int column) {
+    public ImageBuilder pixel(Pixel pixel, int row, int column) {
       pixels[row][column] = pixel;
       return this;
     }
 
-    ImageBuilder pixel(int row, int column, int newRedValue, int newGreenValue,
+    public ImageBuilder pixel(int row, int column, int newRedValue, int newGreenValue,
                        int newBlueValue) {
       pixels[row][column] = new Pixel(newRedValue, newGreenValue, newBlueValue);
       return this;
@@ -269,7 +269,7 @@ public class RGBImage implements Image {
      * @param height of the image
      * @return height
      */
-    ImageBuilder height(int height) {
+    public ImageBuilder height(int height) {
       this.height = height;
       this.pixels = new Pixel[height][width];
       return this;
@@ -281,7 +281,7 @@ public class RGBImage implements Image {
      * @param width of the image
      * @return width
      */
-    ImageBuilder width(int width) {
+    public ImageBuilder width(int width) {
       this.width = width;
       return this;
     }
@@ -292,7 +292,7 @@ public class RGBImage implements Image {
      * @param maxValue of the image
      * @return maximum value
      */
-    ImageBuilder maxValue(int maxValue) {
+    public ImageBuilder maxValue(int maxValue) {
       this.maxValue = maxValue;
       return this;
     }
@@ -303,7 +303,7 @@ public class RGBImage implements Image {
      * @param identifier of the image
      * @return identifier of the image
      */
-    ImageBuilder identifier(String identifier) {
+    public ImageBuilder identifier(String identifier) {
       this.identifier = identifier;
       return this;
     }
@@ -313,7 +313,7 @@ public class RGBImage implements Image {
      *
      * @return new RGBImage object
      */
-    Image build() {
+    public Image build() {
       return new RGBImage(identifier, height, width, maxValue, pixels);
     }
   }
