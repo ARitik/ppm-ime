@@ -1,0 +1,1 @@
+load res/sample.ppm sample

@@ -57,6 +57,18 @@ public class RGBOperationsBasicTest {
     assertEquals(message, message2);
   }
 
+  @Test
+  public void testLoadWhenScriptFileisInvalid() throws IOException {
+    StringBuffer out = new StringBuffer();
+    ImageOperationsBasicPlus model = new RGBOperationsBasicPlus();
+    AppView view = new ImageLogView(out);
+    AppController controller = new ImageCommandController(model, view);
+    Reader in = new StringReader("run scripts/failscript.txt\n");
+    controller.run(in);
+    assertEquals("Log: fail failed!\nInvalid Command!\n", out.toString());
+
+  }
+
 
   @Test
   public void testSave() throws IOException {
@@ -538,4 +550,56 @@ public class RGBOperationsBasicTest {
     assertEquals(sampleImage, loadedSampleImage);
   }
 
+  @Test
+  public void testPngImageisLoadedAndSavedAsBmp() throws IOException {
+    StringBuffer out = new StringBuffer();
+    ImageOperationsBasicPlus model = new RGBOperationsBasicPlus();
+    AppView view = new ImageLogView(out);
+    AppController controller = new ImageCommandController(model, view);
+    Reader in = new StringReader("load res/sample.png sample-test\n" +
+            "save res/sample-test.bmp sample-test\n");
+    controller.run(in);
+    Image sampleImage = ImageUtil.readImage("res/sample.bmp", "sample");
+    Image loadedSampleImage = ImageUtil.readImage("res/sample-test.bmp",
+            "sample-test");
+    assertEquals(sampleImage, loadedSampleImage);
+  }
+
+  @Test
+  public void testColorTransformationGreyscale() throws IOException {
+    StringBuffer out = new StringBuffer();
+    ImageOperationsBasicPlus model = new RGBOperationsBasicPlus();
+    AppView view = new ImageLogView(out);
+    AppController controller = new ImageCommandController(model, view);
+    Reader in = new StringReader("load res/sample-test.ppm sample-test\n"
+            + "greyscale sample-test sample-test-greyscale-luma\n"
+            + "save res/sample-test-greyscale.png sample-test-greyscale-luma");
+    controller.run(in);
+    Image sampleImage = ImageUtil.readImage("res/sample-greyscale.png",
+            "sample-greyscale" +
+                    "-luma");
+    Image loadedSampleImage = ImageUtil.readImage("res/sample-test-greyscale.png",
+            "sample" +
+                    "-test-greyscale-luma");
+    assertEquals(sampleImage, loadedSampleImage);
+  }
+
+  @Test
+  public void testDitherOnPng() throws IOException {
+    StringBuffer out = new StringBuffer();
+    ImageOperationsBasicPlus model = new RGBOperationsBasicPlus();
+    AppView view = new ImageLogView(out);
+    AppController controller = new ImageCommandController(model, view);
+    Reader in = new StringReader("load res/sample-test.ppm sample-test\n"
+            + "dither sample-test sample-test-dither\n"
+            + "save res/sample-test-dither.png sample-test-dither");
+    controller.run(in);
+    Image sampleImage = ImageUtil.readImage("res/sample-greyscale-luma.ppm",
+            "sample-greyscale" +
+                    "-luma");
+    Image loadedSampleImage = ImageUtil.readImage("res/sample-test-greyscale-luma.ppm",
+            "sample" +
+                    "-test-greyscale-luma");
+    assertEquals(sampleImage, loadedSampleImage);
+  }
 }

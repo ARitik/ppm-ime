@@ -1,1 +1,1 @@
-run scripts/script.txt
+fail fail fail
