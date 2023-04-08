@@ -3,6 +3,7 @@ package controller;
 import java.io.IOException;
 
 import model.ImageOperationsBasicPlus;
+import view.AppView;
 
 /**
  * A class that represents Blur operation on the image.
@@ -29,8 +30,9 @@ class Blur implements ImageCommand {
    * @throws IOException image to be blurred does not exist.
    */
   @Override
-  public void execute(ImageOperationsBasicPlus model) throws IOException {
+  public void execute(ImageOperationsBasicPlus model, AppView view) throws IOException {
     model.blur(identifier, blurIdentifier);
+    view.setImage(model.getImage(blurIdentifier));
   }
 
 }

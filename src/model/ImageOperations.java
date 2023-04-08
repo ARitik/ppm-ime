@@ -21,7 +21,7 @@ public interface ImageOperations {
   void loadImage(InputStream in, String type, String identifier) throws IOException;
 
   /**
-   * The method saves the image with the given name to the specified path.
+   * The method retrieves the image with the given identifier from the hashmap.
    *
    * @param identifier of the image
    * @return image to be saved

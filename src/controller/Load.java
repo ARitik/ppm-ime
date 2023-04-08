@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import model.ImageOperationsBasicPlus;
+import view.AppView;
 
 
 /**
@@ -33,7 +34,7 @@ class Load implements ImageCommand {
    * @throws IOException wherever required
    */
   @Override
-  public void execute(ImageOperationsBasicPlus model) throws IOException {
+  public void execute(ImageOperationsBasicPlus model, AppView view) throws IOException {
     File imageFile;
     imageFile = new File(filePath);
     if (!imageFile.exists()) {
@@ -42,6 +43,7 @@ class Load implements ImageCommand {
     String imageFormat = filePath.substring(filePath.lastIndexOf(".") + 1);
     InputStream inputStream = new FileInputStream(imageFile);
     model.loadImage(inputStream, imageFormat, identifier);
+    view.setImage(model.getImage(identifier));
   }
 
 }

@@ -6,6 +6,7 @@ import controller.ImageCommandController;
 import model.ImageOperationsBasicPlus;
 import model.RGBOperationsBasicPlus;
 import view.AppView;
+import view.ImageGUIView;
 import view.ImageLogView;
 
 /**
@@ -21,7 +22,8 @@ public class ProgramRunner {
    */
   public static void main(String[] args) throws IOException {
     ImageOperationsBasicPlus model = new RGBOperationsBasicPlus();
-    AppView view = new ImageLogView(System.out);
+//    AppView view = new ImageLogView(System.out);
+    AppView view = new ImageGUIView(System.out);
     AppController controller = new ImageCommandController(model, view);
     if (args.length > 0 && args[0].equals("-script")) {
       controller.processScriptCommands(args[1]);

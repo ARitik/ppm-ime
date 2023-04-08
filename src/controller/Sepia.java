@@ -3,6 +3,7 @@ package controller;
 import java.io.IOException;
 
 import model.ImageOperationsBasicPlus;
+import view.AppView;
 
 
 /**
@@ -30,7 +31,8 @@ class Sepia implements ImageCommand {
    * @throws IOException wherever required
    */
   @Override
-  public void execute(ImageOperationsBasicPlus model) throws IOException {
+  public void execute(ImageOperationsBasicPlus model, AppView view) throws IOException {
     model.sepia(identifier, sepiaIdentifier);
+    view.setImage(model.getImage(sepiaIdentifier));
   }
 }

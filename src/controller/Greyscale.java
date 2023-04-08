@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import jdk.jshell.spi.ExecutionControl;
 import model.ImageOperationsBasicPlus;
+import view.AppView;
 
 /**
  * A class that represents greyscale operation on the image.
@@ -44,12 +45,13 @@ class Greyscale implements ImageCommand {
    * @param model model object
    * @throws IOException wherever required
    */
-  public void execute(ImageOperationsBasicPlus model) throws IOException,
+  public void execute(ImageOperationsBasicPlus model, AppView view) throws IOException,
           ExecutionControl.NotImplementedException {
     if (this.component == null) {
       model.greyscale(identifier, greyScaleIdentifier);
     } else {
       model.greyscale(component, identifier, greyScaleIdentifier);
     }
+    view.setImage(model.getImage(greyScaleIdentifier));
   }
 }

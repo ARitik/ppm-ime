@@ -1,5 +1,8 @@
 package controller;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import java.util.ArrayList;
@@ -34,15 +37,10 @@ public class ImageCommandController implements AppController {
   public ImageCommandController(ImageOperationsBasicPlus model, AppView view) {
     this.model = model;
     this.view = view;
+    view.addFeatures(this);
   }
 
-  /**
-   * Helper method that processes the commands.
-   *
-   * @param command provided as an input
-   * @throws IOException if command is not passed as expected
-   */
-  private void processCommands(String command) throws IOException {
+  public void processCommands(String command) throws IOException {
     String[] tokens = command.split("\\s+");
     String operation = tokens[0];
     Map<String, Function<String[], ImageCommand>> imageCommands = new HashMap<>();
@@ -86,7 +84,7 @@ public class ImageCommandController implements AppController {
     } else {
       try {
         requestedCommand = cmd.apply(tokens);
-        requestedCommand.execute(model);
+        requestedCommand.execute(model, view);
         view.log(operation, true);
       } catch (IndexOutOfBoundsException exception) {
         view.log(operation, "Invalid parameters supplied!", false);
@@ -95,6 +93,7 @@ public class ImageCommandController implements AppController {
       }
     }
   }
+
 
   /**
    * Processes the script commands.
@@ -124,5 +123,4 @@ public class ImageCommandController implements AppController {
       processCommands(input.nextLine());
     }
   }
-
 }

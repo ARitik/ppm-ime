@@ -3,6 +3,7 @@ package controller;
 import java.io.IOException;
 
 import model.ImageOperationsBasicPlus;
+import view.AppView;
 
 /**
  * A class that represents Combine operation on the image.
@@ -35,7 +36,7 @@ class Combine implements ImageCommand {
    * @param model model object
    * @throws IOException wherever required
    */
-  public void execute(ImageOperationsBasicPlus model) throws IOException {
+  public void execute(ImageOperationsBasicPlus model, AppView view) throws IOException {
     model.rgbCombine(identifier, redIdentifier, greenIdentifier, blueIdentifier);
   }
 }

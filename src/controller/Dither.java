@@ -3,6 +3,7 @@ package controller;
 import java.io.IOException;
 
 import model.ImageOperationsBasicPlus;
+import view.AppView;
 
 /**
  * A class that represents Dither operation on the image.
@@ -29,7 +30,8 @@ class Dither implements ImageCommand {
    * @throws IOException wherever required
    */
   @Override
-  public void execute(ImageOperationsBasicPlus model) throws IOException {
+  public void execute(ImageOperationsBasicPlus model, AppView view) throws IOException {
     model.dither(identifier, ditherIdentifier);
+    view.setImage(model.getImage(ditherIdentifier));
   }
 }

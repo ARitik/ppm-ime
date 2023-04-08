@@ -9,6 +9,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import model.ImageOperationsBasicPlus;
+import view.AppView;
 
 /**
  * A class that represents Save operation on the image.
@@ -64,7 +65,7 @@ class Save implements ImageCommand {
    * @param model model object
    */
   @Override
-  public void execute(ImageOperationsBasicPlus model) throws IOException {
+  public void execute(ImageOperationsBasicPlus model, AppView view) throws IOException {
     BufferedImage image = model.getImage(identifier);
     if (image == null) {
       throw new IOException("Image does not exist!");

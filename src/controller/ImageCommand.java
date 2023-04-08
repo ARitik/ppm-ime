@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import jdk.jshell.spi.ExecutionControl;
 import model.ImageOperationsBasicPlus;
+import view.AppView;
 
 /**
  * An interface that represents the image Commands.
@@ -16,6 +17,6 @@ interface ImageCommand {
    * @throws IOException when the image does not exist.
    * @throws ExecutionControl.NotImplementedException when operation has not been implemented.
    */
-  void execute(ImageOperationsBasicPlus model) throws IOException,
+  void execute(ImageOperationsBasicPlus model, AppView view) throws IOException,
           ExecutionControl.NotImplementedException;
 }

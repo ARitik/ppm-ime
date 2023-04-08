@@ -1,7 +1,10 @@
 package view;
 
 
+import java.awt.image.BufferedImage;
 import java.io.IOException;
+
+import controller.AppController;
 
 /**
  * This class represents the view of the program and displays logs
@@ -19,7 +22,6 @@ public class ImageLogView implements AppView {
     this.out = out;
   }
 
-  @Override
   public void log(String operation, String message, boolean isPass) throws IOException {
     if (isPass) {
       this.out.append(String.format("Log: " + operation + " completed successfully!\n"));
@@ -29,7 +31,6 @@ public class ImageLogView implements AppView {
 
   }
 
-  @Override
   public void log(String operation, boolean isPass) throws IOException {
     if (isPass) {
       this.out.append(String.format("Log: " + operation + " completed successfully!\n"));
@@ -37,5 +38,15 @@ public class ImageLogView implements AppView {
       this.out.append(String.format("Log: " + operation + " failed!\n"));
     }
 
+  }
+
+  @Override
+  public void addFeatures(AppController features) {
+
+  }
+
+  @Override
+  public void setImage(BufferedImage image) {
+    System.out.println(image.getHeight() + " " +  image.getWidth());
   }
 }

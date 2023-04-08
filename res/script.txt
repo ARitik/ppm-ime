@@ -1,0 +1,177 @@
+#load sample.ppm and call it 'sample'
+load sample.ppm sample
+
+#save sample.jpg
+save sample.jpg sample
+
+#save sample.png
+save sample.png sample
+
+#save sample.bmp
+save sample.bmp sample
+
+#brighten sample by adding 50
+brighten 50 sample sample-brighter
+
+#save sample-brighter
+save sample-brighter.ppm sample-brighter
+
+#darken sample by adding -100
+brighten -100 sample sample-darker
+
+#save sample-brighter
+save sample-darker.ppm sample-darker
+
+#flip sample vertically
+vertical-flip sample sample-vertical
+
+#save sample vertically
+save sample-vertical.ppm sample-vertical
+
+#flip sample horizontally
+horizontal-flip sample sample-horizontal
+
+#save sample horizontally
+save sample-horizontal.ppm sample-horizontal
+
+#flip the vertically flipped sample horizontally
+horizontal-flip sample-vertical sample-vertical-horizontal
+
+#save sample vertically
+save sample-vertical-horizontal.ppm sample-vertical-horizontal
+
+#flip the horizontally flipped sample vertically
+vertical-flip sample-horizontal sample-horizontal-vertical
+
+#save sample vertically
+save sample-horizontal-vertical.ppm sample-horizontal-vertical
+
+#flip the vertically flipped sample vertically
+vertical-flip sample-vertical sample-vertical-vertical
+
+#save sample vertically
+save sample-vertical-vertical.ppm sample-vertical-vertical
+
+#flip the horizontally flipped sample horizontally
+horizontal-flip sample-horizontal sample-horizontal-horizontal
+
+#save sample horizontally
+save sample-horizontal-horizontal.ppm sample-horizontal-horizontal
+
+#create a greyscale using only the value component, as an image sample-greyscale
+greyscale value-component sample sample-greyscale-value
+
+#save sample-greyscale
+save sample-greyscale-value.ppm sample-greyscale-value
+
+#create a greyscale using only the luma component, as an image sample-greyscale
+greyscale luma-component sample sample-greyscale-luma
+
+#save sample-greyscale
+save sample-greyscale-luma.ppm sample-greyscale-luma
+
+#create a greyscale using only the intensity component, as an image sample-greyscale
+greyscale intensity-component sample sample-greyscale-intensity
+
+#save sample-greyscale
+save sample-greyscale-intensity.ppm sample-greyscale-intensity
+
+#create a greyscale using only the red component, as an image sample-greyscale
+greyscale red-component sample sample-greyscale-red
+
+#save sample-greyscale
+save sample-greyscale-red.ppm sample-greyscale-red
+
+#create a greyscale using only the green component, as an image sample-greyscale
+greyscale green-component sample sample-greyscale-green
+
+#save sample-greyscale
+save sample-greyscale-green.ppm sample-greyscale-green
+
+#create a greyscale using only the blue component, as an image sample-greyscale
+greyscale blue-component sample sample-greyscale-blue
+
+#save sample-greyscale
+save sample-greyscale-blue.ppm sample-greyscale-blue
+
+#give the sample a red tint
+rgb-split sample sample-red sample-green sample-blue
+
+#brighten just the red image
+brighten 50 sample-red sample-red
+
+#combine them back, but by using the brightened red we get a red tint
+rgb-combine sample-red-tint sample-red sample-green sample-blue
+save sample-red-tint.ppm sample-red-tint
+
+#give the sample a green tint
+rgb-split sample sample-red sample-green sample-blue
+
+#brighten just the green image
+brighten 50 sample-green sample-green
+
+#combine them back, but by using the brightened red we get a red tint
+rgb-combine sample-green-tint sample-red sample-green sample-blue
+save sample-green-tint.ppm sample-green-tint
+
+#give the sample a blue tint
+rgb-split sample sample-red sample-green sample-blue
+
+#brighten just the blue image
+brighten 50 sample-blue sample-blue
+
+#combine them back, but by using the brightened red we get a red tint
+rgb-combine sample-blue-tint sample-red sample-green sample-blue
+save sample-blue-tint.ppm sample-blue-tint
+
+#blur sample
+blur sample sample-blur
+
+#save sample-blur
+save sample-blur.png sample-blur
+save sample-blur.ppm sample-blur
+save sample-blur.jpg sample-blur
+save sample-blur.bmp sample-blur
+
+
+#sharpen sample
+sharpen sample sample-sharpen
+
+#save sample-sharpen
+save sample-sharpen.png sample-sharpen
+save sample-sharpen.ppm sample-sharpen
+save sample-sharpen.jpg sample-sharpen
+save sample-sharpen.bmp sample-sharpen
+
+#greyscale sample
+greyscale sample sample-greyscale
+
+#save sample-greyscale
+save sample-greyscale.ppm sample-greyscale
+save sample-greyscale.png sample-greyscale
+save sample-greyscale.jpg sample-greyscale
+save sample-greyscale.bmp sample-greyscale
+
+
+#sepia sample
+sepia sample sample-sepia
+
+#save sample-sepia
+save sample-sepia.png sample-sepia
+save sample-sepia.ppm sample-sepia
+save sample-sepia.jpg sample-sepia
+save sample-sepia.bmp sample-sepia
+
+
+#dither sample
+dither sample sample-dither
+
+#save sample-dither
+save sample-dither.png sample-dither
+save sample-dither.ppm sample-dither
+save sample-dither.jpg sample-dither
+save sample-dither.bmp sample-dither
+
+
+#exit the program
+exit

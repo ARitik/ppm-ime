@@ -3,6 +3,7 @@ package controller;
 import java.io.IOException;
 
 import model.ImageOperationsBasicPlus;
+import view.AppView;
 
 /**
  * A class that represents Brighten operation on the image.
@@ -33,7 +34,8 @@ class Brighten implements ImageCommand {
    * @throws IOException wherever required
    */
 
-  public void execute(ImageOperationsBasicPlus model) throws IOException {
+  public void execute(ImageOperationsBasicPlus model, AppView view) throws IOException {
     model.brighten(value, identifier, brightenIdentifier);
+    view.setImage(model.getImage(brightenIdentifier));
   }
 }

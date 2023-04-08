@@ -1,5 +1,6 @@
 package controller;
 
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 /**
@@ -21,4 +22,13 @@ public interface AppController {
    * @throws IOException wherever required
    */
   void processScriptCommands(String file) throws IOException;
+
+  /**
+   * Helper method that processes the commands.
+   *
+   * @param command provided as an input
+   * @throws IOException if command is not passed as expected
+   */
+  void processCommands(String command) throws IOException;
+
 }
