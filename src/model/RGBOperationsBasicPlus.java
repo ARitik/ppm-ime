@@ -1,5 +1,7 @@
 package model;
 
+import java.io.IOException;
+
 /**
  * This class implements ImageOperationsBasicPlus and perform certain operations
  * on an image.
@@ -22,8 +24,11 @@ public class RGBOperationsBasicPlus
    * @param blurIdentifier identifier of the new blurred image.
    */
   @Override
-  public void blur(String identifier, String blurIdentifier) {
+  public void blur(String identifier, String blurIdentifier) throws IOException {
     Image image = imageMap.get(identifier);
+    if (image == null) {
+      throw new IOException("Image does not exist!");
+    }
     float[][] kernel = {{1 / 16f, 2 / 16f, 1 / 16f}, {2 / 16f, 4 / 16f, 2 / 16f}, {1 / 16f,
             2 / 16f, 1 / 16f}};
 
@@ -37,8 +42,11 @@ public class RGBOperationsBasicPlus
    * @param sharpenIdentifier identifier of the new sharpened image.
    */
   @Override
-  public void sharpen(String identifier, String sharpenIdentifier) {
+  public void sharpen(String identifier, String sharpenIdentifier) throws IOException {
     Image image = imageMap.get(identifier);
+    if (image == null) {
+      throw new IOException("Image does not exist!");
+    }
     float[][] kernel = {{-1 / 8f, -1 / 8f, -1 / 8f, -1 / 8f, -1 / 8f}, {-1 / 8f,
             2 / 8f, 2 / 8f, 2 / 8f, -1 / 8f}, {-1 / 8f, 2 / 8f, 1, 2 / 8f, -1 / 8f}, {-1 / 8f,
             2 / 8f, 2 / 8f, 2 / 8f, -1 / 8f}, {-1 / 8f, -1 / 8f, -1 / 8f, -1 / 8f, -1 / 8f}
@@ -53,8 +61,11 @@ public class RGBOperationsBasicPlus
    * @param sepiaIdentifier identifier of the new sepia image.
    */
   @Override
-  public void sepia(String identifier, String sepiaIdentifier) {
+  public void sepia(String identifier, String sepiaIdentifier) throws IOException {
     Image image = imageMap.get(identifier);
+    if (image == null) {
+      throw new IOException("Image does not exist!");
+    }
     float[][] kernel = {{0.393f, 0.769f, 0.189f}, {0.349f, 0.686f, 0.168f}, {0.272f,
             0.534f, 0.131f}};
     applyColorTransformation(kernel, (RGBImage) image, sepiaIdentifier);
@@ -67,8 +78,11 @@ public class RGBOperationsBasicPlus
    * @param greyScaleIdentifier identifier of the new greyscale image.
    */
   @Override
-  public void greyscale(String identifier, String greyScaleIdentifier) {
+  public void greyscale(String identifier, String greyScaleIdentifier) throws IOException {
     Image image = imageMap.get(identifier);
+    if (image == null) {
+      throw new IOException("Image does not exist!");
+    }
     float[][] kernel = {{0.2126f, 0.7152f, 0.0722f}, {0.2126f, 0.7152f, 0.0722f}, {0.2126f,
             0.7152f, 0.0722f}};
     applyColorTransformation(kernel, (RGBImage) image, greyScaleIdentifier);
@@ -82,9 +96,12 @@ public class RGBOperationsBasicPlus
    * @param ditherIdentifier identifier of the new dithered image
    */
   @Override
-  public void dither(String identifier, String ditherIdentifier) {
+  public void dither(String identifier, String ditherIdentifier) throws IOException {
     greyscale(identifier, identifier);
     RGBImage greyScaleImage = (RGBImage) imageMap.get(identifier);
+    if( greyScaleImage == null) {
+      throw new IOException("Image does not exist!");
+    }
 
     RGBImage.ImageBuilder imageBuilder = RGBImage.getBuilder();
     int width = greyScaleImage.getWidth();

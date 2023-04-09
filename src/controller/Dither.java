@@ -31,7 +31,7 @@ class Dither implements ImageCommand {
    */
   @Override
   public void execute(ImageOperationsBasicPlus model, AppView view) throws IOException {
-    model.dither(identifier, ditherIdentifier);
-    view.setImage(model.getImage(ditherIdentifier));
+      model.dither(identifier, ditherIdentifier);
+      view.setImage(model.getImage(ditherIdentifier));
   }
 }
