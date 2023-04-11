@@ -1,15 +1,11 @@
 package view;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Objects;
-
-import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import controller.AppController;
@@ -25,17 +21,23 @@ public class ImageGUIView extends JFrame implements AppView {
   private JButton sepiaButton;
   private JButton horizontalFlipButton;
   private JButton verticalFlipButton;
+  private JButton saveFileButton;
   private JComboBox<String> greyScaleDropdown;
   private JSlider brightnessSlider;
+  private JButton exitButton;
   private JPanel logPanel;
   private JPanel histogramPanel;
+  private JButton splitButton;
+  private JButton combineButton;
   private HistogramPanel histogram;
+  private JScrollPane scrollPane;
 
   public ImageGUIView(PrintStream out) {
     super("GRIME");
     this.setExtendedState(JFrame.MAXIMIZED_BOTH);
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     this.setLayout(new BorderLayout());
+
 
     //ImagePanel
     imagePanel = new JPanel();
@@ -60,11 +62,13 @@ public class ImageGUIView extends JFrame implements AppView {
     //ImageLogPane
     histogramPanel = new JPanel();
     histogramPanel.setBorder(BorderFactory.createTitledBorder("Histogram"));
-    histogramPanel.setPreferredSize(new Dimension(300, 400));
+    histogramPanel.setPreferredSize(new Dimension(700, 450));
+    JScrollPane histogramScrollPane = new JScrollPane(histogramPanel);
+    histogramScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
 
     //ImageInfoPanel
-    JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, histogramPanel, logScrollPane);
+    JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, histogramScrollPane, logScrollPane);
     splitPane.setResizeWeight(0.5);
     splitPane.setDividerLocation(0.7);
     imagePanel.add(splitPane, BorderLayout.SOUTH);
@@ -76,70 +80,101 @@ public class ImageGUIView extends JFrame implements AppView {
     toolBench.setPreferredSize(new Dimension(400, 0));
     this.add(toolBench, BorderLayout.LINE_END);
 
+    JPanel loadSavePanel = new JPanel(new GridLayout(1, 2));
+
     //Add buttons to toolbench
 
     // File chooser button
     fileChooserButton = new JButton("Load Image");
-    toolBench.add(fileChooserButton);
-    JLabel brightnessLabel = new JLabel("Brighten");
-    toolBench.add(brightnessLabel);
+    loadSavePanel.add(fileChooserButton);
+    //toolBench.add(fileChooserButton);
+
+    saveFileButton = new JButton("Save Image");
+    //toolBench.add(saveFileButton);
+    loadSavePanel.add(saveFileButton);
+
+    // Add the Load Image and Save Image panel to the Tool Bench
+    toolBench.add(loadSavePanel);
+    toolBench.add(Box.createVerticalStrut(60));
+
+    // Add some vertical spacing
+    //toolBench.add(Box.createRigidArea(new Dimension(0, 10)));
+
+    JPanel verticalLayoutPanel = new JPanel();
+    verticalLayoutPanel.setLayout(new BoxLayout(verticalLayoutPanel, BoxLayout.Y_AXIS));
+    verticalLayoutPanel.setAlignmentX(JButton.CENTER_ALIGNMENT);
+
+    JButton brightnessButton = new JButton("Brighten");
+    //toolBench.add(brightnessLabel);
+    verticalLayoutPanel.add(brightnessButton);
+
     brightnessSlider = new JSlider(-50, 50, 0);
     brightnessSlider.setMinorTickSpacing(10);
     brightnessSlider.setMajorTickSpacing(50);
     brightnessSlider.setPaintTicks(true);
     brightnessSlider.setPaintLabels(true);
-    toolBench.add(brightnessSlider);
+    //toolBench.add(brightnessSlider);
+    verticalLayoutPanel.add(brightnessSlider);
+    verticalLayoutPanel.add(Box.createVerticalStrut(20));
 
     ditherButton = new JButton("Dither");
-    toolBench.add(ditherButton);
+    //toolBench.add(ditherButton);
+    verticalLayoutPanel.add(ditherButton);
+    verticalLayoutPanel.add(Box.createVerticalStrut(20));
 
     blurButton = new JButton("Blur");
-    toolBench.add(blurButton);
+    //toolBench.add(blurButton);
+    verticalLayoutPanel.add(blurButton);
+    verticalLayoutPanel.add(Box.createVerticalStrut(20));
 
     sharpenButton = new JButton("Sharpen");
-    toolBench.add(sharpenButton);
+    //toolBench.add(sharpenButton);
+    verticalLayoutPanel.add(sharpenButton);
+    verticalLayoutPanel.add(Box.createVerticalStrut(20));
 
     sepiaButton = new JButton("Sepia");
-    toolBench.add(sepiaButton);
+    //toolBench.add(sepiaButton);
+    verticalLayoutPanel.add(sepiaButton);
+    verticalLayoutPanel.add(Box.createVerticalStrut(20));
 
-    JLabel label = new JLabel("Select Greyscale Component:");
-    toolBench.add(label);
+    JButton label = new JButton("Select Greyscale Component:");
+    //toolBench.add(label);
+    verticalLayoutPanel.add(label);
     String[] options = {"Luma", "Intensity", "Value", "Red", "Green", "Blue"};
     greyScaleDropdown = new JComboBox<>(options);
-    toolBench.add(greyScaleDropdown);
+    //toolBench.add(greyScaleDropdown);
+    verticalLayoutPanel.add(greyScaleDropdown);
+    verticalLayoutPanel.add(Box.createVerticalStrut(20));
 
     horizontalFlipButton = new JButton("Horizontal Flip");
-    toolBench.add(horizontalFlipButton);
+    //toolBench.add(horizontalFlipButton);
+    verticalLayoutPanel.add(horizontalFlipButton);
+    verticalLayoutPanel.add(Box.createVerticalStrut(20));
 
     verticalFlipButton = new JButton("Vertical Flip");
-    toolBench.add(verticalFlipButton);
+    //toolBench.add(verticalFlipButton);
+    verticalLayoutPanel.add(verticalFlipButton);
+    verticalLayoutPanel.add(Box.createVerticalStrut(20));
+
+
+    splitButton = new JButton("Split");
+    verticalLayoutPanel.add(splitButton);
+    verticalLayoutPanel.add(Box.createVerticalStrut(20));
+
+    combineButton = new JButton("Combine");
+    verticalLayoutPanel.add(combineButton);
+    verticalLayoutPanel.add(Box.createVerticalStrut(40));
+
+    exitButton = new JButton("Exit");
+    //toolBench.add(exitButton);
+    verticalLayoutPanel.add(exitButton);
+    verticalLayoutPanel.add(Box.createVerticalStrut(20));
+
+    toolBench.add(verticalLayoutPanel);
 
 
     this.setVisible(true);
     this.pack();
-  }
-
-  @Override
-  public void log(String operation, String message, boolean isPass) throws IOException {
-    if (isPass) {
-      logPanel.add(new JLabel("Log: " + operation + " completed successfully!\n")
-      );
-    } else {
-      logPanel.add(new JLabel("Log: " + operation + " failed!\n" + message + "\n"));
-    }
-    imageViewPanel.revalidate();
-  }
-
-  @Override
-  public void log(String operation, boolean isPass) throws IOException {
-    if (isPass) {
-      logPanel.add(new JLabel("Log: " + operation + " completed successfully!\n")
-      );
-    } else {
-      logPanel.add(new JLabel("Log: " + operation + " failed!\n"));
-    }
-
-    imageViewPanel.revalidate();
   }
 
   @Override
@@ -206,18 +241,54 @@ public class ImageGUIView extends JFrame implements AppView {
         throw new RuntimeException(e);
       }
     });
+    splitButton.addActionListener(evt -> {
+      try{
+        features.processCommands("rgb-split opFile opFile opFile opFile");
+
+        new ImageGUIView(System.out);
+        new ImageGUIView(System.out);
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
+    });
+    combineButton.addActionListener(evt -> {
+      try{
+        features.processCommands("rgb-combine opFile opFile opFile opFile");
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
+    });
     greyScaleDropdown.addActionListener(evt -> {
       String selectedOption =
               Objects.requireNonNull(greyScaleDropdown.getSelectedItem()).toString().toLowerCase();
       try {
-//        features.processCommands("greyscale opFile opFile");
         features.processCommands("greyscale " + selectedOption + "-component opFile opFile");
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
+    });
+    saveFileButton.addActionListener(evt -> {
+    JFileChooser fileChooser = new JFileChooser();
+    int result = fileChooser.showSaveDialog(ImageGUIView.this);
+    if (result == JFileChooser.APPROVE_OPTION) {
+      File file = fileChooser.getSelectedFile();
+      try {
+        features.processCommands("save " + file.toString() + " opFile");
+      } catch (Exception ex) {
+        ex.printStackTrace();
+      }
+    }
+    });
+    exitButton.addActionListener(evt -> {
+      try {
+        features.processCommands("exit");
       } catch (IOException e) {
         throw new RuntimeException(e);
       }
     });
   }
 
+  @Override
   public void setImage(BufferedImage image) {
     this.image = image;
     imageViewPanel.removeAll();
@@ -232,5 +303,26 @@ public class ImageGUIView extends JFrame implements AppView {
     imageViewPanel.requestFocus();
   }
 
+  @Override
+  public void log(String operation, String message, boolean isPass) throws IOException {
+    if (isPass) {
+      logPanel.add(new JLabel("Log: " + operation + " completed successfully!\n")
+      );
+    } else {
+      logPanel.add(new JLabel("Log: " + operation + " failed!\n" + message + "\n"));
+    }
+    imageViewPanel.revalidate();
+  }
 
+  @Override
+  public void log(String operation, boolean isPass) throws IOException {
+    if (isPass) {
+      logPanel.add(new JLabel("Log: " + operation + " completed successfully!\n")
+      );
+    } else {
+      logPanel.add(new JLabel("Log: " + operation + " failed!\n"));
+    }
+
+    imageViewPanel.revalidate();
+  }
 }
