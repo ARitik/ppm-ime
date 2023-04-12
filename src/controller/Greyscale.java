@@ -10,9 +10,9 @@ import view.AppView;
  * A class that represents greyscale operation on the image.
  */
 class Greyscale implements ImageCommand {
-  String component;
-  String identifier;
-  String greyScaleIdentifier;
+  private final String component;
+  private final String identifier;
+  private final String greyScaleIdentifier;
 
   /**
    * Implements ImageCommand and greyscale an image on the basis of component.

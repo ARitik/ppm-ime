@@ -10,8 +10,8 @@ import view.AppView;
  * A class that represents Sepia operation on the image.
  */
 class Sepia implements ImageCommand {
-  String identifier;
-  String sepiaIdentifier;
+  private final String identifier;
+  private final String sepiaIdentifier;
 
   /**
    * Implements ImageCommand and given an image sepia tone.

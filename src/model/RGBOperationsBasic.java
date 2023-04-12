@@ -413,5 +413,4 @@ public class RGBOperationsBasic implements ImageOperations {
     Image combinedImage = newImageBuilder.build();
     imageMap.put(identifier, combinedImage);
   }
-
 }

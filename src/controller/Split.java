@@ -43,5 +43,8 @@ class Split implements ImageCommand {
     model.greyscale("red", identifier, redIdentifier);
     model.greyscale("green", identifier, greenIdentifier);
     model.greyscale("blue", identifier, blueIdentifier);
+    view.setImage(model.getImage(redIdentifier));
+    view.setImage(model.getImage(greenIdentifier));
+    view.setImage(model.getImage(blueIdentifier));
   }
 }

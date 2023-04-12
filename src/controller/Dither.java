@@ -9,8 +9,8 @@ import view.AppView;
  * A class that represents Dither operation on the image.
  */
 class Dither implements ImageCommand {
-  String identifier;
-  String ditherIdentifier;
+  private final String identifier;
+  private final String ditherIdentifier;
 
   /**
    * Implements ImageCommand and dithers an image.

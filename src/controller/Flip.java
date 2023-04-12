@@ -9,9 +9,9 @@ import view.AppView;
  * A class that represents Flip operation on the image.
  */
 class Flip implements ImageCommand {
-  String orientation;
-  String identifier;
-  String flippedIdentifier;
+  private final String orientation;
+  private final String identifier;
+  private final String flippedIdentifier;
 
   /**
    * Implements ImageCommand and flips an image.

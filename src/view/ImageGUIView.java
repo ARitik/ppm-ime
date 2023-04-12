@@ -54,8 +54,8 @@ public class ImageGUIView extends JFrame implements AppView {
     logPanel.setPreferredSize(new Dimension(300, 400));
     logPanel.setLayout(new BoxLayout(logPanel, BoxLayout.PAGE_AXIS));
 //    logPanel.setEditable(false);
-    JScrollPane logScrollPane = new JScrollPane();
-    logScrollPane.setViewportView(logPanel);
+    JScrollPane logScrollPane = new JScrollPane(logPanel);
+    logScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
     //ImageLogPane
     histogramPanel = new JPanel();
@@ -64,8 +64,7 @@ public class ImageGUIView extends JFrame implements AppView {
 
 
     //ImageInfoPanel
-    JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, histogramPanel,
-            logScrollPane);
+    JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, histogramPanel, logScrollPane);
     splitPane.setResizeWeight(0.5);
     splitPane.setDividerLocation(0.7);
     imagePanel.add(splitPane, BorderLayout.SOUTH);
@@ -121,20 +120,18 @@ public class ImageGUIView extends JFrame implements AppView {
   }
 
   @Override
-  public void log(String operation, String message, boolean isPass) {
+  public void log(String operation, String message, boolean isPass) throws IOException {
     if (isPass) {
       logPanel.add(new JLabel("Log: " + operation + " completed successfully!\n")
       );
     } else {
       logPanel.add(new JLabel("Log: " + operation + " failed!\n" + message + "\n"));
     }
-    imageViewPanel.removeAll();
     imageViewPanel.revalidate();
-    imageViewPanel.requestFocus();
   }
 
   @Override
-  public void log(String operation, boolean isPass) {
+  public void log(String operation, boolean isPass) throws IOException {
     if (isPass) {
       logPanel.add(new JLabel("Log: " + operation + " completed successfully!\n")
       );
@@ -143,8 +140,6 @@ public class ImageGUIView extends JFrame implements AppView {
     }
 
     imageViewPanel.revalidate();
-    logPanel.revalidate();
-    imageViewPanel.requestFocus();
   }
 
   @Override
@@ -157,7 +152,7 @@ public class ImageGUIView extends JFrame implements AppView {
         try {
           features.processCommands("load " + file.toString() + " opFile");
         } catch (Exception ex) {
-          log("load",ex.getMessage(),false);
+          ex.printStackTrace();
         }
       }
     });
@@ -173,7 +168,7 @@ public class ImageGUIView extends JFrame implements AppView {
       try {
         features.processCommands("dither opFile opFile");
       } catch (IOException e) {
-        log("dither",e.getMessage(),false);
+        throw new RuntimeException(e);
       }
     });
     horizontalFlipButton.addActionListener(evt -> {
@@ -215,6 +210,7 @@ public class ImageGUIView extends JFrame implements AppView {
       String selectedOption =
               Objects.requireNonNull(greyScaleDropdown.getSelectedItem()).toString().toLowerCase();
       try {
+//        features.processCommands("greyscale opFile opFile");
         features.processCommands("greyscale " + selectedOption + "-component opFile opFile");
       } catch (IOException e) {
         throw new RuntimeException(e);
