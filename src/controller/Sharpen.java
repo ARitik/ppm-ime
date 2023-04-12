@@ -9,8 +9,8 @@ import view.AppView;
  * A class that represents sharpen operation on the image.
  */
 class Sharpen implements ImageCommand {
-  String identifier;
-  String sharpenIdentifier;
+  private final String identifier;
+  private final String sharpenIdentifier;
 
   /**
    * Implements ImageCommand and sharpens an image.

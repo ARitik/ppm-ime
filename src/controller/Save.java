@@ -15,8 +15,8 @@ import view.AppView;
  * A class that represents Save operation on the image.
  */
 class Save implements ImageCommand {
-  String filePath;
-  String identifier;
+  private final String filePath;
+  private final String identifier;
 
   /**
    * Implements ImageCommand and saves an image.
@@ -35,7 +35,7 @@ class Save implements ImageCommand {
    * @param savePath path of the image
    * @param image    image to be saved
    */
-  private void savePPM(String savePath, BufferedImage image) throws IOException {
+  private void savePPM(String savePath, BufferedImage image){
     BufferedWriter writer;
     try {
       writer = new BufferedWriter(new FileWriter(savePath));

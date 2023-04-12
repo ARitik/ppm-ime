@@ -13,8 +13,8 @@ import view.AppView;
  * A class that represents Load operation on the image.
  */
 class Load implements ImageCommand {
-  String filePath;
-  String identifier;
+  private final String filePath;
+  private final String identifier;
 
   /**
    * Implements ImageCommand and loads an image.

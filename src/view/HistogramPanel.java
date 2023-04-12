@@ -12,7 +12,6 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.DefaultDrawingSupplier;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
-import org.jfree.chart.renderer.xy.StandardXYBarPainter;
 import org.jfree.chart.renderer.xy.XYBarRenderer;
 import org.jfree.data.statistics.HistogramDataset;
 
@@ -20,7 +19,6 @@ public class HistogramPanel extends JPanel {
   private static final int BINS = 256;
   private final BufferedImage image;
   private HistogramDataset dataset;
-  private XYBarRenderer renderer;
 
 
   public HistogramPanel(BufferedImage image) {
@@ -41,14 +39,9 @@ public class HistogramPanel extends JPanel {
     r = raster.getSamples(0, 0, w, h, 2, r);
     dataset.addSeries("Blue", r, BINS);
     // chart
-    JFreeChart chart = ChartFactory.createHistogram("Histogram", "Value",
+    JFreeChart chart = ChartFactory.createXYLineChart("Histogram", "Value",
             "Count", dataset, PlotOrientation.VERTICAL, true, true, false);
     XYPlot plot = (XYPlot) chart.getPlot();
-//    plot.setRangeGridlinesVisible(false);
-//    plot.setDomainGridlinesVisible(false);
-    renderer = (XYBarRenderer) plot.getRenderer();
-    renderer.setBarPainter(new StandardXYBarPainter());
-    // translucent red, green & blue
     Paint[] paintArray = {
             new Color(0x80ff0000, true),
             new Color(0x8000ff00, true),

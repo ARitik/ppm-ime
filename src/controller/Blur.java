@@ -9,8 +9,8 @@ import view.AppView;
  * A class that represents Blur operation on the image.
  */
 class Blur implements ImageCommand {
-  String identifier;
-  String blurIdentifier;
+  private final String identifier;
+  private final String blurIdentifier;
 
   /**
    * Implements ImageCommand and performs blur on an image.

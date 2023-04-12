@@ -9,9 +9,9 @@ import view.AppView;
  * A class that represents Brighten operation on the image.
  */
 class Brighten implements ImageCommand {
-  int value;
-  String identifier;
-  String brightenIdentifier;
+  private final int value;
+  private final String identifier;
+  private final String brightenIdentifier;
 
   /**
    * Implements ImageCommand and brightens an image.

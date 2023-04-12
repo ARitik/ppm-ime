@@ -9,10 +9,10 @@ import view.AppView;
  * A class that represents Combine operation on the image.
  */
 class Combine implements ImageCommand {
-  String identifier;
-  String redIdentifier;
-  String blueIdentifier;
-  String greenIdentifier;
+  private final String identifier;
+  private final String redIdentifier;
+  private final String blueIdentifier;
+  private final String greenIdentifier;
 
   /**
    * Implements ImageCommand and combines images.
