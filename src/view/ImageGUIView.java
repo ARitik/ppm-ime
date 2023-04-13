@@ -8,12 +8,14 @@ import java.io.PrintStream;
 import java.util.Objects;
 
 import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.border.EmptyBorder;
 
 import controller.AppController;
 
 public class ImageGUIView extends JFrame implements AppView {
-  private BufferedImage image;
+  private int logPanelLabelCount;
+  private String greyScaleComponent;
+  private int brightnessConstant;
   private JPanel imageViewPanel;
   private JPanel imagePanel;
   private JButton fileChooserButton;
@@ -26,21 +28,27 @@ public class ImageGUIView extends JFrame implements AppView {
   private JButton saveFileButton;
   private JComboBox<String> greyScaleDropdown;
   private JSlider brightnessSlider;
-  private JButton exitButton;
   private JPanel logPanel;
   private JPanel histogramPanel;
   private JButton splitButton;
   private JButton combineButton;
+  private JButton brightnessSetButton;
+  private JButton setGreyScaleButton;
   private HistogramPanel histogram;
   private JPanel mainPanel;
   private JPanel verticalLayoutPanel;
   private JPanel operationsGrid;
   private JPanel brightnessGreyscaleGrid;
   private String loadFileType;
+  private String imageFileName;
 
   public ImageGUIView(PrintStream out) {
     super("GRIME");
     this.loadFileType = "png";
+    this.logPanelLabelCount = 0;
+    this.brightnessConstant = 0;
+    this.greyScaleComponent = "";
+    this.imageFileName = "";
     this.setExtendedState(JFrame.MAXIMIZED_BOTH);
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -77,9 +85,10 @@ public class ImageGUIView extends JFrame implements AppView {
     //ImageLogPane
     histogramPanel = new JPanel();
     histogramPanel.setBorder(BorderFactory.createTitledBorder("Histogram"));
-    histogramPanel.setPreferredSize(new Dimension(600, 450));
+    histogramPanel.setPreferredSize(new Dimension(600, 400));
     JScrollPane histogramScrollPane = new JScrollPane(histogramPanel);
     histogramScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+    histogramScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 
 
     //ImageInfoPanel
@@ -95,7 +104,7 @@ public class ImageGUIView extends JFrame implements AppView {
 
     JPanel toolBench = new JPanel();
     toolBench.setBorder(BorderFactory.createTitledBorder("Tool Bench"));
-//    toolBench.setLayout(new BoxLayout(toolBench, BoxLayout.PAGE_AXIS));
+    toolBench.setLayout(new BoxLayout(toolBench, BoxLayout.PAGE_AXIS));
     mainPanel.add(toolBench, BorderLayout.LINE_END);
 
     JPanel loadSavePanel = new JPanel(new GridLayout(1, 2));
@@ -127,6 +136,7 @@ public class ImageGUIView extends JFrame implements AppView {
     verticalLayoutPanel.setPreferredSize(new Dimension(380, 700));
     verticalLayoutPanel.setBorder(BorderFactory.createTitledBorder("Operations"));
     verticalLayoutPanel.setLayout(new BoxLayout(verticalLayoutPanel, BoxLayout.Y_AXIS));
+    this.logPanelLabelCount = 0;
 
     operationsGrid = new JPanel();
     operationsGrid.setLayout(new GridLayout(0, 1, 10, 10));
@@ -173,21 +183,21 @@ public class ImageGUIView extends JFrame implements AppView {
     operationsGrid.add(combineButton);
     //verticalLayoutPanel.add(Box.createVerticalStrut(40));
 
-    exitButton = new JButton("Exit");
-    //toolBench.add(exitButton);
-    operationsGrid.add(exitButton);
-
     //verticalLayoutPanel.add(Box.createVerticalStrut(20));
     verticalLayoutPanel.add(operationsGrid);
 
     brightnessGreyscaleGrid = new JPanel();
+    brightnessGreyscaleGrid.setPreferredSize(new Dimension(350, 300));
+//    brightnessGreyscaleGrid.setBorder(BorderFactory.createTitledBorder("Brightness"));
+    brightnessGreyscaleGrid.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createTitledBorder("Brightness"), new EmptyBorder(40, 60, 40, 60)));
+
     brightnessGreyscaleGrid.setLayout(new GridLayout(0, 1, 10, 10));
 
-    JLabel brightnessButton = new JLabel("Brighten");
-    brightnessButton.setHorizontalAlignment(JLabel.CENTER);
-    //toolBench.add(brightnessLabel);
-    //brightnessButton.setPreferredSize(new Dimension(200, 30));
-    brightnessGreyscaleGrid.add(brightnessButton);
+    JLabel brightnessInfo = new JLabel("Adjust brightness to desired level");
+    brightnessInfo.setHorizontalAlignment(JLabel.CENTER);
+    brightnessGreyscaleGrid.add(brightnessInfo);
+    brightnessSetButton = new JButton("Set Brightness");
 
     brightnessSlider = new JSlider(-50, 50, 0);
     brightnessSlider.setMinorTickSpacing(10);
@@ -196,22 +206,34 @@ public class ImageGUIView extends JFrame implements AppView {
     brightnessSlider.setPaintLabels(true);
     //toolBench.add(brightnessSlider);
     brightnessGreyscaleGrid.add(brightnessSlider);
+    brightnessGreyscaleGrid.add(brightnessSetButton);
     brightnessGreyscaleGrid.add(Box.createVerticalStrut(20));
 
-    JLabel label = new JLabel("Greyscale");
-    label.setHorizontalAlignment(JLabel.CENTER);
+//    JLabel label = new JLabel("Greyscale");
+//    label.setHorizontalAlignment(JLabel.CENTER);
     //toolBench.add(label);
-    brightnessGreyscaleGrid.add(label);
+//    brightnessGreyscaleGrid.add(label);
+    //toolBench.add(greyScaleDropdown);
+//    brightnessGreyscaleGrid.add(greyScaleDropdown);
+
+    JPanel greyScalePanel = new JPanel();
+    greyScalePanel.setLayout(new BoxLayout(greyScalePanel,BoxLayout.PAGE_AXIS));
+    greyScalePanel.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createTitledBorder("Greyscale"), new EmptyBorder(40, 80, 40, 75)));
+//    greyScalePanel.setPreferredSize(new Dimension(0, 200));
     String[] options = {"Luma", "Intensity", "Value", "Red", "Green", "Blue"};
     greyScaleDropdown = new JComboBox<>(options);
-    //toolBench.add(greyScaleDropdown);
-    brightnessGreyscaleGrid.add(greyScaleDropdown);
+    setGreyScaleButton = new JButton("Set Component");
+    greyScalePanel.add(new JLabel("Greyscale"));
+    greyScalePanel.add(greyScaleDropdown);
+    greyScalePanel.add(setGreyScaleButton);
 
     // Create an empty border to give some space around the panel
-    brightnessGreyscaleGrid.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+//    brightnessGreyscaleGrid.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
 // Create a new JPanel with a GridBagLayout
     JPanel centerPanel = new JPanel(new GridBagLayout());
+    centerPanel.setPreferredSize(new Dimension(300, 600));
 
 // Create a GridBagConstraints object to specify the layout properties
     GridBagConstraints gbc = new GridBagConstraints();
@@ -220,8 +242,13 @@ public class ImageGUIView extends JFrame implements AppView {
     gbc.weighty = 1.0;
     gbc.anchor = GridBagConstraints.PAGE_START;
 
+    centerPanel.add(brightnessGreyscaleGrid);
+
+    gbc.gridy = 1;
+    gbc.weighty = 0.0;
+
 // Add the original panel to the new panel
-    centerPanel.add(brightnessGreyscaleGrid, gbc);
+    centerPanel.add(greyScalePanel, gbc);
 
 // Add the new panel to the container
     verticalLayoutPanel.add(centerPanel);
@@ -250,6 +277,8 @@ public class ImageGUIView extends JFrame implements AppView {
       int result = fileChooser.showOpenDialog(ImageGUIView.this);
       if (result == JFileChooser.APPROVE_OPTION) {
         File file = fileChooser.getSelectedFile();
+        imageFileName = file.getName();
+        imageFileName = imageFileName.substring(0,imageFileName.indexOf("."));
         try {
           features.processCommands("load " + file.toString() + " opFile");
           String filePath = file.toString();
@@ -260,9 +289,16 @@ public class ImageGUIView extends JFrame implements AppView {
       }
     });
     brightnessSlider.addChangeListener(evt -> {
-      int brightnessConstant = brightnessSlider.getValue();
+      brightnessConstant = brightnessSlider.getValue();
       try {
-        features.processCommands("brighten " + brightnessConstant + " opFile opFile");
+        features.processCommands("brighten " + brightnessConstant + " opFile opBrightFile");
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
+    });
+    brightnessSetButton.addChangeListener(evt -> {
+      try {
+        features.processCommands("brighten " + 0 + " opBrightFile opFile");
       } catch (IOException e) {
         throw new RuntimeException(e);
       }
@@ -321,30 +357,33 @@ public class ImageGUIView extends JFrame implements AppView {
           return;
         }
         File outputDir = fileChooser.getSelectedFile();
-        features.processCommands("save " + outputDir + "/redchannel." + loadFileType + " opFile" +
+        features.processCommands("save " + outputDir + "/" + imageFileName + "-red-channel." + loadFileType + " " +
+                "opFile" +
                 "-red");
-        features.processCommands("save " + outputDir + "/greenchannel." + loadFileType + " opFile" +
-                "-green");
-        features.processCommands("save " + outputDir + "/bluechannel." + loadFileType + " opFile" +
-                "-blue");
+        features.processCommands("save " + outputDir + "/" + imageFileName + "-green-channel." +
+                        loadFileType + " opFile-green" );
+        features.processCommands("save " + outputDir + "/" + imageFileName + "-blue-channel." +
+                loadFileType + " opFile-blue" );
 
       } catch (IOException e) {
         throw new RuntimeException(e);
       }
     });
     combineButton.addActionListener(evt -> {
-      String[] options = {"red","green","blue"};
+      String[] options = {"red", "green", "blue"};
       String lastDir = "/Users";
       try {
         File[] imageFiles = new File[3];
         for (int i = 0; i < 3; i++) {
           JFileChooser fileChooser = new JFileChooser();
+          fileChooser.setCurrentDirectory(new File(lastDir));
           fileChooser.setDialogTitle("Select the " + options[i] + " channel image");
           int result = fileChooser.showOpenDialog(null);
           if (result != JFileChooser.APPROVE_OPTION) {
             return;
           }
           imageFiles[i] = fileChooser.getSelectedFile();
+          lastDir = imageFiles[i].getPath();
         }
         features.processCommands("load " + imageFiles[0].getPath() + " opFile-red");
         features.processCommands("load " + imageFiles[1].getPath() + " opFile-green");
@@ -357,8 +396,10 @@ public class ImageGUIView extends JFrame implements AppView {
     greyScaleDropdown.addActionListener(evt -> {
       String selectedOption =
               Objects.requireNonNull(greyScaleDropdown.getSelectedItem()).toString().toLowerCase();
+      this.greyScaleComponent = selectedOption;
       try {
-        features.processCommands("greyscale " + selectedOption + "-component opFile opFile");
+        features.processCommands("greyscale " + selectedOption + "-component opFile " +
+                "opGreyScaleFile");
       } catch (IOException e) {
         throw new RuntimeException(e);
       }
@@ -375,9 +416,10 @@ public class ImageGUIView extends JFrame implements AppView {
         }
       }
     });
-    exitButton.addActionListener(evt -> {
+    setGreyScaleButton.addActionListener(evt -> {
       try {
-        features.processCommands("exit");
+        features.processCommands("greyscale " + greyScaleComponent + "-component opFile " +
+                "opFile");
       } catch (IOException e) {
         throw new RuntimeException(e);
       }
@@ -386,7 +428,6 @@ public class ImageGUIView extends JFrame implements AppView {
 
   @Override
   public void setImage(BufferedImage image) {
-    this.image = image;
     imageViewPanel.removeAll();
     histogramPanel.removeAll();
     histogram = new HistogramPanel(image);
@@ -407,7 +448,13 @@ public class ImageGUIView extends JFrame implements AppView {
     } else {
       logPanel.add(new JLabel("Log: " + operation + " failed!\n" + message + "\n"));
     }
+    logPanelLabelCount += 1;
+    if (logPanelLabelCount > 22) {
+      logPanel.removeAll();
+      logPanelLabelCount = 0;
+    }
     imageViewPanel.revalidate();
+    logPanel.repaint();
   }
 
   @Override
@@ -418,7 +465,12 @@ public class ImageGUIView extends JFrame implements AppView {
     } else {
       logPanel.add(new JLabel("Log: " + operation + " failed!\n"));
     }
-
+    logPanelLabelCount += 1;
+    if (logPanelLabelCount > 22) {
+      logPanel.removeAll();
+      logPanelLabelCount = 0;
+    }
     imageViewPanel.revalidate();
+    logPanel.repaint();
   }
 }
