@@ -3,9 +3,7 @@ package model;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -301,10 +299,6 @@ public class RGBOperationsBasic implements ImageOperations {
             "green");
     RGBImage blueChannelImage = (RGBImage) splitIntoComponent(image, blueChannel, blueIdentifier,
             "blue");
-    List<Image> channelImages = new ArrayList<Image>();
-    channelImages.add(redChannelImage);
-    channelImages.add(blueChannelImage);
-    channelImages.add(greenChannelImage);
   }
 
   /**
@@ -407,7 +401,7 @@ public class RGBOperationsBasic implements ImageOperations {
         int r = redImage.getRPixel(row, column);
         int g = greenImage.getGPixel(row, column);
         int b = blueImage.getBPixel(row, column);
-        newImageBuilder.pixel(new Pixel(r, g, b), row, column);
+        newImageBuilder.pixel(new Pixel(r, b, g), row, column);
       }
     }
     Image combinedImage = newImageBuilder.build();

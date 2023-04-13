@@ -38,5 +38,6 @@ class Combine implements ImageCommand {
    */
   public void execute(ImageOperationsBasicPlus model, AppView view) throws IOException {
     model.rgbCombine(identifier, redIdentifier, greenIdentifier, blueIdentifier);
+    view.setImage(model.getImage(identifier));
   }
 }

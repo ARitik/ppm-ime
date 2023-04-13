@@ -13,7 +13,7 @@ import jdk.jshell.spi.ExecutionControl;
 public interface ImageOperations {
 
   /**
-   * The method loads an image from the specified path and refer it by the given image name.
+   * The method loads an image from the specified path and refers to it by the given image name.
    *
    * @param identifier of the image
    */

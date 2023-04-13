@@ -40,11 +40,9 @@ class Split implements ImageCommand {
    */
   public void execute(ImageOperationsBasicPlus model, AppView view) throws IOException,
           ExecutionControl.NotImplementedException {
-    model.greyscale("red", identifier, redIdentifier);
-    model.greyscale("green", identifier, greenIdentifier);
-    model.greyscale("blue", identifier, blueIdentifier);
-    view.setImage(model.getImage(redIdentifier));
-    view.setImage(model.getImage(greenIdentifier));
-    view.setImage(model.getImage(blueIdentifier));
+    model.rgbSplit(identifier,redIdentifier,greenIdentifier,blueIdentifier);
+//    model.greyscale("red", identifier, redIdentifier);
+//    model.greyscale("green", identifier, greenIdentifier);
+//    model.greyscale("blue", identifier, blueIdentifier);
   }
 }

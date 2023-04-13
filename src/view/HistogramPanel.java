@@ -27,25 +27,34 @@ public class HistogramPanel extends JPanel {
 
   ChartPanel createChartPanel() {
     // dataset
-    dataset = new HistogramDataset();
+    HistogramDataset dataset = new HistogramDataset();
     Raster raster = image.getRaster();
     final int w = image.getWidth();
     final int h = image.getHeight();
     double[] r = new double[w * h];
+    double[] g = new double[w * h];
+    double[] b = new double[w * h];
     r = raster.getSamples(0, 0, w, h, 0, r);
+    g = raster.getSamples(0, 0, w, h, 1, g);
+    b = raster.getSamples(0, 0, w, h, 2, b);
+    double[] i = new double[w * h];
+    for (int j = 0; j < i.length; j++) {
+      i[j] = (r[j] * 0.2989) + (g[j] * 0.5870) + (b[j] * 0.1140);
+    }
     dataset.addSeries("Red", r, BINS);
-    r = raster.getSamples(0, 0, w, h, 1, r);
-    dataset.addSeries("Green", r, BINS);
-    r = raster.getSamples(0, 0, w, h, 2, r);
-    dataset.addSeries("Blue", r, BINS);
+    dataset.addSeries("Green", g, BINS);
+    dataset.addSeries("Blue", b, BINS);
+    dataset.addSeries("Intensity", i, BINS);
+
     // chart
-    JFreeChart chart = ChartFactory.createXYLineChart("Histogram", "Value",
-            "Count", dataset, PlotOrientation.VERTICAL, true, true, false);
+    JFreeChart chart = ChartFactory.createXYLineChart("Histogram", "Value", "Count", dataset,
+            PlotOrientation.VERTICAL, true, true, false);
     XYPlot plot = (XYPlot) chart.getPlot();
     Paint[] paintArray = {
             new Color(0x80ff0000, true),
             new Color(0x8000ff00, true),
-            new Color(0x800000ff, true)
+            new Color(0x800000ff, true),
+            Color.yellow
     };
     plot.setDrawingSupplier(new DefaultDrawingSupplier(
             paintArray,
@@ -60,4 +69,5 @@ public class HistogramPanel extends JPanel {
     panel.setRangeZoomable(false);
     return panel;
   }
+
 }
