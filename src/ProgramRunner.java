@@ -22,10 +22,14 @@ public class ProgramRunner {
    */
   public static void main(String[] args) throws IOException {
     ImageOperationsBasicPlus model = new RGBOperationsBasicPlus();
-//    AppView view = new ImageLogView(System.out);
-    AppView view = new ImageGUIView(System.out);
+    AppView view;
+    if(args.length > 0 && (args[0].equals("-text") || args[0].equals("-script"))) {
+      view = new ImageLogView(System.out);
+    } else {
+      view = new ImageGUIView(System.out);
+    }
     AppController controller = new ImageCommandController(model, view);
-    if (args.length > 0 && args[0].equals("-script")) {
+    if(args.length > 0 && args[0].equals("-script")) {
       controller.processScriptCommands(args[1]);
       System.exit(0);
     }
